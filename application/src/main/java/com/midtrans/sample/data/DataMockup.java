@@ -1,11 +1,19 @@
 package com.midtrans.sample.data;
 
 import org.springframework.stereotype.Component;
+import sun.jvm.hotspot.ui.tree.SimpleTreeNode;
 
 import java.util.*;
 
 @Component
 public class DataMockup {
+
+    private List<String> listedPayment;
+
+    public void enablePayments(List<String> listPayment) {
+        listedPayment = new ArrayList<>();
+        listedPayment.addAll(listPayment);
+    }
 
     public Map<String, Object> initDataMock(){
         UUID idRand = UUID.randomUUID();
@@ -66,12 +74,12 @@ public class DataMockup {
         custDetail.put("phone", "62783737373");
         custDetail.put("billing_address", billingAddres);
 
-
         Map<String, Object> body = new HashMap<>();
         body.put("credit_card", creditCard);
         body.put("transaction_details", transDetail);
         body.put("item_details", items);
         body.put("customer_details", custDetail);
+        body.put("enabled_payments", listedPayment);
 
         return body;
     }

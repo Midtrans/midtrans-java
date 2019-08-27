@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1b2fd338-5f39-419c-93a5-e37eaa47d8b1" name="Default Changelist" comment="Make Config class get server &amp; client key from application.properties">
+    <list default="true" id="1b2fd338-5f39-419c-93a5-e37eaa47d8b1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/HomeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/src/main/resources/templates/fragments/header.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/src/main/resources/templates/layout.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/src/main/resources/templates/snap/snap.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/SampleApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/SampleApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/CoreApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/CoreApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/FrontController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/FrontController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/SnapController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/FrontController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/SnapController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/data/DataMockup.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/data/DataMockup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/check-out.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/templates/snap/check-out.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/MidtranConfiguration.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/SampleApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/SampleApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/FrontController.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/FrontController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/SnapController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/FrontController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/data/DataMockup.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/data/DataMockup.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/templates/check-out.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/APIHttpClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/APIHttpClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/Config.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/SnapApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransSnapApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/SnapApiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/MidtransSnapApiImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/httpclient/APIHttpClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/httpclient/APIHttpClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/SnapApi.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/impl/SnapApiImpl.class" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,8 +36,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="HTML File" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -57,6 +63,9 @@
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/application/src/main/resources/templates/snap" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.midtrans.api" />
     </key>
@@ -114,7 +123,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566871647666</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Make Config class get server &amp; client key from application.properties">
+      <created>1566875122415</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1566875122415</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -129,8 +145,10 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <MESSAGE value="Delete Auto Config Class" />
     <MESSAGE value="Make Config class get server &amp; client key from application.properties" />
     <option name="LAST_COMMIT_MESSAGE" value="Make Config class get server &amp; client key from application.properties" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>
