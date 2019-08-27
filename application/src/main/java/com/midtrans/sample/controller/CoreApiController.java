@@ -30,9 +30,6 @@ public class CoreApiController {
     @GetMapping(value = "/card-token", produces = "application/json")
     public String cardToken() {
         //Midtrans Configuration
-        config.setCLIENT_KEY("SB-Mid-client-N7N5b2n_ZUQOOVba");
-        config.setSERVER_KEY("SB-Mid-server-Wh2cEDd4H661g4lrcig8sQMf");
-        config.setProduction(false);
         config.getCoreApi();
 
         //Set Params ClientKey and Card Detail Number
@@ -51,8 +48,6 @@ public class CoreApiController {
     @GetMapping(value = "/carge-cc", produces = "application/json")
     public Map<String, Object> cargeCreditCardTransaction() throws IOException {
         //Midtrans Configuration
-        config.setSERVER_KEY("SB-Mid-server-Wh2cEDd4H661g4lrcig8sQMf");
-        config.setProduction(false);
         config.getCoreApi();
 
         String json = "{\n" +
@@ -105,15 +100,13 @@ public class CoreApiController {
        Map<String, Object> object = jsonArrayToObject(json);
        JSONObject response = coreApi.cargeCC(object);
        System.out.println(response.toString());
-
-
         return object;
     }
 
 
 
     private Map<String , Object> jsonArrayToObject(String json) throws IOException {
-        Map<String, Object> body = new HashMap<>();
+        Map<String, Object> body;
         ObjectMapper mapper = new ObjectMapper();
         body = mapper.readValue(json, new TypeReference<HashMap>(){});
         return body;

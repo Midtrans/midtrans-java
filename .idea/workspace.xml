@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1b2fd338-5f39-419c-93a5-e37eaa47d8b1" name="Default Changelist" comment="">
+    <list default="true" id="1b2fd338-5f39-419c-93a5-e37eaa47d8b1" name="Default Changelist" comment="Make Config class get server &amp; client key from application.properties">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/SampleApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/SampleApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/CoreApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/CoreApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/FrontController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/FrontController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/SnapController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/MidtranConfiguration.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/SampleApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/SampleApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/FrontController.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/FrontController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/SnapController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/APIHttpClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/APIHttpClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/Config.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/httpclient/APIHttpClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/httpclient/APIHttpClient.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -91,6 +107,14 @@
       <option name="presentableId" value="Default" />
       <updated>1566450430356</updated>
     </task>
+    <task id="LOCAL-00001" summary="Delete Auto Config Class">
+      <created>1566871647666</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1566871647666</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -103,5 +127,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Delete Auto Config Class" />
+    <MESSAGE value="Make Config class get server &amp; client key from application.properties" />
+    <option name="LAST_COMMIT_MESSAGE" value="Make Config class get server &amp; client key from application.properties" />
   </component>
 </project>

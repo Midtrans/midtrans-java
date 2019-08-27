@@ -11,7 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan(value = "com.midtrans.api", basePackageClasses = SampleApplication.class)
-@EnableConfigurationProperties(MidtranConfiguration.class)
 public class SampleApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

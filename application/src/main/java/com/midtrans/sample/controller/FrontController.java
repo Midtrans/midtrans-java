@@ -38,9 +38,6 @@ public class FrontController {
 
     @RequestMapping(value = "/check-out", method = RequestMethod.GET)
     public String checkout(Model model) {
-//        config.setCLIENT_KEY("SB-Mid-client-sRS1hk357G2WA1nI");
-//        config.setSERVER_KEY("SB-Mid-server-Wh2cEDd4H661g4lrcig8sQMf");
-//        config.setProduction(false);
         config.getSnapApi();
         String clientKey = config.getCLIENT_KEY();
         Map<String, Object> dataCheckout = dataMockup.initDataMock();
@@ -51,16 +48,11 @@ public class FrontController {
     }
 
     @RequestMapping(value = "/snap-redirect", method = RequestMethod.POST)
-    public String index() throws IOException {
-        config.setSERVER_KEY("SB-Mid-server-Wh2cEDd4H661g4lrcig8sQMf");
-        config.setProduction(false);
+    public String index() {
         config.getSnapApi();
         Map<String, Object> body = dataMockup.initDataMock();
-
         System.out.println(body.toString());
-
         JSONObject response = snapApi.tokenTransaction(body);
-
         String redirectURL = response.getString("redirect_url");
         return "redirect:"+redirectURL;
     }

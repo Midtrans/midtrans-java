@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -16,17 +17,14 @@ import java.util.Base64;
 import java.util.Map;
 import java.util.logging.Logger;
 
-@Component
+@Service
 public class APIHttpClient {
 
     @Autowired
     private Config config;
 
     private String encodeServerKey(){
-        String serverKey = config.getSERVER_KEY() + ":";
-        String encodedAuth = Base64.getEncoder().encodeToString((serverKey).getBytes(StandardCharsets.UTF_8));
-        String auth = "Basic " + encodedAuth;
-        return auth;
+        return "Basic " + Base64.getEncoder().encodeToString((config.getSERVER_KEY() + ":").getBytes(StandardCharsets.UTF_8));
     }
 
     private HttpHeaders setHeaders() {
