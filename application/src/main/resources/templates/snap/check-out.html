@@ -40,31 +40,15 @@
                     </div>
                     <span class="text-muted">Rp.50.000</span>
                 </li>
-                <!--                <li class="list-group-item d-flex justify-content-between bg-light">-->
-                <!--                    <div class="text-success">-->
-                <!--                        <h6 class="my-0">Promo code</h6>-->
-                <!--                        <small>EXAMPLECODE</small>-->
-                <!--                    </div>-->
-                <!--                    <span class="text-success">-$5</span>-->
-                <!--                </li>-->
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total (Rp)</span>
                     <strong>Rp.265.000</strong>
                 </li>
             </ul>
-
-            <!--            <form class="card p-2">-->
-            <!--                <div class="input-group">-->
-            <!--                    <input type="text" class="form-control" placeholder="Promo code">-->
-            <!--                    <div class="input-group-append">-->
-            <!--                        <button type="submit" class="btn btn-secondary">Redeem</button>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </form>-->
         </div>
         <div class="col-md-8 order-md-1">
             <h4 class="mb-3">Billing & Shipping Address</h4>
-            <form class="needs-validation" novalidate>
+            <form class="needs-validation" method="post" novalidate>
                 <div class="row">
                     <div class="col-md-3">
                         <label for="firstName">First name</label></br>
@@ -86,21 +70,28 @@
                     <h5><label id="address" th:text="${result.customer_details.billing_address.address}"></label></h5>
                 </div>
                 <hr class="mb-4">
-                <button id="pay-button" class="btn btn-primary btn-lg btn-block">Payment!</button>
             </form>
+            <button id="pay-button" class="btn btn-primary btn-lg btn-block">Payment!</button>
             <hr class="mb-4">
-            <pre><div id="result-json">JSON result will appear here after payment:<br></div></pre>
+            <code>
+                <pre><div id="result-json">JSON result will appear here after payment:<br></div></pre>
+            </code>
             <hr class="mb-4">
         </div>
     </div>
 </main>
 
 <div th:replace="layout :: body-bottom-scripts"/>
-<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-sRS1hk357G2WA1nI"></script>
+<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        th:attr="data-client-key=${clientKey}"></script>
 <script th:inline="javascript">
       var payButton = document.getElementById('pay-button');
       payButton.onclick = function (event) {
         var token = [[${token}]];
+        var redirectUrl = [[${redirectURL}]];
+        if (token == null) {
+            window.location.href = redirectUrl;
+        } else {
         snap.pay(token, {
           // Optional
           onSuccess: function(result){
@@ -116,6 +107,7 @@
           }
         });
         return false;
+        }
       };
 </script>
 </body>

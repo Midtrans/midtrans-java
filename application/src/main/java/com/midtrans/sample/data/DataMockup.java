@@ -9,10 +9,21 @@ import java.util.*;
 public class DataMockup {
 
     private List<String> listedPayment;
+    private Map<String, String> creditCard;
+    private String paymentType = "";
 
     public void enablePayments(List<String> listPayment) {
         listedPayment = new ArrayList<>();
         listedPayment.addAll(listPayment);
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
+    public void creditCard(Map<String, String> params) {
+        creditCard = new HashMap<>();
+        creditCard.putAll(params);
     }
 
     public Map<String, Object> initDataMock(){
@@ -21,9 +32,6 @@ public class DataMockup {
         Map<String, String> transDetail = new HashMap<>();
         transDetail.put("order_id", idRand.toString());
         transDetail.put("gross_amount", "265000");
-
-        Map<String, String> creditCard = new HashMap<>();
-        creditCard.put("secure", "true");
 
         List<Map<String, String>> items = new ArrayList<>();
         Map<String,String> item1 = new HashMap<>();
@@ -75,11 +83,18 @@ public class DataMockup {
         custDetail.put("billing_address", billingAddres);
 
         Map<String, Object> body = new HashMap<>();
-        body.put("credit_card", creditCard);
+        if (creditCard != null) {
+            body.put("credit_card", creditCard);
+        }
         body.put("transaction_details", transDetail);
         body.put("item_details", items);
         body.put("customer_details", custDetail);
-        body.put("enabled_payments", listedPayment);
+        if (!paymentType.isEmpty()) {
+            body.put("payment_type", paymentType);
+        }
+        if (listedPayment != null) {
+            body.put("enabled_payments", listedPayment);
+        }
 
         return body;
     }

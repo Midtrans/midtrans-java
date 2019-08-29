@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Config {
-    private final String COREAPI_PRODUCTION_BASE_URL = "https://api.midtrans.com/v2";
-    private final String COREAPI_SANDBOX_BASE_URL = "https://api.sandbox.midtrans.com/v2";
-    private final String SNAP_PRODUCTION_BASE_URL = "https://app.midtrans.com/snap/v1";
-    private final String SNAP_SANDBOX_BASE_URL = "https://app.sandbox.midtrans.com/snap/v1";
+    private final String COREAPI_PRODUCTION_BASE_URL = "https://api.midtrans.com/v2/";
+    private final String COREAPI_SANDBOX_BASE_URL = "https://api.sandbox.midtrans.com/v2/";
+    private final String SNAP_PRODUCTION_BASE_URL = "https://app.midtrans.com/snap/v1/";
+    private final String SNAP_SANDBOX_BASE_URL = "https://app.sandbox.midtrans.com/snap/v1/";
 
     @Value("${com.midtrans.serverkey}")
     private String SERVER_KEY;
@@ -19,13 +19,9 @@ public class Config {
     @Value("${com.midtrans.production}")
     private boolean isProduction;
 
-    private String BASE_URL;
+    private String BASE_URL = "";
 
     public Config() {
-    }
-
-    public void setProduction(boolean production) {
-        isProduction = production;
     }
 
     private boolean isProduction() {
@@ -64,5 +60,17 @@ public class Config {
             setBASE_URL(SNAP_SANDBOX_BASE_URL);
         }
         return BASE_URL;
+    }
+
+    public void setSERVER_KEY(String SERVER_KEY) {
+        this.SERVER_KEY = SERVER_KEY;
+    }
+
+    public void setCLIENT_KEY(String CLIENT_KEY) {
+        this.CLIENT_KEY = CLIENT_KEY;
+    }
+
+    public void setProduction(boolean production) {
+        isProduction = production;
     }
 }

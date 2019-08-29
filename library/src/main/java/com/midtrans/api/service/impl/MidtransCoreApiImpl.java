@@ -5,6 +5,7 @@ import com.midtrans.api.service.MidtransCoreApi;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Map;
@@ -16,8 +17,10 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
     private APIHttpClient httpClient;
 
     @Override
-    public JSONObject getToken(MultiValueMap<String, String> params) {
-        return httpClient.getMethod(params, "/token");
+    public JSONObject getToken(Map<String, String> params) {
+        MultiValueMap<String, String> param = new LinkedMultiValueMap<>();
+        param.setAll(params);
+        return httpClient.getMethod(param, "/token");
     }
 
     @Override

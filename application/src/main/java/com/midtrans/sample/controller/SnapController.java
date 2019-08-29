@@ -11,23 +11,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
 import java.util.*;
 
 @Controller
 public class SnapController {
 
     /*
-     * This Controller Class For Snap Implementation
+     * This Controller Class For Midtrans Snap Implementation
      */
 
     private Map<String, Object> customBody;
 
+
+    //Midtrans HTTP SNAP Library Class
     @Autowired
     private MidtransSnapApi midtransSnapApi;
 
+    /*
+    Midtrans Configuration class for get ClientKey or ServerKey
+    and setup Environment production/sandbox, you can set Key
+    on application.properties file, or with setter method on Config class
+     */
     @Autowired
     private Config config;
 
+    //Data transaction Mockup
     @Autowired
     private DataMockup dataMockup;
 
@@ -39,36 +48,30 @@ public class SnapController {
     }
 
     @RequestMapping(value = "/check-out", method = RequestMethod.POST)
-    public String checkout(@RequestParam("enablePay") List<String> listPay, Model model) {
-        config.getSnapApi();
+    public String checkout(@RequestParam(value = "enablePay", required = false) List<String> listPay,
+                           @RequestParam(value = "snapType") String snapType,
+                           Model model) {
         String clientKey = config.getCLIENT_KEY();
-
         customBody = new HashMap<>();
         List<String> paymentList = new ArrayList<>();
         if (listPay != null) {
-            for (String listPays : listPay) {
-                paymentList.add(listPays);
-            }
+            paymentList.addAll(listPay);
         }
-
+        dataMockup = new DataMockup();
         dataMockup.enablePayments(paymentList);
         customBody.putAll(dataMockup.initDataMock());
-
         Map<String, Object> dataCheckout = dataMockup.initDataMock();
-        model.addAttribute("result", customBody);
-        model.addAttribute("clientKey", clientKey);
-        model.addAttribute("token", midtransSnapApi.generateToken(dataCheckout));
-        return "snap/check-out";
-    }
-
-    @RequestMapping(value = "/snap-redirect", method = RequestMethod.POST)
-    public String index() {
-        config.getSnapApi();
-        Map<String, Object> body = dataMockup.initDataMock();
-        System.out.println(body.toString());
-        JSONObject response = midtransSnapApi.tokenTransaction(body);
-        String redirectURL = response.getString("redirect_url");
-        return "redirect:"+redirectURL;
+        if (snapType.equals("snap")) {
+            model.addAttribute("result", customBody);
+            model.addAttribute("clientKey", clientKey);
+            model.addAttribute("token", midtransSnapApi.generateSnapToken(dataCheckout));
+            return "snap/check-out";
+        } else {
+            String redirectURL = midtransSnapApi.snapRedirect(dataCheckout);
+            model.addAttribute("result", customBody);
+            model.addAttribute("redirectURL", redirectURL);
+            return "snap/check-out";
+        }
     }
 
 }
