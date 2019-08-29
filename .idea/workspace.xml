@@ -2,28 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1b2fd338-5f39-419c-93a5-e37eaa47d8b1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/application/src/main/resources/templates/coreapi/credit-card.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/application/src/main/resources/templates/coreapi/gopay.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/SampleApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/SampleApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/CoreApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/CoreApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/HomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/SnapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/SnapController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/coreapi/core-api.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/templates/coreapi/core-api.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/fragments/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/templates/fragments/header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/snap/snap.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/templates/snap/snap.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/SampleApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/SampleApplication.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/target/classes/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/APIHttpClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/APIHttpClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/CoreApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/CoreApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/SnapApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/SnapApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransCoreApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransCoreApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransSnapApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransSnapApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/MidtransCoreApiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/MidtransCoreApiImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/httpclient/APIHttpClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/httpclient/APIHttpClient.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/MidtransCoreApi.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/MidtransCoreApi.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/impl/MidtransCoreApiImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/impl/MidtransCoreApiImpl.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -144,7 +126,14 @@
       <option name="project" value="LOCAL" />
       <updated>1567048083789</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Done CoreAPI sample payment with CC and GoPAy">
+      <created>1567076459304</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1567076459304</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -168,7 +157,8 @@
     <MESSAGE value="Done Snap api and HTTP Client with retrofit" />
     <MESSAGE value="Done Snap api and change HTTP Client with retrofit" />
     <MESSAGE value="Done Snap api and change HTTP Client with retrofit2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Done Snap api and change HTTP Client with retrofit2" />
+    <MESSAGE value="Done CoreAPI sample payment with CC and GoPAy" />
+    <option name="LAST_COMMIT_MESSAGE" value="Done CoreAPI sample payment with CC and GoPAy" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

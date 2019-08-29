@@ -68,13 +68,6 @@ public class CoreApiController {
         JSONObject result = coreApi.expireTransaction(transaction.get("transaction_id"));
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
-
-    @PostMapping(value = "/expire-transaction", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> refundTransaction(@RequestBody Map<String, String> transaction,
-                                                    @RequestBody Map<String, String> body) {
-        JSONObject result = coreApi.refundTransaction(transaction.get("transaction_id"), body);
-        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
-    }
 }
 
 
