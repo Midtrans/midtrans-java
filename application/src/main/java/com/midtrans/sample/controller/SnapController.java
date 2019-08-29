@@ -3,7 +3,6 @@ package com.midtrans.sample.controller;
 import com.midtrans.api.Config;
 import com.midtrans.api.service.MidtransSnapApi;
 import com.midtrans.sample.data.DataMockup;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -47,7 +45,7 @@ public class SnapController {
         return "snap/snap";
     }
 
-    @RequestMapping(value = "/check-out", method = RequestMethod.POST)
+    @RequestMapping(value = "snap/check-out", method = RequestMethod.POST)
     public String checkout(@RequestParam(value = "enablePay", required = false) List<String> listPay,
                            @RequestParam(value = "snapType") String snapType,
                            Model model) {
@@ -67,9 +65,8 @@ public class SnapController {
             model.addAttribute("token", midtransSnapApi.generateSnapToken(dataCheckout));
             return "snap/check-out";
         } else {
-            String redirectURL = midtransSnapApi.snapRedirect(dataCheckout);
             model.addAttribute("result", customBody);
-            model.addAttribute("redirectURL", redirectURL);
+            model.addAttribute("redirectURL", midtransSnapApi.snapRedirect(dataCheckout));
             return "snap/check-out";
         }
     }

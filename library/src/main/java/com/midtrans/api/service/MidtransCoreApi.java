@@ -1,9 +1,21 @@
 package com.midtrans.api.service;
 
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
+
 import java.util.Map;
 
 public interface MidtransCoreApi {
-    JSONObject getToken(Map<String, String> params);
-    JSONObject cargeCC(Map<String, Object> objectMap);
+    JSONObject chargeTransaction(Map<String, Object> body);
+
+    JSONObject checkTransaction(String orderId);
+
+    JSONObject approveTransaction(String orderId);
+
+    JSONObject cancelTransaction(String orderId);
+
+    JSONObject expireTransaction(String orderId);
+
+    JSONObject refundTransaction(String orderId, Map<String, String> body);
+
 }

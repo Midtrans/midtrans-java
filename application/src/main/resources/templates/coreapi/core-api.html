@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
       layout:decorate="layout">
 <head th:replace="layout :: common-header">
     <title>Midtrans Snap JAVA Springboot Demo</title>
@@ -9,7 +10,7 @@
 <div th:replace="fragments/header :: header"></div>
 
 <main role="main" class="container" style="padding-top: 30px">
-    <h2 class="mt-5">Midtrans Core API Demo</h2>
+    <h2 class="mt-5">Midtrans CORE API Demo</h2>
     <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -72,62 +73,24 @@
         </div>
         <div class="col-md-8 order-md-1">
             <hr class="mb-4">
-            <form class="needs-validation" action="/pay-cc" method="post" novalidate>
-                <div class="row">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="cc-number">Credit card number</label>
-                                <input type="text" class="form-control" name="cardNumber" id="cc-number"
-                                       value="4811111111111114" placeholder="" required>
-                                <div class="invalid-feedback">
-                                    Credit card number is required
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2 mb-2">
-                                <label for="cc-month">Month</label>
-                                <input type="number" max="2" class="form-control" name="cardMonth" value="11"
-                                       id="cc-month" placeholder="" required>
-                                <div class="invalid-feedback">
-                                    Expiration date required
-                                </div>
-                            </div>
-                            /
-                            <div class="col-sm-2 sm-2">
-                                <label for="cc-year">Year</label>
-                                <input type="number" max="2" class="form-control" name="cardYear" value="22"
-                                       id="cc-year" placeholder="" required>
-                                <div class="invalid-feedback">
-                                    Security code required
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3 mb-3">
-                                <label for="cc-cvv">CVV</label>
-                                <input type="number" class="form-control" name="cardCvv" value="123" id="cc-cvv"
-                                       placeholder="" required>
-                                <div class="invalid-feedback">
-                                    Security code required
-                                </div>
-                            </div>
-                        </div>
-                        <label class="checkbox-inline"><input type="checkbox" name="secure" value="true">
-                            Secure!</label>
+            <label>Type Payment : </label>
+            <form class="needs-validation" action="/api/checkout" method="get" novalidate>
+                <div>
+                    <hr class="mb-4">
+                    <div class="radio">
+                        <label><input type="radio" value="cc" name="paymentType" checked> Credit Card</label>
                     </div>
+                    <div class="radio">
+                        <label><input type="radio" value="gopay" name="paymentType"> GoPay</label>
+                    </div>
+                    <hr class="mb-4">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Check-out!</button>
                 </div>
-                <hr class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Pay with Credit Card!</button>
             </form>
         </div>
     </div>
 </main>
 
 <div th:replace="layout :: body-bottom-scripts"/>
-<script id="midtrans-script" src="https://api.midtrans.com/v2/assets/js/midtrans-new-3ds.min.js"
-        data-environment="sandbox" th:attr="data-client-key=${clientKey}" type="text/javascript"></script>
-
 </body>
 </html>

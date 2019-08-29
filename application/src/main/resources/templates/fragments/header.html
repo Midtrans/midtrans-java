@@ -4,7 +4,9 @@
 <header th:id="page-header">
     <!-- Fixed navbar -->
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" target="_blank" href="https://midtrans.com">Midtrans Demo</a>
+
+        <a class="navbar-brand" target="_blank" href="https://midtrans.com"><img style="max-height: 25px;"
+                                                                                 src="https://midtrans.com/assets/images/logo-midtrans-color.svg"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -18,14 +20,15 @@
                     <a class="nav-link" href="/snap">Snap Demo <span class="sr-only"></span></a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle" href="/api/core-api" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Core API
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/core-api">Credit Card</a>
-                        <a class="dropdown-item" href="/go-pay">GoPay</a>
+                        <a class="dropdown-item" href="/api/core-api">Demo Transaction</a>
                         <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Approve Transaction</a>
+                        <a class="dropdown-item" href="#">Refund Transaction</a>
                         <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                 </li>

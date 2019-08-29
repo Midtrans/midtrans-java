@@ -13,7 +13,5 @@ public interface SnapApi {
     @POST("transactions")
     Call<ResponseBody> generateToken(@Body Map<String, Object> objectMap);
 
-    @POST("transactions")
-    Call<JSONObject> genToken(@Body Map<String, Object> objectMap);
 
 }

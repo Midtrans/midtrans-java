@@ -1,12 +1,26 @@
 package com.midtrans.sample.controller;
 
+import com.midtrans.api.Config;
+import com.midtrans.api.service.MidtransCoreApi;
+import com.midtrans.sample.data.DataMockup;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Map;
 
 
-@Controller
+@Controller("/")
 public class HomeController {
+
+    @Autowired
+    private Config config;
+
+    @Autowired
+    private DataMockup dataMockup;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home() {
@@ -14,8 +28,29 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index() {
+    private String index() {
         return "index";
+    }
+
+    @RequestMapping(value = "api/core-api", method = RequestMethod.GET)
+    public String coreApi(Model model) {
+        Map<String, Object> objectMap = dataMockup.initDataMock();
+        model.addAttribute("data", objectMap);
+        return "coreapi/core-api";
+    }
+
+    @RequestMapping(value = "api/checkout", method = RequestMethod.GET)
+    public String checkOut(@RequestParam(value = "paymentType") String typePayment,
+                           Model model) {
+        Map<String, Object> result = dataMockup.initDataMock();
+        model.addAttribute("result", result);
+        model.addAttribute("clientKey", config.getCLIENT_KEY());
+        if (typePayment.equals("cc")) {
+            return "coreapi/credit-card";
+        } else if (typePayment.equals("gopay")) {
+            return "coreapi/gopay";
+        }
+        return "redirect:/api/core-api";
     }
 
 }
