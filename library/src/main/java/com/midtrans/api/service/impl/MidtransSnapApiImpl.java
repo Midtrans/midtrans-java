@@ -26,7 +26,6 @@ public class MidtransSnapApiImpl implements MidtransSnapApi {
     @Autowired
     private Config config;
 
-
     @Override
     public String generateSnapToken(Map<String, Object> objectMap) {
         //TODO getConfig SNAP API TO BASE_URL

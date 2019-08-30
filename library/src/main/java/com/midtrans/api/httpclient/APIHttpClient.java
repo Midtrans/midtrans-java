@@ -6,13 +6,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.client.UnknownHttpStatusCodeException;
-import org.springframework.web.util.UriComponentsBuilder;
-import org.json.JSONObject;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -20,7 +15,6 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.Map;
 import java.util.logging.Logger;
 
 @Service
@@ -50,8 +44,8 @@ public class APIHttpClient {
                         return chain.proceed(chain.request());
                     }
                     Request header = chain.request().newBuilder()
-                            .header("Accept", MediaType.APPLICATION_JSON_VALUE)
-                            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                            .header("Accept", "application/json")
+                            .header("Content-Type", "application/json")
                             .header("Authorization", encodeServerKey())
                             .build();
                     return chain.proceed(header);

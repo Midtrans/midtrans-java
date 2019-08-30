@@ -39,6 +39,7 @@ public class HomeController {
         return "coreapi/core-api";
     }
 
+
     @RequestMapping(value = "api/checkout", method = RequestMethod.GET)
     public String checkOut(@RequestParam(value = "paymentType") String typePayment,
                            Model model) {
