@@ -5,6 +5,7 @@ import com.midtrans.api.httpclient.APIHttpClient;
 import com.midtrans.api.httpclient.SnapApi;
 import com.midtrans.api.service.MidtransSnapApi;
 import okhttp3.ResponseBody;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,21 +27,23 @@ public class MidtransSnapApiImpl implements MidtransSnapApi {
     @Autowired
     private Config config;
 
-    @Override
-    public String generateSnapToken(Map<String, Object> objectMap) {
-        //TODO getConfig SNAP API TO BASE_URL
+    // Snap http request method with handle error exception
+    private JSONObject snapHttpRequest(Map<String, Object> requestObject) {
+        // getSnap base URL from Configuration class
         config.getSnapApi();
-        String snapToken = "";
+        JSONObject rawResult = new JSONObject();
+
+        // Initialize Retrofit http client
         SnapApi snapApi = httpClient.getClient().create(SnapApi.class);
-        Call<ResponseBody> call = snapApi.generateToken(objectMap);
+        //get to SnapAPI with retrofit return ResponseBody
+        Call<ResponseBody> call = snapApi.createTransactions(requestObject);
         try {
             Response<ResponseBody> response = call.execute();
             if (response.isSuccessful()) {
                 try {
                     if (response.body() != null) {
-                        JSONObject object = new JSONObject(response.body().string());
-                        snapToken = object.getString("token");
-                        LOGGER.info("Midtrans snap token: " + snapToken);
+                        rawResult = new JSONObject(response.body().string());
+                        LOGGER.info("Midtrans Snap Response : " + rawResult.toString());
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -51,34 +54,33 @@ public class MidtransSnapApiImpl implements MidtransSnapApi {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return snapToken;
+        return rawResult;
+    }
+
+    // Handle error if jsonKey not found, when Get value from raw JSON
+    private String getValueFromRawJSON(JSONObject rawResult, String jsonKey) {
+        String value = "";
+        try {
+            value = rawResult.getString(jsonKey);
+        } catch (JSONException e) {
+            LOGGER.warning("ERROR JSON " + e);
+        }
+        return value;
+    }
+
+
+    @Override
+    public JSONObject createTransaction(Map<String, Object> requestObject) {
+        return snapHttpRequest(requestObject);
     }
 
     @Override
-    public String snapRedirect(Map<String, Object> objectMap) {
-        config.getSnapApi();
-        String snapRedirectURL = "";
-        SnapApi snapApi = httpClient.getClient().create(SnapApi.class);
-        Call<ResponseBody> call = snapApi.generateToken(objectMap);
-        try {
-            Response<ResponseBody> response = call.execute();
-            if (response.isSuccessful()) {
-                try {
-                    if (response.body() != null) {
-                        JSONObject object = new JSONObject(response.body().string());
-                        snapRedirectURL = object.getString("redirect_url");
-                        LOGGER.info("Midtrans redirect URL: " + snapRedirectURL);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                httpClient.httpErrorHandle(response.code());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return snapRedirectURL;
+    public String createTransactionToken(Map<String, Object> requestObject) {
+        return getValueFromRawJSON(snapHttpRequest(requestObject), "token");
     }
 
+    @Override
+    public String createTransactionRedirectUrl(Map<String, Object> requestObject) {
+        return getValueFromRawJSON(snapHttpRequest(requestObject), "redirect_url");
+    }
 }

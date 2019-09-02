@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1b2fd338-5f39-419c-93a5-e37eaa47d8b1" name="Default Changelist" comment="">
+    <list default="true" id="1b2fd338-5f39-419c-93a5-e37eaa47d8b1" name="Default Changelist" comment="change snap method name, and handling json error exception&#10;MidtransSnapApi Interface Class&#10;+ createTransaction (return JSON Raw Object)&#10;+ createTransactionToken (return String snapToken)&#10;+ createTransactionRedirectUrl (return String redirectURL)">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/HomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/library/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/APIHttpClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/APIHttpClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/SnapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/SnapController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/SnapApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/SnapApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransSnapApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransSnapApi.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/MidtransSnapApiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/MidtransSnapApiImpl.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -146,11 +147,53 @@
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
+        <entry key="1">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State>
               <option name="COLUMN_ORDER" />
             </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="master" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/master" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="HEAD" />
+                </option>
+              </RecentGroup>
+            </list>
           </value>
         </entry>
       </map>

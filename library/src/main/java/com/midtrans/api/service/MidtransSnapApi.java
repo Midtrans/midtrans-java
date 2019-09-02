@@ -1,8 +1,16 @@
 package com.midtrans.api.service;
 
+import org.json.JSONObject;
+
 import java.util.Map;
 
 public interface MidtransSnapApi {
-    String generateSnapToken(Map<String, Object> objectMap);
-    String snapRedirect(Map<String, Object> objectMap);
+    // To get snap transaction with return json raw object
+    JSONObject createTransaction(Map<String, Object> requestObject);
+
+    // To get snap token with return String token
+    String createTransactionToken(Map<String, Object> requestObject);
+
+    // To get snap redirect url with return String redirect url
+    String createTransactionRedirectUrl(Map<String, Object> requestObject);
 }

@@ -3,6 +3,7 @@ package com.midtrans.sample.controller;
 import com.midtrans.api.Config;
 import com.midtrans.api.service.MidtransSnapApi;
 import com.midtrans.sample.data.DataMockup;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,7 @@ public class SnapController {
      * This Controller Class For Midtrans Snap Implementation
      */
 
-    private Map<String, Object> customBody;
+    private Map<String, Object> requestBody;
 
 
     //Midtrans HTTP SNAP Library Class
@@ -49,24 +50,42 @@ public class SnapController {
     public String checkout(@RequestParam(value = "enablePay", required = false) List<String> listPay,
                            @RequestParam(value = "snapType") String snapType,
                            Model model) {
+
+        // Get ClientKey from Midtrans COnfiguration class
         String clientKey = config.getCLIENT_KEY();
-        customBody = new HashMap<>();
+
+        // New Map Object for JSON raw request body
+        requestBody = new HashMap<>();
+
+        // Add enablePayment from @RequestParam to dataMockup
         List<String> paymentList = new ArrayList<>();
         if (listPay != null) {
             paymentList.addAll(listPay);
         }
         dataMockup = new DataMockup();
         dataMockup.enablePayments(paymentList);
-        customBody.putAll(dataMockup.initDataMock());
-        Map<String, Object> dataCheckout = dataMockup.initDataMock();
+
+        // PutAll data mockUp to requestBody
+        requestBody.putAll(dataMockup.initDataMock());
+        requestBody = new HashMap<>();
+
+        /*
+        If you want snap method return json raw object, you can use method
+        createTransaction() on MidtransSnapApi interface class.
+         */
+
+        // send data to frontEnd snapPopUp
         if (snapType.equals("snap")) {
-            model.addAttribute("result", customBody);
+            model.addAttribute("result", requestBody);
             model.addAttribute("clientKey", clientKey);
-            model.addAttribute("token", midtransSnapApi.generateSnapToken(dataCheckout));
+            // token object getData token to API with createTransactionToken() method return String token
+            model.addAttribute("token", midtransSnapApi.createTransactionToken(requestBody));
             return "snap/check-out";
+            // send data to frontEnd redirect-url
         } else {
-            model.addAttribute("result", customBody);
-            model.addAttribute("redirectURL", midtransSnapApi.snapRedirect(dataCheckout));
+            model.addAttribute("result", requestBody);
+            // redirectURL get url redirect to API with createTransactionRedirectUrl() method, with return String url redirect
+            model.addAttribute("redirectURL", midtransSnapApi.createTransactionRedirectUrl(requestBody));
             return "snap/check-out";
         }
     }

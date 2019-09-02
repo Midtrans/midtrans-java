@@ -11,7 +11,7 @@ import java.util.Map;
 public interface SnapApi {
 
     @POST("transactions")
-    Call<ResponseBody> generateToken(@Body Map<String, Object> objectMap);
+    Call<ResponseBody> createTransactions(@Body Map<String, Object> objectMap);
 
 
 }
