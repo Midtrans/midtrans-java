@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1b2fd338-5f39-419c-93a5-e37eaa47d8b1" name="Default Changelist" comment="change snap method name, and handling json error exception&#10;MidtransSnapApi Interface Class&#10;+ createTransaction (return JSON Raw Object)&#10;+ createTransactionToken (return String snapToken)&#10;+ createTransactionRedirectUrl (return String redirectURL)">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/SnapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/SnapController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/SnapApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/SnapApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransSnapApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransSnapApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/MidtransSnapApiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/MidtransSnapApiImpl.java" afterDir="false" />
-    </list>
+    <list default="true" id="1b2fd338-5f39-419c-93a5-e37eaa47d8b1" name="Default Changelist" comment="change snap method name, and handling json error exception&#10;MidtransSnapApi Interface Class&#10;+ createTransaction (return JSON Raw Object)&#10;+ createTransactionToken (return String snapToken)&#10;+ createTransactionRedirectUrl (return String redirectURL)" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,12 +178,12 @@
               </RecentGroup>
               <RecentGroup>
                 <option name="FILTER_VALUES">
-                  <option value="origin/master" />
+                  <option value="HEAD" />
                 </option>
               </RecentGroup>
               <RecentGroup>
                 <option name="FILTER_VALUES">
-                  <option value="HEAD" />
+                  <option value="origin/master" />
                 </option>
               </RecentGroup>
             </list>
@@ -208,7 +201,9 @@
     <MESSAGE value="Done Snap api and change HTTP Client with retrofit" />
     <MESSAGE value="Done Snap api and change HTTP Client with retrofit2" />
     <MESSAGE value="Done CoreAPI sample payment with CC and GoPAy" />
-    <option name="LAST_COMMIT_MESSAGE" value="Done CoreAPI sample payment with CC and GoPAy" />
+    <MESSAGE value="initial commit" />
+    <MESSAGE value="change snap method name, and handling json error exception&#10;MidtransSnapApi Interface Class&#10;+ createTransaction (return JSON Raw Object)&#10;+ createTransactionToken (return String snapToken)&#10;+ createTransactionRedirectUrl (return String redirectURL)" />
+    <option name="LAST_COMMIT_MESSAGE" value="change snap method name, and handling json error exception&#10;MidtransSnapApi Interface Class&#10;+ createTransaction (return JSON Raw Object)&#10;+ createTransactionToken (return String snapToken)&#10;+ createTransactionRedirectUrl (return String redirectURL)" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>
