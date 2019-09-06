@@ -7,19 +7,19 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="mid-sample-application" />
-        <module name="mid-springboot-library" />
+        <module name="midtrans-java-library" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="mid-multi-module" target="1.5" />
       <module name="mid-sample-application" target="1.8" />
-      <module name="mid-springboot-library" target="1.8" />
+      <module name="midtrans-java-library" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="mid-sample-application" options="-parameters" />
-      <module name="mid-springboot-library" options="-parameters" />
+      <module name="midtrans-java-library" options="-parameters" />
     </option>
   </component>
 </project>

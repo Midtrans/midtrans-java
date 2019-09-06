@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1b2fd338-5f39-419c-93a5-e37eaa47d8b1" name="Default Changelist" comment="change snap method name, and handling json error exception&#10;MidtransSnapApi Interface Class&#10;+ createTransaction (return JSON Raw Object)&#10;+ createTransactionToken (return String snapToken)&#10;+ createTransactionRedirectUrl (return String redirectURL)" />
+    <list default="true" id="d20754d7-0b47-4487-a8a7-7b5a97300846" name="Default Changelist" comment="Can use in java native apps, event without spring boot">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,8 +19,6 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
-        <option value="Interface" />
-        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -27,27 +32,10 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectId" id="1PlZ1nRQmveCPEQUinvnFC9GI8w" />
+  <component name="ProjectId" id="1QMotviSUxdPUMd3MWB6upKuUhj" />
   <component name="PropertiesComponent">
-    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="Errors" />
-  </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/application/src/main/resources/templates/snap" />
-    </key>
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="com.midtrans.api" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/application/src/main/resources/templates" />
-    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -61,7 +49,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.ConfigTest">
     <configuration name="SampleApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.midtrans.sample.SampleApplication" />
       <module name="mid-sample-application" />
@@ -75,8 +63,57 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ConfigTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="midtrans-java-library" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.midtrans.java.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.midtrans.java" />
+      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.ConfigTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ConfigsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="midtrans-java-library" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.midtrans.java.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.midtrans.java" />
+      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.ConfigsTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ConfigsTest.getSERVER_KEY" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="midtrans-java-library" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.midtrans.java.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.midtrans.java" />
+      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.ConfigsTest" />
+      <option name="METHOD_NAME" value="getSERVER_KEY" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ConfigTest" />
+        <item itemvalue="JUnit.ConfigsTest" />
+        <item itemvalue="JUnit.ConfigsTest.getSERVER_KEY" />
         <item itemvalue="Application.SampleApplication" />
       </list>
     </recent_temporary>
@@ -86,124 +123,44 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="1b2fd338-5f39-419c-93a5-e37eaa47d8b1" name="Default Changelist" comment="" />
-      <created>1566450430356</created>
+      <changelist id="d20754d7-0b47-4487-a8a7-7b5a97300846" name="Default Changelist" comment="" />
+      <created>1567590043714</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1566450430356</updated>
+      <updated>1567590043714</updated>
     </task>
-    <task id="LOCAL-00001" summary="Delete Auto Config Class">
-      <created>1566871647666</created>
+    <task id="LOCAL-00001" summary="Can use in java native apps, event without spring boot">
+      <created>1567757439702</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1566871647666</updated>
+      <updated>1567757439702</updated>
     </task>
-    <task id="LOCAL-00002" summary="Make Config class get server &amp; client key from application.properties">
-      <created>1566875122415</created>
+    <task id="LOCAL-00002" summary="change implement library">
+      <created>1567757511024</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1566875122415</updated>
+      <updated>1567757511024</updated>
     </task>
-    <task id="LOCAL-00003" summary="Add custom enable payment on Snap">
-      <created>1566891603797</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1566891603797</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Done Snap api and change HTTP Client with retrofit2">
-      <created>1567048083789</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1567048083789</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Done CoreAPI sample payment with CC and GoPAy">
-      <created>1567076459304</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1567076459304</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Done CoreAPI sample payment with CC and GoPAy">
-      <created>1567076808123</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1567076808123</updated>
-    </task>
-    <option name="localTasksCounter" value="7" />
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
-        <entry key="1">
-          <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="master" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="RECENT_FILTERS">
-      <map>
-        <entry key="Branch">
-          <value>
-            <list>
-              <RecentGroup>
-                <option name="FILTER_VALUES">
-                  <option value="master" />
-                </option>
-              </RecentGroup>
-              <RecentGroup>
-                <option name="FILTER_VALUES">
-                  <option value="HEAD" />
-                </option>
-              </RecentGroup>
-              <RecentGroup>
-                <option name="FILTER_VALUES">
-                  <option value="origin/master" />
-                </option>
-              </RecentGroup>
-            </list>
+            <State />
           </value>
         </entry>
       </map>
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
-    <MESSAGE value="Delete Auto Config Class" />
-    <MESSAGE value="Make Config class get server &amp; client key from application.properties" />
-    <MESSAGE value="Add custom enable payment on Snap" />
-    <MESSAGE value="Done Snap api and HTTP Client with retrofit" />
-    <MESSAGE value="Done Snap api and change HTTP Client with retrofit" />
-    <MESSAGE value="Done Snap api and change HTTP Client with retrofit2" />
-    <MESSAGE value="Done CoreAPI sample payment with CC and GoPAy" />
-    <MESSAGE value="initial commit" />
-    <MESSAGE value="change snap method name, and handling json error exception&#10;MidtransSnapApi Interface Class&#10;+ createTransaction (return JSON Raw Object)&#10;+ createTransactionToken (return String snapToken)&#10;+ createTransactionRedirectUrl (return String redirectURL)" />
-    <option name="LAST_COMMIT_MESSAGE" value="change snap method name, and handling json error exception&#10;MidtransSnapApi Interface Class&#10;+ createTransaction (return JSON Raw Object)&#10;+ createTransactionToken (return String snapToken)&#10;+ createTransactionRedirectUrl (return String redirectURL)" />
+    <MESSAGE value="Can use in java native apps, event without spring boot" />
+    <MESSAGE value="change implement library" />
+    <option name="LAST_COMMIT_MESSAGE" value="change implement library" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

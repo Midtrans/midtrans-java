@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/mid-multi-module.iml" filepath="$PROJECT_DIR$/mid-multi-module.iml" />
       <module fileurl="file://$PROJECT_DIR$/application/mid-sample-application.iml" filepath="$PROJECT_DIR$/application/mid-sample-application.iml" />
-      <module fileurl="file://$PROJECT_DIR$/library/mid-springboot-library.iml" filepath="$PROJECT_DIR$/library/mid-springboot-library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/midtrans-java-library.iml" filepath="$PROJECT_DIR$/library/midtrans-java-library.iml" />
     </modules>
   </component>
 </project>
