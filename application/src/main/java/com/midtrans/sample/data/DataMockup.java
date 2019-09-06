@@ -1,7 +1,6 @@
 package com.midtrans.sample.data;
 
 import org.springframework.stereotype.Component;
-import sun.jvm.hotspot.ui.tree.SimpleTreeNode;
 
 import java.util.*;
 

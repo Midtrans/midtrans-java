@@ -1,6 +1,7 @@
 package com.midtrans.sample.controller;
 
 import com.midtrans.api.service.MidtransCoreApi;
+import com.midtrans.sample.MidtransConfig;
 import com.midtrans.sample.data.DataMockup;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,12 @@ import java.util.Map;
 
 @RestController
 public class CoreApiController {
+
     @Autowired
+    private MidtransConfig config;
+
     private MidtransCoreApi coreApi;
+
 
     @Autowired
     private DataMockup dataMockup;
@@ -30,6 +35,8 @@ public class CoreApiController {
         dataMockup.creditCard(creditCard);
 
         Map<String, Object> body = new HashMap<>(dataMockup.initDataMock());
+
+        coreApi = config.getConfigFactory().getCoreApi();
         JSONObject object = coreApi.chargeTransaction(body);
         String result = object.toString();
         return new ResponseEntity<>(result, HttpStatus.OK);
