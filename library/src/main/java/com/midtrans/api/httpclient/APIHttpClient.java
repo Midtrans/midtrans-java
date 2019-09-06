@@ -1,31 +1,26 @@
 package com.midtrans.api.httpclient;
 
 import com.midtrans.api.Config;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import org.springframework.stereotype.Component;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.logging.Logger;
 
-@Service
+@Component
 public class APIHttpClient {
     private static final Logger LOGGER = Logger.getLogger(APIHttpClient.class.getName());
 
-    @Autowired
     private Config config;
 
-    public APIHttpClient() {
+    public APIHttpClient(Config config) {
+        this.config = config;
     }
+
 
     public Retrofit getClient() {
         return new Retrofit.Builder()
@@ -36,20 +31,17 @@ public class APIHttpClient {
     }
 
     private OkHttpClient defaultHttpClient = new OkHttpClient.Builder()
-            .addInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Interceptor.Chain chain) throws IOException {
-                    if (config.getSERVER_KEY().isEmpty() || config.getSERVER_KEY() == null) {
-                        LOGGER.warning("Server key is empty....");
-                        return chain.proceed(chain.request());
-                    }
-                    Request header = chain.request().newBuilder()
-                            .header("Accept", "application/json")
-                            .header("Content-Type", "application/json")
-                            .header("Authorization", encodeServerKey())
-                            .build();
-                    return chain.proceed(header);
+            .addInterceptor(chain -> {
+                if (config.getSERVER_KEY().isEmpty() || config.getSERVER_KEY() == null) {
+                    LOGGER.warning("Server key is empty....");
+                    return chain.proceed(chain.request());
                 }
+                Request header = chain.request().newBuilder()
+                        .header("Accept", "application/json")
+                        .header("Content-Type", "application/json")
+                        .header("Authorization", encodeServerKey())
+                        .build();
+                return chain.proceed(header);
             }).build();
 
     private String encodeServerKey(){

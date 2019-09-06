@@ -1,7 +1,6 @@
 package com.midtrans.api.service;
 
 import org.json.JSONObject;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 

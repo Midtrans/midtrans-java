@@ -1,27 +1,23 @@
 package com.midtrans.api;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Config {
-    private final String COREAPI_PRODUCTION_BASE_URL = "https://api.midtrans.com/v2/";
-    private final String COREAPI_SANDBOX_BASE_URL = "https://api.sandbox.midtrans.com/v2/";
-    private final String SNAP_PRODUCTION_BASE_URL = "https://app.midtrans.com/snap/v1/";
-    private final String SNAP_SANDBOX_BASE_URL = "https://app.sandbox.midtrans.com/snap/v1/";
 
-    @Value("${com.midtrans.serverkey}")
     private String SERVER_KEY;
 
-    @Value("${com.midtrans.clientkey}")
     private String CLIENT_KEY;
 
-    @Value("${com.midtrans.production}")
     private boolean isProduction;
 
-    private String BASE_URL = "";
+    private String BASE_URL;
 
-    public Config() {
+
+    public Config(String SERVER_KEY, String CLIENT_KEY, boolean isProduction) {
+        this.SERVER_KEY = SERVER_KEY;
+        this.CLIENT_KEY = CLIENT_KEY;
+        this.isProduction = isProduction;
     }
 
     private boolean isProduction() {
@@ -44,22 +40,24 @@ public class Config {
         return CLIENT_KEY;
     }
 
-    public String getCoreApi() {
+    public void getCoreApiURL() {
         if (isProduction()) {
+            String COREAPI_PRODUCTION_BASE_URL = "https://api.midtrans.com/v2/";
             setBASE_URL(COREAPI_PRODUCTION_BASE_URL);
         } else {
+            String COREAPI_SANDBOX_BASE_URL = "https://api.sandbox.midtrans.com/v2/";
             setBASE_URL(COREAPI_SANDBOX_BASE_URL);
         }
-        return BASE_URL;
     }
 
-    public String getSnapApi() {
+    public void getSnapApiURL() {
         if (isProduction()) {
+            String SNAP_PRODUCTION_BASE_URL = "https://app.midtrans.com/snap/v1/";
             setBASE_URL(SNAP_PRODUCTION_BASE_URL);
         } else {
+            String SNAP_SANDBOX_BASE_URL = "https://app.sandbox.midtrans.com/snap/v1/";
             setBASE_URL(SNAP_SANDBOX_BASE_URL);
         }
-        return BASE_URL;
     }
 
     public void setSERVER_KEY(String SERVER_KEY) {
@@ -73,4 +71,6 @@ public class Config {
     public void setProduction(boolean production) {
         isProduction = production;
     }
+
+
 }

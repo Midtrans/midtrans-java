@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 public interface MidtransSnapApi {
+
     // To get snap transaction with return json raw object
     JSONObject createTransaction(Map<String, Object> requestObject);
 

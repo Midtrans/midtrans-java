@@ -7,7 +7,6 @@ import com.midtrans.api.service.MidtransSnapApi;
 import okhttp3.ResponseBody;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -20,18 +19,17 @@ import java.util.logging.Logger;
 public class MidtransSnapApiImpl implements MidtransSnapApi {
     private static final Logger LOGGER = Logger.getLogger(MidtransSnapApi.class.getName());
 
-
-    @Autowired
-    private APIHttpClient httpClient;
-
-    @Autowired
     private Config config;
+
+    public MidtransSnapApiImpl(Config config) {
+        this.config = config;
+    }
 
     // Snap http request method with handle error exception
     private JSONObject snapHttpRequest(Map<String, Object> requestObject) {
-        // getSnap base URL from Configuration class
-        config.getSnapApi();
+
         JSONObject rawResult = new JSONObject();
+        APIHttpClient httpClient = new APIHttpClient(config);
 
         // Initialize Retrofit http client
         SnapApi snapApi = httpClient.getClient().create(SnapApi.class);
