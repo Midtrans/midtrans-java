@@ -55,7 +55,7 @@ public class MidtransSnapApiImpl implements MidtransSnapApi {
         return rawResult;
     }
 
-    // Handle error if jsonKey not found, when Get value from raw JSON
+    // JSONRaw Handle error if jsonKey not found
     private String getValueFromRawJSON(JSONObject rawResult, String jsonKey) {
         String value = "";
         try {

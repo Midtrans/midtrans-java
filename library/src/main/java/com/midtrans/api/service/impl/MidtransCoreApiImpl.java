@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import retrofit2.Call;
 import retrofit2.Response;
-
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -18,16 +17,13 @@ import java.util.logging.Logger;
 public class MidtransCoreApiImpl implements MidtransCoreApi {
     private static final Logger LOGGER = Logger.getLogger(MidtransCoreApi.class.getName());
 
-    private Config config;
     private CoreApi coreApi;
     private APIHttpClient httpClient;
 
     public MidtransCoreApiImpl(Config config) {
-        this.config = config;
         this.httpClient = new APIHttpClient(config);
         this.coreApi = this.httpClient.getClient().create(CoreApi.class);
     }
-
 
     //Http Handle Method for handle HTTP Response
     private JSONObject httpHandle(Call<ResponseBody> call) {
@@ -54,40 +50,30 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
 
     @Override
     public JSONObject chargeTransaction(Map<String, Object> body) {
-        //config.getCoreApi();
-        //CoreApi coreApi = httpClient.getClient().create(CoreApi.class);
         Call<ResponseBody> call = coreApi.chargeTransaction(body);
         return httpHandle(call);
     }
 
     @Override
     public JSONObject checkTransaction(String orderId) {
-        //config.getCoreApi();
-        //CoreApi coreApi = httpClient.getClient().create(CoreApi.class);
         Call<ResponseBody> call = coreApi.checkTransaction(orderId);
         return httpHandle(call);
     }
 
     @Override
     public JSONObject approveTransaction(String orderId) {
-        //config.getCoreApi();
-        //CoreApi coreApi = httpClient.getClient().create(CoreApi.class);
         Call<ResponseBody> call = coreApi.approveTransaction(orderId);
         return httpHandle(call);
     }
 
     @Override
     public JSONObject cancelTransaction(String orderId) {
-        //config.getCoreApi();
-        //CoreApi coreApi = httpClient.getClient().create(CoreApi.class);
         Call<ResponseBody> call = coreApi.cancelTransaction(orderId);
         return httpHandle(call);
     }
 
     @Override
     public JSONObject expireTransaction(String orderId) {
-        //config.getCoreApi();
-        //CoreApi coreApi = httpClient.getClient().create(CoreApi.class);
         Call<ResponseBody> call = coreApi.expireTransaction(orderId);
         return httpHandle(call);
     }

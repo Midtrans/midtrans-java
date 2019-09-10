@@ -6,7 +6,6 @@ import okhttp3.Request;
 import org.springframework.stereotype.Component;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.logging.Logger;
@@ -20,7 +19,6 @@ public class APIHttpClient {
     public APIHttpClient(Config config) {
         this.config = config;
     }
-
 
     public Retrofit getClient() {
         return new Retrofit.Builder()

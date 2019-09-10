@@ -1,7 +1,6 @@
 package com.midtrans.api.httpclient;
 
 import okhttp3.ResponseBody;
-import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;

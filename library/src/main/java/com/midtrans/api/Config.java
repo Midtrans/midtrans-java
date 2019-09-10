@@ -20,7 +20,7 @@ public class Config {
         this.isProduction = isProduction;
     }
 
-    private boolean isProduction() {
+    public boolean isProduction() {
         return isProduction;
     }
 
