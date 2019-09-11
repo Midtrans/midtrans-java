@@ -26,4 +26,8 @@ public class ConfigFactory {
         return new MidtransSnapApiImpl(config);
     }
 
+    public Config getConfig() {
+        return config;
+    }
+
 }

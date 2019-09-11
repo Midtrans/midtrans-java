@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d20754d7-0b47-4487-a8a7-7b5a97300846" name="Default Changelist" comment="Can use in java native apps, event without spring boot">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+    <list default="true" id="d20754d7-0b47-4487-a8a7-7b5a97300846" name="Default Changelist" comment="add function getConfig">
+      <change afterPath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/MidtransSnapApiTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/mockupdata/DataMockup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/MidtransConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/MidtransConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/CoreApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/CoreApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/SnapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/SnapController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/SampleApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/SampleApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/SnapController.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/SnapController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/ConfigFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/ConfigFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransSnapApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransSnapApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/ConfigTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/ConfigTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/Constant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/httpclient/APIHttpClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/httpclient/APIHttpClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/impl/MidtransCoreApiImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/impl/MidtransCoreApiImpl.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,6 +28,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="JUnit4 Test Class" />
       </list>
     </option>
   </component>
@@ -35,7 +45,21 @@
   <component name="ProjectId" id="1QMotviSUxdPUMd3MWB6upKuUhj" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.midtrans.java" />
+      <recent name="com.midtrans.api.service" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.midtrans.java.mockupdata" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -49,21 +73,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.ConfigTest">
-    <configuration name="SampleApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.midtrans.sample.SampleApplication" />
-      <module name="mid-sample-application" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.midtrans.sample.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ConfigTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.MidtransSnapApiTest.createTransactionfailed">
+    <configuration name="MidtransSnapApiTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="midtrans-java-library" />
       <extension name="coverage">
         <pattern>
@@ -72,13 +83,13 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.midtrans.java" />
-      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.ConfigTest" />
+      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.MidtransSnapApiTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ConfigsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MidtransSnapApiTest.createTransactionMaxParam" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="midtrans-java-library" />
       <extension name="coverage">
         <pattern>
@@ -87,13 +98,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.midtrans.java" />
-      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.ConfigsTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.MidtransSnapApiTest" />
+      <option name="METHOD_NAME" value="createTransactionMaxParam" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ConfigsTest.getSERVER_KEY" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MidtransSnapApiTest.createTransactionSimpleParam" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="midtrans-java-library" />
       <extension name="coverage">
         <pattern>
@@ -102,8 +114,40 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.midtrans.java" />
-      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.ConfigsTest" />
-      <option name="METHOD_NAME" value="getSERVER_KEY" />
+      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.MidtransSnapApiTest" />
+      <option name="METHOD_NAME" value="createTransactionSimpleParam" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MidtransSnapApiTest.createTransactionToken" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="midtrans-java-library" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.midtrans.java.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.midtrans.java" />
+      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.MidtransSnapApiTest" />
+      <option name="METHOD_NAME" value="createTransactionToken" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MidtransSnapApiTest.createTransactionfailed" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="midtrans-java-library" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.midtrans.java.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.midtrans.java" />
+      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.MidtransSnapApiTest" />
+      <option name="METHOD_NAME" value="createTransactionfailed" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -111,10 +155,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ConfigTest" />
-        <item itemvalue="JUnit.ConfigsTest" />
-        <item itemvalue="JUnit.ConfigsTest.getSERVER_KEY" />
-        <item itemvalue="Application.SampleApplication" />
+        <item itemvalue="JUnit.MidtransSnapApiTest.createTransactionfailed" />
+        <item itemvalue="JUnit.MidtransSnapApiTest.createTransactionToken" />
+        <item itemvalue="JUnit.MidtransSnapApiTest" />
+        <item itemvalue="JUnit.MidtransSnapApiTest.createTransactionMaxParam" />
+        <item itemvalue="JUnit.MidtransSnapApiTest.createTransactionSimpleParam" />
       </list>
     </recent_temporary>
   </component>
@@ -143,7 +188,21 @@
       <option name="project" value="LOCAL" />
       <updated>1567757511024</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="initial commit">
+      <created>1567757820251</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1567757820251</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Can use in java native apps, even without spring boot">
+      <created>1568089227462</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1568089227463</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -151,7 +210,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -160,7 +221,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Can use in java native apps, event without spring boot" />
     <MESSAGE value="change implement library" />
-    <option name="LAST_COMMIT_MESSAGE" value="change implement library" />
+    <MESSAGE value="initial commit" />
+    <MESSAGE value="Can use in java native apps, even without spring boot" />
+    <option name="LAST_COMMIT_MESSAGE" value="Can use in java native apps, even without spring boot" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>
