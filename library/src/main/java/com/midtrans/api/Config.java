@@ -13,7 +13,6 @@ public class Config {
 
     private String BASE_URL;
 
-
     public Config(String SERVER_KEY, String CLIENT_KEY, boolean isProduction) {
         this.SERVER_KEY = SERVER_KEY;
         this.CLIENT_KEY = CLIENT_KEY;

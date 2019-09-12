@@ -2,6 +2,8 @@ package com.midtrans.api.service.impl;
 
 import com.midtrans.api.Config;
 import com.midtrans.api.httpclient.APIHttpClient;
+import com.midtrans.api.httpclient.error.ErrorMessage;
+import com.midtrans.api.httpclient.error.ErrorUtils;
 import com.midtrans.api.httpclient.SnapApi;
 import com.midtrans.api.service.MidtransSnapApi;
 import okhttp3.ResponseBody;
@@ -30,6 +32,7 @@ public class MidtransSnapApiImpl implements MidtransSnapApi {
 
         JSONObject rawResult = new JSONObject();
         APIHttpClient httpClient = new APIHttpClient(config);
+        ErrorUtils errorUtils = new ErrorUtils();
 
         // Initialize Retrofit http client
         SnapApi snapApi = httpClient.getClient().create(SnapApi.class);
@@ -41,13 +44,15 @@ public class MidtransSnapApiImpl implements MidtransSnapApi {
                 try {
                     if (response.body() != null) {
                         rawResult = new JSONObject(response.body().string());
-                        LOGGER.info("Midtrans Snap Response : " + rawResult.toString());
+                        if (!config.isProduction()) {
+                            LOGGER.info("Midtrans Snap Response : " + rawResult.toString());
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else {
-                httpClient.httpErrorHandle(response.code());
+                errorUtils.httpErrorHandle(response.code(), response);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,7 +66,7 @@ public class MidtransSnapApiImpl implements MidtransSnapApi {
         try {
             value = rawResult.getString(jsonKey);
         } catch (JSONException e) {
-            LOGGER.warning("ERROR JSON " + e);
+            e.printStackTrace();
         }
         return value;
     }
