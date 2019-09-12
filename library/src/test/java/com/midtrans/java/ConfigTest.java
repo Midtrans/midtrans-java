@@ -5,7 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.midtrans.java.Constant.*;
+import static com.midtrans.java.mockupdata.Constant.*;
 import static org.junit.Assert.*;
 
 public class ConfigTest {
@@ -14,7 +14,7 @@ public class ConfigTest {
 
     @Before
     public void setUp() throws Exception {
-        config = new Config("serverKey", "clientKey", true);
+        config = new Config(serverKey, clientKey, isProduction);
     }
 
     @After
@@ -23,20 +23,23 @@ public class ConfigTest {
 
     @Test
     public void setSERVER_KEY() {
-        config.setSERVER_KEY(serverKey);
-        assertEquals(serverKey, config.getSERVER_KEY());
+        config.setSERVER_KEY("");
+        config.setSERVER_KEY("TEST SET SERVER KEY");
+        assertEquals("TEST SET SERVER KEY", config.getSERVER_KEY());
     }
 
     @Test
     public void setCLIENT_KEY() {
-        config.setCLIENT_KEY(clientKey);
-        assertEquals(clientKey, config.getCLIENT_KEY());
+        config.setCLIENT_KEY("");
+        config.setCLIENT_KEY("TEST SET CLIENT KEY");
+        assertEquals("TEST SET CLIENT KEY", config.getCLIENT_KEY());
     }
 
     @Test
     public void setProduction() {
         config.setProduction(false);
-        assertEquals(isProduction, false);
+        config.setProduction(true);
+        assertEquals(true, config.isProduction());
     }
 
     @Test

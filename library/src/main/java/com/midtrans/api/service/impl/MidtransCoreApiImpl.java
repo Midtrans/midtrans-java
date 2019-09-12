@@ -3,6 +3,7 @@ package com.midtrans.api.service.impl;
 import com.midtrans.api.Config;
 import com.midtrans.api.httpclient.APIHttpClient;
 import com.midtrans.api.httpclient.CoreApi;
+import com.midtrans.api.httpclient.error.ErrorUtils;
 import com.midtrans.api.service.MidtransCoreApi;
 import okhttp3.ResponseBody;
 import org.json.JSONObject;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 import retrofit2.Call;
 import retrofit2.Response;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -18,15 +21,17 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
     private static final Logger LOGGER = Logger.getLogger(MidtransCoreApi.class.getName());
 
     private CoreApi coreApi;
-    private APIHttpClient httpClient;
+    private Config config;
 
     public MidtransCoreApiImpl(Config config) {
-        this.httpClient = new APIHttpClient(config);
-        this.coreApi = this.httpClient.getClient().create(CoreApi.class);
+        this.config = config;
+        APIHttpClient httpClient = new APIHttpClient(config);
+        this.coreApi = httpClient.getClient().create(CoreApi.class);
     }
 
     //Http Handle Method for handle HTTP Response
     private JSONObject httpHandle(Call<ResponseBody> call) {
+        ErrorUtils errorUtils = new ErrorUtils();
         JSONObject object = new JSONObject();
         try {
             Response<ResponseBody> response = call.execute();
@@ -34,47 +39,48 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
                 try {
                     if (response.body() != null) {
                         object = new JSONObject(response.body().string());
-                        LOGGER.info("Midtrans response: " + object);
+                        if (!config.isProduction()) {
+                            LOGGER.info("Midtrans response: " + object);
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else {
-                httpClient.httpErrorHandle(response.code());
+                errorUtils.httpErrorHandle(response.code(), response);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         return object;
     }
-
     @Override
     public JSONObject chargeTransaction(Map<String, Object> body) {
-        Call<ResponseBody> call = coreApi.chargeTransaction(body);
+        Call<ResponseBody> call = coreApi.chargeTransaction(Optional.ofNullable(body).orElse(new HashMap<>()));
         return httpHandle(call);
     }
 
     @Override
     public JSONObject checkTransaction(String orderId) {
-        Call<ResponseBody> call = coreApi.checkTransaction(orderId);
+        Call<ResponseBody> call = coreApi.checkTransaction(Optional.ofNullable(orderId).orElse("null"));
         return httpHandle(call);
     }
 
     @Override
     public JSONObject approveTransaction(String orderId) {
-        Call<ResponseBody> call = coreApi.approveTransaction(orderId);
+        Call<ResponseBody> call = coreApi.approveTransaction(Optional.ofNullable(orderId).orElse("null"));
         return httpHandle(call);
     }
 
     @Override
     public JSONObject cancelTransaction(String orderId) {
-        Call<ResponseBody> call = coreApi.cancelTransaction(orderId);
+        Call<ResponseBody> call = coreApi.cancelTransaction(Optional.ofNullable(orderId).orElse("null"));
         return httpHandle(call);
     }
 
     @Override
     public JSONObject expireTransaction(String orderId) {
-        Call<ResponseBody> call = coreApi.expireTransaction(orderId);
+        Call<ResponseBody> call = coreApi.expireTransaction(Optional.ofNullable(orderId).orElse("null"));
         return httpHandle(call);
     }
 
@@ -82,7 +88,25 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
     public JSONObject refundTransaction(String orderId, Map<String, String> body) {
         //config.getCoreApi();
         //CoreApi coreApi = httpClient.getClient().create(CoreApi.class);
-        Call<ResponseBody> call = coreApi.refundTransaction(orderId, body);
+        Call<ResponseBody> call = coreApi.refundTransaction(Optional.ofNullable(orderId).orElse("null"), Optional.ofNullable(body).orElse(new HashMap<>()));
+        return httpHandle(call);
+    }
+
+    @Override
+    public JSONObject cardToken(Map<String, String> params) {
+        Call<ResponseBody> call = coreApi.cardToken(params);
+        return httpHandle(call);
+    }
+
+    @Override
+    public JSONObject registerCard(Map<String, String> params) {
+        Call<ResponseBody> call = coreApi.registerCard(params);
+        return httpHandle(call);
+    }
+
+    @Override
+    public JSONObject cardPointInquiry(String tokenId) {
+        Call<ResponseBody> call = coreApi.cardPointInquiry(tokenId);
         return httpHandle(call);
     }
 

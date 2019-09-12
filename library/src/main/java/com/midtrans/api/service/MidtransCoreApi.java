@@ -16,4 +16,11 @@ public interface MidtransCoreApi {
 
     JSONObject refundTransaction(String orderId, Map<String, String> body);
 
+    JSONObject cardToken(Map<String, String> params);
+
+    JSONObject registerCard(Map<String, String> params);
+
+    JSONObject cardPointInquiry(String tokenId);
+
+
 }

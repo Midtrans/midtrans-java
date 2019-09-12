@@ -2,13 +2,20 @@ package com.midtrans.api.httpclient;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
+import retrofit2.http.*;
+
 import java.util.Map;
 
 public interface CoreApi {
+
+    @GET("token")
+    Call<ResponseBody> cardToken(@QueryMap Map<String, String> params);
+
+    @GET("card/register")
+    Call<ResponseBody> registerCard(@QueryMap Map<String, String> params);
+
+    @GET("point_inquiry/{tokenId}")
+    Call<ResponseBody> cardPointInquiry(@Path("tokenId") String tokenId);
 
     @POST("charge")
     Call<ResponseBody> chargeTransaction(@Body Map<String, Object> body);
