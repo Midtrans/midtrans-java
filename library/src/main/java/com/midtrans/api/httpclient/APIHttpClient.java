@@ -31,7 +31,9 @@ public class APIHttpClient {
     private OkHttpClient defaultHttpClient = new OkHttpClient.Builder()
             .addInterceptor(chain -> {
                 if (config.getSERVER_KEY().isEmpty() || config.getSERVER_KEY() == null) {
-                    LOGGER.warning("Server key is empty....");
+                    if (!config.isProduction()) {
+                        LOGGER.warning("Server key is empty....");
+                    }
                     return chain.proceed(chain.request());
                 }
                 Request header = chain.request().newBuilder()
@@ -44,26 +46,6 @@ public class APIHttpClient {
 
     private String encodeServerKey(){
         return "Basic " + Base64.getEncoder().encodeToString((config.getSERVER_KEY() + ":").getBytes(StandardCharsets.UTF_8));
-    }
-
-    public void httpErrorHandle(int code) {
-        switch (code) {
-            case 400:
-                LOGGER.warning("400 Bad Request: There was a problem in the JSON you submitted");
-                break;
-            case 401:
-                LOGGER.warning("401 Unauthorized: Access denied due to unauthorized transaction, please check client or server key");
-                break;
-            case 404:
-                LOGGER.warning("404 Not Found");
-                break;
-            case 500:
-                LOGGER.warning("HTTP ERROR 500: Internal Server ERROR!");
-                break;
-            default:
-                LOGGER.warning("Unknown ERROR");
-                break;
-        }
     }
 
 }

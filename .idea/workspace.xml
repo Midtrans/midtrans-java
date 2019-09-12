@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d20754d7-0b47-4487-a8a7-7b5a97300846" name="Default Changelist" comment="add function getConfig">
-      <change afterPath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/MidtransSnapApiTest.java" afterDir="false" />
+    <list default="true" id="d20754d7-0b47-4487-a8a7-7b5a97300846" name="Default Changelist" comment="Handle error and exception">
+      <change afterPath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/CoreApiTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/SnapApiTest.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/mockupdata/DataMockup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/MidtransConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/MidtransConfig.java" afterDir="false" />
@@ -11,12 +12,21 @@
       <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/SampleApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/SampleApplication.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/SnapController.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/SnapController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/ConfigFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/ConfigFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/APIHttpClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/APIHttpClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/CoreApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/CoreApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransCoreApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransCoreApi.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransSnapApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransSnapApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/MidtransCoreApiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/MidtransCoreApiImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/MidtransSnapApiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/MidtransSnapApiImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/ConfigTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/ConfigTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/Constant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/test/java/com/midtrans/java/mockupdata/Constant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/Config.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/httpclient/APIHttpClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/httpclient/APIHttpClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/httpclient/CoreApi.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/httpclient/CoreApi.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/MidtransCoreApi.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/MidtransCoreApi.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/impl/MidtransCoreApiImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/impl/MidtransCoreApiImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/impl/MidtransSnapApiImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/impl/MidtransSnapApiImpl.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,6 +34,10 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CoverageViewManager">
+    <option name="myElementSize" value="241" />
+  </component>
+  <component name="ExportTestResults" outputFolder="$USER_HOME$/Desktop" userTempatePath="" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -60,6 +74,9 @@
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
+    <key name="CreateBuilderDialog.RecentsKey">
+      <recent name="com.midtrans.api.httpclient" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -73,8 +90,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.MidtransSnapApiTest.createTransactionfailed">
-    <configuration name="MidtransSnapApiTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.CoreApiTest.approveTransaction">
+    <configuration name="CoreApiTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="midtrans-java-library" />
       <extension name="coverage">
         <pattern>
@@ -83,13 +100,13 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.midtrans.java" />
-      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.MidtransSnapApiTest" />
+      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.CoreApiTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MidtransSnapApiTest.createTransactionMaxParam" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CoreApiTest.approveTransaction" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="midtrans-java-library" />
       <extension name="coverage">
         <pattern>
@@ -98,14 +115,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.midtrans.java" />
-      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.MidtransSnapApiTest" />
-      <option name="METHOD_NAME" value="createTransactionMaxParam" />
+      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.CoreApiTest" />
+      <option name="METHOD_NAME" value="approveTransaction" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MidtransSnapApiTest.createTransactionSimpleParam" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CoreApiTest.checkTransaction" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="midtrans-java-library" />
       <extension name="coverage">
         <pattern>
@@ -114,14 +131,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.midtrans.java" />
-      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.MidtransSnapApiTest" />
-      <option name="METHOD_NAME" value="createTransactionSimpleParam" />
+      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.CoreApiTest" />
+      <option name="METHOD_NAME" value="checkTransaction" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MidtransSnapApiTest.createTransactionToken" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CoreApiTest.failCharegWithEmpyBody" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="midtrans-java-library" />
       <extension name="coverage">
         <pattern>
@@ -130,14 +147,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.midtrans.java" />
-      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.MidtransSnapApiTest" />
-      <option name="METHOD_NAME" value="createTransactionToken" />
+      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.CoreApiTest" />
+      <option name="METHOD_NAME" value="failCharegWithEmpyBody" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MidtransSnapApiTest.createTransactionfailed" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CoreApiTest.orderIdNullCheckTransaction" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="midtrans-java-library" />
       <extension name="coverage">
         <pattern>
@@ -146,8 +163,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.midtrans.java" />
-      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.MidtransSnapApiTest" />
-      <option name="METHOD_NAME" value="createTransactionfailed" />
+      <option name="MAIN_CLASS_NAME" value="com.midtrans.java.CoreApiTest" />
+      <option name="METHOD_NAME" value="orderIdNullCheckTransaction" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -155,11 +172,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.MidtransSnapApiTest.createTransactionfailed" />
-        <item itemvalue="JUnit.MidtransSnapApiTest.createTransactionToken" />
-        <item itemvalue="JUnit.MidtransSnapApiTest" />
-        <item itemvalue="JUnit.MidtransSnapApiTest.createTransactionMaxParam" />
-        <item itemvalue="JUnit.MidtransSnapApiTest.createTransactionSimpleParam" />
+        <item itemvalue="JUnit.CoreApiTest.approveTransaction" />
+        <item itemvalue="JUnit.CoreApiTest" />
+        <item itemvalue="JUnit.CoreApiTest.orderIdNullCheckTransaction" />
+        <item itemvalue="JUnit.CoreApiTest.checkTransaction" />
+        <item itemvalue="JUnit.CoreApiTest.failCharegWithEmpyBody" />
       </list>
     </recent_temporary>
   </component>
@@ -202,7 +219,21 @@
       <option name="project" value="LOCAL" />
       <updated>1568089227463</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="add method getConfig">
+      <created>1568169420438</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1568169420438</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Handle error and exception">
+      <created>1568266383715</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1568266383716</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -223,7 +254,14 @@
     <MESSAGE value="change implement library" />
     <MESSAGE value="initial commit" />
     <MESSAGE value="Can use in java native apps, even without spring boot" />
-    <option name="LAST_COMMIT_MESSAGE" value="Can use in java native apps, even without spring boot" />
+    <MESSAGE value="add method getConfig" />
+    <MESSAGE value="Handle error and exception" />
+    <option name="LAST_COMMIT_MESSAGE" value="Handle error and exception" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/mid_multi_module$CoreApiTest.ic" NAME="CoreApiTest Coverage Results" MODIFIED="1568196285599" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.midtrans.java.*</FILTER>
+    </SUITE>
   </component>
 </project>
