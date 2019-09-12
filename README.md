@@ -192,35 +192,33 @@ Also available as examples [here](examples/snap).
 #### Get Redirection URL of a Payment Page
 
 ```javascript
-const midtransClient = require('midtrans-client');
-// Create Snap API instance
-let snap = new midtransClient.Snap({
-        isProduction : false,
-        serverKey : 'YOUR_SERVER_KEY',
-        clientKey : 'YOUR_CLIENT_KEY'
-    });
+// Create new Object SnapAPI
+MidtransSnapApi snapApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getSnapApi();
 
-let parameter = {
-    "transaction_details": {
-        "order_id": "test-transaction-123",
-        "gross_amount": 200000
-    }, "credit_card":{
-        "secure" : true
-    }
-};
+// Create Function JSON Raw Object
+public Map<String, Object> requestBody() {
+    UUID idRand = UUID.randomUUID();
+    Map<String, Object> params = new HashMap<>();
+    
+    Map<String, String> transactionDetails = new HashMap<>();
+    transactionDetails.put("order_id", idRand);
+    transactionDetails.put("gross_amount", "265000");
+    
+    Map<String, String> creditCard = new HashMap<>();
+    creditCard.put("secure", "true");
+    
+    params.put("transaction_details", transactionDetails);
+    params.put("credit_card", creditCard);
+    
+    return params;
+}
 
-snap.createTransaction(parameter)
-    .then((transaction)=>{
-        // transaction redirect_url
-        let redirectUrl = transaction.redirect_url;
-        console.log('redirectUrl:',redirectUrl);
-    })
+// Create Token and then you can send token variable to FrontEnd,
+// to initialize Snap JS when customer click pay button
+String redirectURL = snapApi.createTransactionRedirectUrl(requestBody())
 
-// alternative way to create redirectUrl
-// snap.createTransactionRedirectUrl(parameter)
-//     .then((redirectUrl)=>{
-//         console.log('redirectUrl:',redirectUrl);
-//     })
+//you can return to redirectURL on springboot controller
+return "redirect:" +redirectURL;
 ```
 #### Implement Notification Handler
 [Refer to this section](#23-handle-http-notification)
