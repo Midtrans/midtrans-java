@@ -65,37 +65,19 @@ MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CL
 MidtransSnapApi snapApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getSnapApi();
 ```
 
-You can also re-set config using `Snap.apiConfig.set( ... )`
+You can also re-setting config using `apiConfig()` method on MidtransCoreApi.Class or MidtransSnapApi.Class like `coreApi.apiConfig.set( ... )`
 example:
 
 ```javascript
-const midtransClient = require('midtrans-client');
-
 // Create Snap API instance, empty config
-let snap = new midtransClient.Snap();
-snap.apiConfig.set({
-        isProduction : false,
-        serverKey : 'YOUR_SERVER_KEY',
-        clientKey : 'YOUR_CLIENT_KEY'
-    });
+coreApi.apiConfig().setProduction(false);
+coreApi.apiConfig().setCLIENT_KEY("YOUR_CLIENT_KEY");
+coreApi.apiConfig().setSERVER_KEY("YOUR_SERVER_KEY");
 
 // You don't have to re-set using all the options, 
 // i.e. set serverKey only
-snap.apiConfig.set({serverKey : 'YOUR_SERVER_KEY'});
+coreApi.apiConfig().setSERVER_KEY("YOUR_SERVER_KEY");
 ```
-
-You can also set config directly from attribute
-```javascript
-const midtransClient = require('midtrans-client');
-
-// Create Snap API instance, empty config
-let snap = new midtransClient.Snap();
-
-snap.apiConfig.isProduction = false;
-snap.apiConfig.serverKey = 'YOUR_SERVER_KEY';
-snap.apiConfig.clientKey = 'YOUR_CLIENT_KEY';
-```
-
 
 ### 2.2.A Snap
 You can see Snap example [here](examples/snap).
@@ -140,17 +122,17 @@ public Map<String, Object> requestBody() {
 
 // Create Token and then you can send token variable to FrontEnd,
 // to initialize Snap JS when customer click pay button
-String token = snapApi.createTransactionToken(requestBody())
+String transactionToken = snapApi.createTransactionToken(requestBody())
 
 //you can use Model object in springboot controller to send token to FrontEnd
-model.addAttribute("token", token);
+model.addAttribute("transactionToken", transactionToken);
 ```
 
 
 #### Initialize Snap JS when customer click pay button
 
 On frontend / html:
-Replace `PUT_TRANSACTION_TOKEN_HERE` with `transactionToken` acquired above
+Replace `PUT_TRANSACTION_TOKEN_HERE` with `transactionToken` acquired above, you can use java template engine like Thymeleaf to parse `transactionToken` to frontEnd like [this](https://github.com/Xaxxis/midtrans-java/blob/master/application/src/main/resources/templates/snap/check-out.html#L90) `[[${transactionToken}]]`
 ```html
 <html>
   <body>
@@ -227,44 +209,79 @@ return "redirect:" +redirectURL;
 
 You can see some Core API examples [here](examples/coreApi).
 
-Available methods for `CoreApi` class
-```javascript
-/**
- * Do `/charge` API request to Core API
- * @param  {Object} parameter - object of Core API JSON body as parameter, will be converted to JSON (more params detail refer to: https://api-docs.midtrans.com)
- * @return {Promise} - Promise contains Object from JSON decoded response
- */
-charge(parameter={})
+Available methods for `MidtransCoreApi` class
+```java
+    /**
+     * Do re-setting config Class like clientKey, serverKey, isProduction
+     * @return {Config class}
+     */
+    Config apiConfig();
 
-/**
- * Do `/capture` API request to Core API
- * @param  {Object} parameter - object of Core API JSON body as parameter, will be converted to JSON (more params detail refer to: https://api-docs.midtrans.com)
- * @return {Promise} - Promise contains Object from JSON decoded response
- */
-capture(parameter={})
+    /**
+    * Do `/charge` API request to Core API
+    * @param  {Map Object} parameter - object of Core API JSON body as parameter, will be converted to JSON (more params detail refer to: https://api-docs.midtrans.com)
+    * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+    */
+    JSONObject chargeTransaction(Map<String, Object> params);
 
-/**
- * Do `/card/register` API request to Core API
- * @param  {Object} parameter - object of Core API JSON body as parameter, will be converted to JSON (more params detail refer to: https://api-docs.midtrans.com)
- * @return {Promise} - Promise contains Object from JSON decoded response
- */
-cardRegister(parameter={})
+    /**
+     * Do `/<orderId>/status` API request to Core API
+     * @param  {String} orderId - orderId of the transaction (more detail refer to: https://api-docs.midtrans.com)
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     */
+    JSONObject checkTransaction(String orderId);
 
-/**
- * Do `/token` API request to Core API
- * @param  {Object} parameter - object of Core API JSON body as parameter, will be converted to JSON (more params detail refer to: https://api-docs.midtrans.com)
- * @return {Promise} - Promise contains Object from JSON decoded response
- */
-cardToken(parameter={})
+    /**
+     * Do `/<orderId>/approve` API request to Core API
+     * @param  {String} orderId - orderId of the transaction (more detail refer to: https://api-docs.midtrans.com)
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     */
+    JSONObject approveTransaction(String orderId);
 
-/**
- * Do `/point_inquiry/<tokenId>` API request to Core API
- * @param  {String} tokenId - tokenId of credit card (more params detail refer to: https://api-docs.midtrans.com)
- * @return {Promise} - Promise contains Object from JSON decoded response
- */
-cardPointInquiry(tokenId)
+    /**
+     * Do `/<orderId>/cancel` API request to Core API
+     * @param  {String} orderId - orderId of the transaction (more detail refer to: https://api-docs.midtrans.com)
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     */
+    JSONObject cancelTransaction(String orderId);
+
+    /**
+     * Do `/<orderId>/expire` API request to Core API
+     * @param  {String} orderId - orderId of the transaction (more detail refer to: https://api-docs.midtrans.com)
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     */
+    JSONObject expireTransaction(String orderId);
+
+    /**
+     * Do `/<orderId>/refund` API request to Core API
+     * @param  {String} orderId - orderId of the transaction (more detail refer to: https://api-docs.midtrans.com)
+     * @param  {Map Object} parameter - object of Core API JSON body as parameter, will be converted to JSON (more params detail refer to: https://api-docs.midtrans.com)
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     */
+    JSONObject refundTransaction(String orderId, Map<String, String> params);
+
+    /**
+     * Do `/token` API request to Core API
+     * @param  {Map Object} parameter - object of Core API JSON body as parameter, will be converted to JSON (more params detail refer to: https://api-docs.midtrans.com)
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     */
+    JSONObject cardToken(Map<String, String> params);
+
+    /**
+     * Do `/card/register` API request to Core API
+     * @param  {Map Object} parameter - object of Core API JSON body as parameter, will be converted to JSON (more params detail refer to: https://api-docs.midtrans.com)
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     */
+    JSONObject registerCard(Map<String, String> params);
+
+    /**
+     * Do `/point_inquiry/<tokenId>` API request to Core API
+     * @param  {String} tokenId - tokenId of credit card (more detail refer to: https://api-docs.midtrans.com)
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     */
+    JSONObject cardPointInquiry(String tokenId);
 ```
-`parameter` is Object or String of JSON of [Core API Parameter](https://api-docs.midtrans.com/#json-objects)
+`params` is Map Object or String of JSON of [Core API Parameter](https://api-docs.midtrans.com/#json-objects)
 
 #### Credit Card Get Token
 
