@@ -32,7 +32,7 @@ public class APIHttpClient {
             .addInterceptor(chain -> {
                 if (config.getSERVER_KEY().isEmpty() || config.getSERVER_KEY() == null) {
                     if (!config.isProduction()) {
-                        LOGGER.warning("Server key is empty....");
+                        LOGGER.info("Server key is empty....");
                     }
                     return chain.proceed(chain.request());
                 }
