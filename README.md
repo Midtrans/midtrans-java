@@ -16,9 +16,9 @@ Maven:
 
 <dependencies>
     <dependency>
-        <groupId>id.co.veritrans</groupId>
-        <artifactId>vt-java-client</artifactId>
-        <version>1.2.1</version>
+        <groupId>com.midtrans</groupId>
+        <artifactId>midtrans-java-client</artifactId>
+        <version>1.0.0</version>
     </dependency>
 </dependencies>
 ```
@@ -31,7 +31,7 @@ repositories {
 }
 
 dependencies {
-    compile 'id.co.veritrans:vt-java-client:1.2.1'
+    compile 'com.midtrans:midtrans-java-client:1.0'
 }
 ```
 
