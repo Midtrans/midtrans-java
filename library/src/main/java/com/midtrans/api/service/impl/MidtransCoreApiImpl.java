@@ -54,6 +54,13 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
         }
         return object;
     }
+
+    @Override
+    public Config apiConfig() {
+        return config;
+    }
+
+
     @Override
     public JSONObject chargeTransaction(Map<String, Object> body) {
         Call<ResponseBody> call = coreApi.chargeTransaction(Optional.ofNullable(body).orElse(new HashMap<>()));
@@ -86,8 +93,6 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
 
     @Override
     public JSONObject refundTransaction(String orderId, Map<String, String> body) {
-        //config.getCoreApi();
-        //CoreApi coreApi = httpClient.getClient().create(CoreApi.class);
         Call<ResponseBody> call = coreApi.refundTransaction(Optional.ofNullable(orderId).orElse("null"), Optional.ofNullable(body).orElse(new HashMap<>()));
         return httpHandle(call);
     }
@@ -110,5 +115,21 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
         return httpHandle(call);
     }
 
+    @Override
+    public JSONObject captureTransaction(Map<String, String> params) {
+        Call<ResponseBody> call = coreApi.captureTransaction(params);
+        return httpHandle(call);
+    }
 
+    @Override
+    public JSONObject getTransactionStatusB2B(String orderId) {
+        Call<ResponseBody> call = coreApi.getStatusB2B(orderId);
+        return httpHandle(call);
+    }
+
+    @Override
+    public JSONObject directRefundTransaction(String orderId, Map<String, String> params) {
+        Call<ResponseBody> call = coreApi.directRefundTransaction(orderId, params);
+        return httpHandle(call);
+    }
 }

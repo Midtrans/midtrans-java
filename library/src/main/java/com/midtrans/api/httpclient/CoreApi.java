@@ -38,5 +38,16 @@ public interface CoreApi {
     @POST("{orderId}/refund")
     Call<ResponseBody> refundTransaction(@Path("orderId") String orderId, @Body Map<String, String> body);
 
+    @POST("{orderId}/refund/online/direct")
+    Call<ResponseBody> directRefundTransaction(@Path("orderId") String orderId, @Body Map<String, String> body);
+
+    @POST("capture")
+    Call<ResponseBody> captureTransaction(@Body Map<String, String> body);
+
+    @GET("{orderId}/status/b2b")
+    Call<ResponseBody> getStatusB2B(@Path("orderId") String orderId);
+
+
+
 
 }
