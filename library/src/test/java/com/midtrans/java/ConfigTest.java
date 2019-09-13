@@ -23,27 +23,20 @@ public class ConfigTest {
 
     @Test
     public void setSERVER_KEY() {
-        config.setSERVER_KEY("");
         config.setSERVER_KEY("TEST SET SERVER KEY");
         assertEquals("TEST SET SERVER KEY", config.getSERVER_KEY());
     }
 
     @Test
     public void setCLIENT_KEY() {
-        config.setCLIENT_KEY("");
         config.setCLIENT_KEY("TEST SET CLIENT KEY");
         assertEquals("TEST SET CLIENT KEY", config.getCLIENT_KEY());
     }
 
     @Test
     public void setProduction() {
-        config.setProduction(false);
         config.setProduction(true);
         assertEquals(true, config.isProduction());
-    }
-
-    @Test
-    public void getBASE_URL() {
     }
 
     @Test
@@ -75,6 +68,4 @@ public class ConfigTest {
             assertEquals(SNAP_SANDBOX_BASE_URL, config.getBASE_URL());
         }
     }
-
-
 }

@@ -19,12 +19,9 @@ public class SnapApiTest {
 
     private MidtransSnapApi snapApi;
 
-    private ConfigFactory configFactory;
-
-
     @Before
     public void setUp() {
-        configFactory = new ConfigFactory(new ConfigBuilder()
+        ConfigFactory configFactory = new ConfigFactory(new ConfigBuilder()
                 .setSERVER_KEY(serverKey)
                 .setCLIENT_KEY(clientKey)
                 .setIsProduction(isProduction)
@@ -70,7 +67,7 @@ public class SnapApiTest {
 
     @Test
     public void errorServerKey() {
-        configFactory.getConfig().setSERVER_KEY("");
+        snapApi.apiConfig().setSERVER_KEY("");
         JSONObject result = snapApi.createTransaction(miniDataMockUp());
         assert result.toString().contentEquals("{}");
     }

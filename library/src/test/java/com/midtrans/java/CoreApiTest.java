@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.midtrans.java.mockupdata.Constant.clientKey;
 import static com.midtrans.java.mockupdata.Constant.serverKey;
@@ -29,7 +30,6 @@ public class CoreApiTest {
                 .setSERVER_KEY(serverKey)
                 .setIsProduction(false)
                 .build());
-
         coreApi = configFactory.getCoreApi();
         dataMockup = new DataMockup();
     }
@@ -124,6 +124,47 @@ public class CoreApiTest {
 
         JSONObject result = coreApi.refundTransaction(makeTransaction(), refundBody);
         assert result.getString("status_code").equals("412");
+    }
+
+    @Test
+    public void captureTransaction() {
+        UUID idRandom = UUID.randomUUID();
+        Map<String, String> params = new HashMap<>();
+
+        params.put("transaction_id", idRandom.toString());
+        params.put("gross_amount", "265.000");
+        JSONObject result = coreApi.captureTransaction(params);
+
+        assert result.getString("status_code").equals("404");
+    }
+
+    @Test
+    public void getStatusB2BTransaction() {
+        JSONObject result = coreApi.getTransactionStatusB2B(makeTransaction());
+        assert result.getString("status_code").equals("404");
+    }
+
+    @Test
+    public void directRefund() {
+        UUID stringRand = UUID.randomUUID();
+
+        Map<String, String> params = new HashMap<>();
+        params.put("refund_key", stringRand.toString());
+        params.put("amount", "265000");
+        params.put("reason", "Test direct refund");
+
+        JSONObject result = coreApi.directRefundTransaction(makeFDSTransaction(), params);
+        assert result.getString("status_code").equals("412");
+    }
+
+    @Test
+    public void failChargeTransactionNoServerKey() {
+        coreApi.apiConfig().setSERVER_KEY("");
+        dataMockup = new DataMockup();
+        dataMockup.setPaymentType("gopay");
+        JSONObject result = coreApi.chargeTransaction(dataMockup.initDataMock());
+
+        assert result.getString("status_code").equals("401");
     }
 
 
