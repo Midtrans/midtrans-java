@@ -375,9 +375,10 @@ JSONObject result = expireTransaction(String orderId);
 #### Refund Transaction
 ```java
 //Make params with Map Object
-private void Map<String,String> params() {
+private Map<String,String> params() {
     params.put("amount", "5000");
     params.put("reason", "Item out of stock");
+    return params;
 }
 
 JSONObject refundTransaction("YOUR_ORDER_ID OR TRANSACTION_ID", params);
@@ -385,11 +386,10 @@ JSONObject refundTransaction("YOUR_ORDER_ID OR TRANSACTION_ID", params);
 ```
 
 ## 4. Examples
-Examples are available on [/examples](/examples) folder.
+Examples are available on [/examples](/application/src/main) folder.
 There are:
-- [Core Api examples](/examples/coreApi)
-- [Snap examples](/examples/snapApi)
-- [Express App examples](/examples/expressApp) that implement Snap & Core Api
+- [Core Api examples](/application/src/main)
+- [Snap examples](/application/src/main)
 
 ## Get help
 
