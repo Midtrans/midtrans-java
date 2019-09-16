@@ -280,6 +280,13 @@ Available methods for `MidtransCoreApi` class
      * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
      */
     JSONObject cardPointInquiry(String tokenId);
+    
+    /**
+     * Do `/<orderId>/deny` API request to Core API
+     * @param {String} orderId - orderId of the transaction (more detail refer to: https://api-docs.midtrans.com/#deny-transaction)
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     */
+    JSONObject denyTransaction(String orderId);
 ```
 `params` is Map Object or String of JSON of [Core API Parameter](https://api-docs.midtrans.com/#json-objects)
 
