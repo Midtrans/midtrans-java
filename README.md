@@ -350,13 +350,16 @@ HTTP notification will be sent whenever transaction status is changed.
 Example also available [here](application/src/main)
 
 ```java
-private void handleNotification(JSONObject response) {
-        if (!(response.length() == 0)) {
-            String orderId = response.optString("order_id", null);
-            String transactionStatus = response.optString("transaction_status", null);
-            String fraudStatus = response.optString("fraud_status", null);
+@PostMapping(value = "/notification", produces = MediaType.APPLICATION_JSON_VALUE)
+    private ResponseEntity<String> handleNotification(@RequestBody Map<String, Object> response) {
+        String notifResponse = null;
+        if (!(response.isEmpty())) {
+            String orderId = (String) response.get("order_id");
+            String transactionStatus = (String) response.get("transaction_status");
+            String fraudStatus = (String) response.get("fraud_status");
 
-            System.out.println("Transaction notification received. Order ID: "+orderId+". Transaction status: "+transactionStatus+". Fraud status: "+fraudStatus);
+            notifResponse = "Transaction notification received. Order ID: "+orderId+". Transaction status: "+transactionStatus+". Fraud status: "+fraudStatus;
+            System.out.println(notifResponse);
 
             if (fraudStatus.equals("capture")) {
                 if (fraudStatus.equals("challenge")) {
@@ -370,6 +373,7 @@ private void handleNotification(JSONObject response) {
                 // TODO set transaction status on your database to 'pending' / waiting payment
             }
         }
+        return new ResponseEntity<>(notifResponse, HttpStatus.OK);
     }
 ```
 
