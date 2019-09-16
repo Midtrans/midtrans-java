@@ -87,7 +87,7 @@
 <script th:inline="javascript">
       var payButton = document.getElementById('pay-button');
       payButton.onclick = function (event) {
-        var token = [[${token}]];
+        var token = [[${transactionToken}]];
         var redirectUrl = [[${redirectURL}]];
         if (token == null) {
             window.location.href = redirectUrl;

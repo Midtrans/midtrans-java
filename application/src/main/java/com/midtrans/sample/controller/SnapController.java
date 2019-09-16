@@ -1,8 +1,9 @@
 package com.midtrans.sample.controller;
 
+import com.midtrans.api.Config;
+import com.midtrans.api.ConfigFactory;
 import com.midtrans.api.service.MidtransSnapApi;
 import com.midtrans.sample.Credentials;
-import com.midtrans.sample.MidtransConfig;
 import com.midtrans.sample.data.DataMockup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,35 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Controller
 public class SnapController {
 
-    /*
-     * This Controller Class For Midtrans Snap Implementation
-     */
-
-    private Map<String, Object> requestBody;
-
-    @Autowired
-    private MidtransConfig midtransConfig;
-
-
-    //Midtrans HTTP SNAP API Class
-    private MidtransSnapApi midtransSnapApi;
-
-    @PostConstruct
-    public void setup() {
-        midtransSnapApi = midtransConfig.getConfigFactory().getSnapApi();
-    }
-
-    /*
-    Midtrans Configuration class for get ClientKey or ServerKey
-    and setup Environment production/sandbox, you can set Key
-    on application.properties file, or with setter method on Config class
-     */
     @Autowired
     private Credentials config;
 
@@ -47,6 +24,7 @@ public class SnapController {
     @Autowired
     private DataMockup dataMockup;
 
+    private MidtransSnapApi snapApi = new ConfigFactory(new Config("SB-Mid-server-Wh2cEDd4H661g4lrcig8sQMf", "SB-Mid-client-N7N5b2n_ZUQOOVba", false)).getSnapApi();
 
     @RequestMapping(value = "/snap", method = RequestMethod.GET)
     public String snap(Model model) {
@@ -63,7 +41,7 @@ public class SnapController {
         String clientKey = config.getClientKey();
 
         // New Map Object for JSON raw request body
-        requestBody = new HashMap<>();
+        Map<String, Object> requestBody = new HashMap<>();
 
         // Add enablePayment from @RequestParam to dataMockup
         List<String> paymentList = new ArrayList<>();
@@ -78,7 +56,7 @@ public class SnapController {
 
         /*
         If you want snap method return json raw object, you can use method
-        createTransaction() on MidtransSnapApi interface class.
+        createTransaction() on MidtransSnapApi class.
          */
 
         // send data to frontEnd snapPopUp
@@ -86,15 +64,17 @@ public class SnapController {
             model.addAttribute("result", requestBody);
             model.addAttribute("clientKey", clientKey);
             // token object getData token to API with createTransactionToken() method return String token
-            model.addAttribute("token", midtransSnapApi.createTransactionToken(requestBody));
+            model.addAttribute("transactionToken", snapApi.createTransactionToken(requestBody));
             return "snap/check-out";
+
             // send data to frontEnd redirect-url
         } else {
             model.addAttribute("result", requestBody);
             // redirectURL get url redirect to API with createTransactionRedirectUrl() method, with return String url redirect
-            model.addAttribute("redirectURL", midtransSnapApi.createTransactionRedirectUrl(requestBody));
+            model.addAttribute("redirectURL", snapApi.createTransactionRedirectUrl(requestBody));
             return "snap/check-out";
         }
     }
+
 
 }

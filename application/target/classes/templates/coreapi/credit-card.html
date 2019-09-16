@@ -206,7 +206,9 @@
         performAuthentication: function(redirect_url){
           // [3.2] 3ds authentication redirect_url received, open iframe to display to customer
           popupModal.openPopup(redirect_url);
-        },
+
+        }
+        ,
         // [3.3] When 3DS authentication result received, which contains transaction result
         // it will trigger one of function below, according to status: success/failure/pending
         onSuccess: function(response){
