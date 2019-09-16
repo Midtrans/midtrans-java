@@ -68,7 +68,7 @@ MidtransSnapApi snapApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CL
 You can also re-setting config using `apiConfig()` method on MidtransCoreApi.Class or MidtransSnapApi.Class like `coreApi.apiConfig.set( ... )`
 example:
 
-```javascript
+```java
 // Create Snap API instance, empty config
 coreApi.apiConfig().setProduction(false);
 coreApi.apiConfig().setCLIENT_KEY("YOUR_CLIENT_KEY");
@@ -85,15 +85,15 @@ You can see Snap example [here](examples/snap).
 Available methods for `MidtransSnapApi` class
 ```java
 //1. To get snap transaction with return json raw object
-JSONObject createTransaction(Map<String, Object> requestObject);
+JSONObject createTransaction(Map<String, Object> params);
 
 //2. To get snap token with return String token
-String createTransactionToken(Map<String, Object> requestObject);
+String createTransactionToken(Map<String, Object> params);
 
 //3. To get snap redirect url with return String redirect url
-String createTransactionRedirectUrl(Map<String, Object> requestObject);
+String createTransactionRedirectUrl(Map<String, Object> params);
 ```
-`parameter` is Object or String of JSON of [SNAP Parameter](https://snap-docs.midtrans.com/#json-objects)
+`params` is Map Object or String of JSON of [SNAP Parameter](https://snap-docs.midtrans.com/#json-objects)
 
 
 #### Get Snap Token
@@ -102,7 +102,7 @@ String createTransactionRedirectUrl(Map<String, Object> requestObject);
 // Create new Object SnapAPI
 MidtransSnapApi snapApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getSnapApi();
 
-// Create Function JSON Raw Object
+// Create params JSON Raw Object request
 public Map<String, Object> requestBody() {
     UUID idRand = UUID.randomUUID();
     Map<String, Object> params = new HashMap<>();
@@ -169,15 +169,15 @@ Replace `PUT_TRANSACTION_TOKEN_HERE` with `transactionToken` acquired above, you
 
 ### 2.2.B Snap Redirect
 
-Also available as examples [here](examples/snap).
+Also available as examples [here](/application/src/main/java/com/midtrans/sample/controller/SnapController.java).
 
 #### Get Redirection URL of a Payment Page
 
-```javascript
+```java
 // Create new Object SnapAPI
 MidtransSnapApi snapApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getSnapApi();
 
-// Create Function JSON Raw Object
+// Create params JSON Raw Object request
 public Map<String, Object> requestBody() {
     UUID idRand = UUID.randomUUID();
     Map<String, Object> params = new HashMap<>();
@@ -289,33 +289,32 @@ Get token should be handled on  Frontend please refer to [API docs](https://api-
 
 #### Credit Card Charge
 
-```javascript
-const midtransClient = require('midtrans-client');
-// Create Core API instance
-let core = new midtransClient.CoreApi({
-        isProduction : false,
-        serverKey : 'YOUR_SERVER_KEY',
-        clientKey : 'YOUR_CLIENT_KEY'
-    });
+```java
+MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getCoreApi();
 
-let parameter = {
-    "payment_type": "credit_card",
-    "transaction_details": {
-        "gross_amount": 12145,
-        "order_id": "test-transaction-54321",
-    },
-    "credit_card":{
-        "token_id": 'CREDIT_CARD_TOKEN', // change with your card token
-        "authentication": true
-    }
-};
+
+// Create Function JSON Raw Object
+public Map<String, Object> requestBody() {
+    UUID idRand = UUID.randomUUID();
+    Map<String, Object> params = new HashMap<>();
+    
+    Map<String, String> transactionDetails = new HashMap<>();
+    transactionDetails.put("order_id", idRand);
+    transactionDetails.put("gross_amount", "265000");
+    
+    Map<String, String> creditCard = new HashMap<>();
+    creditCard.put("token_id", YOUR_TOKEN_ID);
+    creditCard.put("authentication", "true");
+    
+    params.put("transaction_details", transactionDetails);
+    params.put("credit_card", creditCard);
+    
+    return params;
+}
 
 // charge transaction
-core.charge(parameter)
-    .then((chargeResponse)=>{
-        console.log('chargeResponse:');
-        console.log(chargeResponse);
-    });
+JSONObject result = coreApi.chargeTransaction(requestBody());
+System.out.println(result);
 ```
 
 #### Credit Card 3DS Authentication
@@ -323,7 +322,7 @@ core.charge(parameter)
 The credit card charge result may contains `redirect_url` for 3DS authentication. 3DS Authentication should be handled on Frontend please refer to [API docs](https://api-docs.midtrans.com/#card-features-3d-secure)
 
 For full example on Credit Card 3DS transaction refer to:
-- [Express App examples](/examples/expressApp) that implement Snap & Core Api
+- [App examples](application/src/main/) that implement Snap & Core Api
 
 ### 2.3 Handle HTTP Notification
 
@@ -331,116 +330,58 @@ For full example on Credit Card 3DS transaction refer to:
 
 Create separated web endpoint (notification url) to receive HTTP POST notification callback/webhook. 
 HTTP notification will be sent whenever transaction status is changed.
-Example also available [here](examples/transactionActions/notificationExample.js)
+Example also available [here](application/src/main)
 
-```javascript
-const midtransClient = require('midtrans-client');
-// Create Core API / Snap instance (both have shared `transactions` methods)
-let apiClient = new midtransClient.Snap({
-        isProduction : false,
-        serverKey : 'YOUR_SERVER_KEY',
-        clientKey : 'YOUR_CLIENT_KEY'
-    });
-
-apiClient.transaction.notification(notificationJson)
-    .then((statusResponse)=>{
-        let orderId = statusResponse.order_id;
-        let transactionStatus = statusResponse.transaction_status;
-        let fraudStatus = statusResponse.fraud_status;
-
-        console.log(`Transaction notification received. Order ID: ${orderId}. Transaction status: ${transactionStatus}. Fraud status: ${fraudStatus}`);
-
-        // Sample transactionStatus handling logic
-
-        if (transactionStatus == 'capture'){
-            if (fraudStatus == 'challenge'){
-                // TODO set transaction status on your databaase to 'challenge'
-            } else if (fraudStatus == 'accept'){
-                // TODO set transaction status on your databaase to 'success'
-            }
-        } else if (transactionStatus == 'cancel' ||
-          transactionStatus == 'deny' ||
-          transactionStatus == 'expire'){
-          // TODO set transaction status on your databaase to 'failure'
-        } else if (transactionStatus == 'pending'){
-          // TODO set transaction status on your databaase to 'pending' / waiting payment
-        }
-    });
+```java
+Not yet implement
 ```
 
 ### 2.4 Transaction Action
-Also available as examples [here](examples/transactionActions)
+Also available as examples [here](application/src/main)
 #### Get Status
-```javascript
+```java
 // get status of transaction that already recorded on midtrans (already `charge`-ed) 
-apiClient.transaction.status('YOUR_ORDER_ID OR TRANSACTION_ID')
-    .then((response)=>{
-        // do something to `response` object
-    });
+JSONObject result = checkTransaction("YOUR_ORDER_ID OR TRANSACTION_ID");
+    //do something with `result` JSON Raw Object
 ```
 #### Get Status B2B
-```javascript
+```java
 // get transaction status of VA b2b transaction
-apiClient.transaction.statusb2b('YOUR_ORDER_ID OR TRANSACTION_ID')
-    .then((response)=>{
-        // do something to `response` object
-    });
+JSONObject result = getTransactionStatusB2B("YOUR_ORDER_ID OR TRANSACTION_ID");
+    //do something with `result` JSON Raw Object
 ```
 #### Approve Transaction
-```javascript
+```javas
 // approve a credit card transaction with `challenge` fraud status
-apiClient.transaction.approve('YOUR_ORDER_ID OR TRANSACTION_ID')
-    .then((response)=>{
-        // do something to `response` object
-    });
+JSONObject result = approveTransaction("YOUR_ORDER_ID OR TRANSACTION_ID");
+    //do something with `result` JSON Raw Object
 ```
 #### Deny Transaction
-```javascript
+```java
 // deny a credit card transaction with `challenge` fraud status
-apiClient.transaction.deny('YOUR_ORDER_ID OR TRANSACTION_ID')
-    .then((response)=>{
-        // do something to `response` object
-    });
+JSONObject result = denyTransaction("YOUR_ORDER_ID OR TRANSACTION_ID");
+    //do something with `result` JSON Raw Object
 ```
 #### Cancel Transaction
-```javascript
-apiClient.transaction.cancel('YOUR_ORDER_ID OR TRANSACTION_ID')
-    .then((response)=>{
-        // do something to `response` object
-    });
+```java
+JSONObject result = cancelTransaction("YOUR_ORDER_ID OR TRANSACTION_ID");
+    //do something with `result` JSON Raw Object
 ```
 #### Expire Transaction
-```javascript
-apiClient.transaction.expire('YOUR_ORDER_ID OR TRANSACTION_ID')
-    .then((response)=>{
-        // do something to `response` object
-    });
+```java
+JSONObject result = expireTransaction(String orderId);
+    //do something with `result` JSON Raw Object
 ```
 #### Refund Transaction
-```javascript
-let parameter = {
-    "amount": 5000,
-    "reason": "Item out of stock"
+```java
+//Make params with Map Object
+private void Map<String,String> params() {
+    params.put("amount", "5000");
+    params.put("reason", "Item out of stock");
 }
-apiClient.transaction.refund('YOUR_ORDER_ID OR TRANSACTION_ID',parameter)
-    .then((response)=>{
-        // do something to `response` object
-    });
-```
 
-## 3. Handling Error / Exception
-When using function that result in Midtrans API call e.g: `core.charge(...)` or `snap.createTransaction(...)` 
-there's a chance it may throw error (`MidtransError` object), the error object will contains below properties that can be used as information to your error handling logic:
-```javascript
-snap.createTransaction(parameter)
-      .then((res)=>{
-      })
-      .catch((e)=>{
-        e.message // basic error message string
-        e.httpStatusCode // HTTP status code e.g: 400, 401, etc.
-        e.ApiResponse // JSON of the API response 
-        e.rawHttpClientData // raw Axios response object
-      })
+JSONObject refundTransaction("YOUR_ORDER_ID OR TRANSACTION_ID", params);
+    //do something with `result` JSON Raw Object
 ```
 
 ## 4. Examples
