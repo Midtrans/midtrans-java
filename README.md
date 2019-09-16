@@ -386,7 +386,7 @@ JSONObject result = cancelTransaction("YOUR_ORDER_ID OR TRANSACTION_ID");
 ```
 #### Expire Transaction
 ```java
-JSONObject result = expireTransaction(String orderId);
+JSONObject result = expireTransaction("YOUR_ORDER_ID OR TRANSACTION_ID");
     //do something with `result` JSON Raw Object
 ```
 #### Refund Transaction
@@ -398,7 +398,7 @@ private Map<String,String> params() {
     return params;
 }
 
-JSONObject refundTransaction("YOUR_ORDER_ID OR TRANSACTION_ID", params);
+JSONObject refundTransaction("YOUR_ORDER_ID OR TRANSACTION_ID", params());
     //do something with `result` JSON Raw Object
 ```
 
