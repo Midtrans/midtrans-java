@@ -58,11 +58,21 @@ Create API client object
 
 ```java
 MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getCoreApi();
+
+//You can set Config.class with
+`YOUR_SERVER_KEY`
+`YOUR_CLIENT_KEY`
+`isProduction`
 ```
 
 
 ```java
 MidtransSnapApi snapApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getSnapApi();
+
+//You can set Config.class with
+`YOUR_SERVER_KEY`
+`YOUR_CLIENT_KEY`
+`isProduction`
 ```
 
 You can also re-setting config using `apiConfig()` method on MidtransCoreApi.Class or MidtransSnapApi.Class like `coreApi.apiConfig.set( ... )`
