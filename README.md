@@ -350,7 +350,27 @@ HTTP notification will be sent whenever transaction status is changed.
 Example also available [here](application/src/main)
 
 ```java
-Not yet implement
+private void handleNotification(JSONObject response) {
+        if (!(response.length() == 0)) {
+            String orderId = response.optString("order_id", null);
+            String transactionStatus = response.optString("transaction_status", null);
+            String fraudStatus = response.optString("fraud_status", null);
+
+            System.out.println("Transaction notification received. Order ID: "+orderId+". Transaction status: "+transactionStatus+". Fraud status: "+fraudStatus);
+
+            if (fraudStatus.equals("capture")) {
+                if (fraudStatus.equals("challenge")) {
+                    // TODO set transaction status on your database to 'challenge'
+                } else if (fraudStatus.equals("accept")){
+                    // TODO set transaction status on your database to 'success'
+                }
+            } else if (transactionStatus.equals("cancel") || transactionStatus.equals("deny") || transactionStatus.equals("expire")) {
+                // TODO set transaction status on your database to 'failure'
+            } else if (transactionStatus.equals("pending")) {
+                // TODO set transaction status on your database to 'pending' / waiting payment
+            }
+        }
+    }
 ```
 
 ### 2.4 Transaction Action
