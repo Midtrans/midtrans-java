@@ -368,7 +368,7 @@ JSONObject result = getTransactionStatusB2B("YOUR_ORDER_ID OR TRANSACTION_ID");
     //do something with `result` JSON Raw Object
 ```
 #### Approve Transaction
-```javas
+```java
 // approve a credit card transaction with `challenge` fraud status
 JSONObject result = approveTransaction("YOUR_ORDER_ID OR TRANSACTION_ID");
     //do something with `result` JSON Raw Object
