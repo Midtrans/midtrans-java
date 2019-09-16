@@ -63,6 +63,7 @@ public class SnapApiTest {
     public void badRequestBodyOnSnapTrans() {
         JSONObject result = snapApi.createTransaction(badDataMockUp());
         assert result.toString().contentEquals("{}");
+        assert result.length() == 0;
     }
 
     @Test
@@ -70,6 +71,8 @@ public class SnapApiTest {
         snapApi.apiConfig().setSERVER_KEY("");
         JSONObject result = snapApi.createTransaction(miniDataMockUp());
         assert result.toString().contentEquals("{}");
+        assert result.length() == 0;
+
     }
 
     //Minimal data mockUp
