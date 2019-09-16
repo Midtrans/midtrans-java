@@ -132,4 +132,10 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
         Call<ResponseBody> call = coreApi.directRefundTransaction(orderId, params);
         return httpHandle(call);
     }
+
+    @Override
+    public JSONObject denyTransaction(String orderId) {
+        Call<ResponseBody> call = coreApi.denyTransaction(orderId);
+        return httpHandle(call);
+    }
 }

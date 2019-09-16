@@ -28,7 +28,7 @@ public class MidtransSnapApiImpl implements MidtransSnapApi {
     }
 
     // Snap http request method with handle error exception
-    private JSONObject snapHttpRequest(Map<String, Object> requestObject) {
+    private JSONObject snapHttpRequest(Map<String, Object> params) {
 
         JSONObject rawResult = new JSONObject();
         APIHttpClient httpClient = new APIHttpClient(config);
@@ -37,7 +37,7 @@ public class MidtransSnapApiImpl implements MidtransSnapApi {
         // Initialize Retrofit http client
         SnapApi snapApi = httpClient.getClient().create(SnapApi.class);
         //get to SnapAPI with retrofit return ResponseBody
-        Call<ResponseBody> call = snapApi.createTransactions(requestObject);
+        Call<ResponseBody> call = snapApi.createTransactions(params);
         try {
             Response<ResponseBody> response = call.execute();
             if (response.isSuccessful()) {
@@ -71,19 +71,23 @@ public class MidtransSnapApiImpl implements MidtransSnapApi {
         return value;
     }
 
-
     @Override
-    public JSONObject createTransaction(Map<String, Object> requestObject) {
-        return snapHttpRequest(requestObject);
+    public Config apiConfig() {
+        return config;
     }
 
     @Override
-    public String createTransactionToken(Map<String, Object> requestObject) {
-        return getValueFromRawJSON(snapHttpRequest(requestObject), "token");
+    public JSONObject createTransaction(Map<String, Object> params) {
+        return snapHttpRequest(params);
     }
 
     @Override
-    public String createTransactionRedirectUrl(Map<String, Object> requestObject) {
-        return getValueFromRawJSON(snapHttpRequest(requestObject), "redirect_url");
+    public String createTransactionToken(Map<String, Object> params) {
+        return getValueFromRawJSON(snapHttpRequest(params), "token");
+    }
+
+    @Override
+    public String createTransactionRedirectUrl(Map<String, Object> params) {
+        return getValueFromRawJSON(snapHttpRequest(params), "redirect_url");
     }
 }
