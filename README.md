@@ -385,7 +385,7 @@ System.out.println(result);
 The credit card charge result may contains `redirect_url` for 3DS authentication. 3DS Authentication should be handled on Frontend please refer to [API docs](https://api-docs.midtrans.com/#card-features-3d-secure)
 
 For full example on Credit Card 3DS transaction refer to:
-- [App examples](application/src/main/) that implement Snap & Core Api
+- [App examples](example/src/main/java/com/midtrans/sample) that implement Snap & Core Api
 
 ### 2.3 Handle HTTP Notification
 
@@ -393,7 +393,7 @@ For full example on Credit Card 3DS transaction refer to:
 
 Create separated web endpoint (notification url) to receive HTTP POST notification callback/webhook. 
 HTTP notification will be sent whenever transaction status is changed.
-Example also available [here](application/src/main)
+Example also available [here](example/src/main/java/com/midtrans/sample/controller/CoreApiController.java)
 
 ```java
 @PostMapping(value = "/notification", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -424,7 +424,7 @@ Example also available [here](application/src/main)
 ```
 
 ### 2.4 Transaction Action
-Also available as examples [here](application/src/main)
+Also available as examples [here](example/src/main/java/com/midtrans/sample/controller/CoreApiController.java)
 #### Get Status
 ```java
 // get status of transaction that already recorded on midtrans (already `charge`-ed) 
@@ -473,10 +473,10 @@ JSONObject refundTransaction("YOUR_ORDER_ID OR TRANSACTION_ID", params());
 ```
 
 ## 4. Examples
-Examples are available on [/examples](/application/src/main) folder.
+Examples are available on [/examples](example/src/main/java/com/midtrans/sample/) folder.
 There are:
-- [Core Api examples](/application/src/main)
-- [Snap examples](/application/src/main)
+- [Core Api examples](example/src/main/java/com/midtrans/sample/controller/CoreApiController.java)
+- [Snap examples](example/src/main/java/com/midtrans/sample/controller/SnapController.java)
 
 ## Get help
 
