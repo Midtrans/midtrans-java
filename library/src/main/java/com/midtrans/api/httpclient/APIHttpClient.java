@@ -3,23 +3,34 @@ package com.midtrans.api.httpclient;
 import com.midtrans.api.Config;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import org.springframework.stereotype.Component;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.logging.Logger;
 
-@Component
+/**
+ * Retrofit HttpClient configuration
+ */
 public class APIHttpClient {
     private static final Logger LOGGER = Logger.getLogger(APIHttpClient.class.getName());
 
     private Config config;
 
+    /**
+     * APIHttpClient constructor
+     *
+     * @param config Midtrans {@link com.midtrans.api.Config configuration}
+     */
     public APIHttpClient(Config config) {
         this.config = config;
     }
 
+    /**
+     * get client Retrofit configuration
+     *
+     * @return Retrofit
+     */
     public Retrofit getClient() {
         return new Retrofit.Builder()
                 .baseUrl(config.getBASE_URL())

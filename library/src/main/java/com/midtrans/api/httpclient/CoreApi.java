@@ -6,6 +6,9 @@ import retrofit2.http.*;
 
 import java.util.Map;
 
+/**
+ * HttpClient for midtrans CoreAPI
+ */
 public interface CoreApi {
 
     @GET("token")

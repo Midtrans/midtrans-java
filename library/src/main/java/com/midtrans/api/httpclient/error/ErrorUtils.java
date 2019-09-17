@@ -6,8 +6,10 @@ import org.json.JSONObject;
 import retrofit2.Response;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
+/**
+ * ErrorUtils parse error from midtrans
+ */
 public class ErrorUtils {
 
     private static ErrorMessage parseError(final Response<?> response) {
@@ -41,6 +43,12 @@ public class ErrorUtils {
                 .build();
     }
 
+    /**
+     * catch http error message from Midtrans
+     *
+     * @param code     http status code from HttpClient response (Retrofit)
+     * @param response Retrofit response from midtrans
+     */
     public void catchHttpErrorMessage(int code, Response response) {
         ErrorMessage errorMessage = parseError(response);
         switch (code) {

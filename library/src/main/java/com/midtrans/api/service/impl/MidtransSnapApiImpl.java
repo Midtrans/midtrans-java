@@ -17,12 +17,19 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
 
-@Service
+/**
+ * Implements from {@link com.midtrans.api.service.MidtransSnapApi MidtransSnapApi}
+ */
 public class MidtransSnapApiImpl implements MidtransSnapApi {
     private static final Logger LOGGER = Logger.getLogger(MidtransSnapApi.class.getName());
 
     private Config config;
 
+    /**
+     * SnapAPI constructor
+     *
+     * @param config Midtrans {@link com.midtrans.api.Config configuration}
+     */
     public MidtransSnapApiImpl(Config config) {
         this.config = config;
     }

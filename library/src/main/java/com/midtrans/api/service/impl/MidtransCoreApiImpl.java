@@ -16,20 +16,26 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-@Service
+/**
+ * Implements from {@link com.midtrans.api.service.MidtransCoreApi MidtransCoreApi}
+ */
 public class MidtransCoreApiImpl implements MidtransCoreApi {
     private static final Logger LOGGER = Logger.getLogger(MidtransCoreApi.class.getName());
 
     private CoreApi coreApi;
     private Config config;
 
+    /**
+     * CoreAPI constructor
+     *
+     * @param config Midtrans {@link com.midtrans.api.Config configuration}
+     */
     public MidtransCoreApiImpl(Config config) {
         this.config = config;
         APIHttpClient httpClient = new APIHttpClient(config);
         this.coreApi = httpClient.getClient().create(CoreApi.class);
     }
 
-    //Http Handle Method for handle HTTP Response
     private JSONObject httpHandle(Call<ResponseBody> call) {
         ErrorUtils errorUtils = new ErrorUtils();
         JSONObject object = new JSONObject();
