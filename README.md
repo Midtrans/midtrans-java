@@ -57,6 +57,10 @@ Get your client key and server key from [Midtrans Dashboard](https://dashboard.m
 Create API client object
 
 ```java
+import com.midtrans.api.Config;
+import com.midtrans.api.ConfigFactory;
+import com.midtrans.api.service.MidtransCoreApi;
+
 MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getCoreApi();
 
 //You can set Config.class with
@@ -67,6 +71,10 @@ MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CL
 
 
 ```java
+import com.midtrans.api.Config;
+import com.midtrans.api.ConfigFactory;
+import com.midtrans.api.service.MidtransCoreApi;
+
 MidtransSnapApi snapApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getSnapApi();
 
 //You can set Config.class with
@@ -89,8 +97,46 @@ coreApi.apiConfig().setSERVER_KEY("YOUR_SERVER_KEY");
 coreApi.apiConfig().setSERVER_KEY("YOUR_SERVER_KEY");
 ```
 
+#### CoreAPI Simple Sample Usage
+```java
+
+import com.midtrans.api.Config;
+import com.midtrans.api.ConfigFactory;
+import com.midtrans.api.service.MidtransCoreApi;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import org.json.JSONObject;
+
+
+public class MidtransExample {
+    private MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getCoreApi();
+
+    public static void main(String[] args) {
+        
+        UUID idRand = UUID.randomUUID();
+        Map<String, Object> chargeParams = new HashMap<>();
+    
+        Map<String, String> transactionDetails = new HashMap<>();
+        transactionDetails.put("order_id", idRand);
+        transactionDetails.put("gross_amount", "265000");
+    
+        Map<String, String> creditCard = new HashMap<>();
+        creditCard.put("authentication", "true");
+    
+        chargeParams.put("transaction_details", transactionDetails);
+        chargeParams.put("credit_card", creditCard);
+        
+
+            JSONObject result = coreApi.chargeTransaction(chargeParams);
+            System.out.println(result);
+    }
+}
+```
+
 ### 2.2.A Snap
-You can see Snap example [here](examples/snap).
+You can see Snap example [here](example/src/main/java/com/midtrans/sample/controller/SnapController.java).
 
 Available methods for `MidtransSnapApi` class
 ```java
@@ -217,7 +263,7 @@ return "redirect:" +redirectURL;
 
 ### 2.2.C Core API (VT-Direct)
 
-You can see some Core API examples [here](examples/coreApi).
+You can see some Core API examples [here](example/src/main/java/com/midtrans/sample/controller/CoreApiController.java).
 
 Available methods for `MidtransCoreApi` class
 ```java
