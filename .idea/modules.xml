@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/mid-multi-module.iml" filepath="$PROJECT_DIR$/mid-multi-module.iml" />
-      <module fileurl="file://$PROJECT_DIR$/application/mid-sample-application.iml" filepath="$PROJECT_DIR$/application/mid-sample-application.iml" />
+      <module fileurl="file://$PROJECT_DIR$/example/midtrams-springboot-sample.iml" filepath="$PROJECT_DIR$/example/midtrams-springboot-sample.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/midtrans-java-library.iml" filepath="$PROJECT_DIR$/library/midtrans-java-library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/midtrans-java-module.iml" filepath="$PROJECT_DIR$/midtrans-java-module.iml" />
     </modules>
   </component>
 </project>

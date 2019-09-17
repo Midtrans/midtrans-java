@@ -47,7 +47,6 @@ public class APIHttpClient {
     private String encodeServerKey(){
         return "Basic " + Base64.getEncoder().encodeToString((config.getSERVER_KEY() + ":").getBytes(StandardCharsets.UTF_8));
     }
-
 }
 
 

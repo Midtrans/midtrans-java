@@ -47,7 +47,7 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
                     e.printStackTrace();
                 }
             } else {
-                errorUtils.httpErrorHandle(response.code(), response);
+                errorUtils.catchHttpErrorMessage(response.code(), response);
             }
         } catch (IOException e) {
             e.printStackTrace();

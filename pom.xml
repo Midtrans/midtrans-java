@@ -10,7 +10,7 @@
 
     <modules>
         <module>library</module>
-        <module>application</module>
+        <module>example</module>
     </modules>
 
 </project>

@@ -1,26 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_TEST_SOURCES" value="false" />
+    <option name="SCOPE_TYPE" value="8" />
+    <option name="CUSTOM_SCOPE_NAME" value="Module 'midtrans-java-library'" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="d20754d7-0b47-4487-a8a7-7b5a97300846" name="Default Changelist" comment="Handle error and exception">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="d20754d7-0b47-4487-a8a7-7b5a97300846" name="Default Changelist" comment="Initial commit">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/Credentials.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/Credentials.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/MidtransConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/CoreApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/CoreApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/SnapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/SnapController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/coreapi/credit-card.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/templates/coreapi/credit-card.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/fragments/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/templates/fragments/header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/snap/check-out.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/resources/templates/snap/check-out.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/Credentials.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/Credentials.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/MidtransConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/SampleApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/SampleApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/HomeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/HomeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/SnapController.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/SnapController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/data/DataMockup.class" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/data/DataMockup.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/templates/coreapi/credit-card.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/templates/coreapi/credit-card.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/templates/fragments/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/templates/fragments/header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/target/classes/templates/snap/check-out.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/target/classes/templates/snap/check-out.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/mid-sample-application.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/Credentials.java" beforeDir="false" afterPath="$PROJECT_DIR$/example/src/main/java/com/midtrans/sample/Credentials.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/SampleApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/example/src/main/java/com/midtrans/sample/SampleApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/CoreApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/example/src/main/java/com/midtrans/sample/controller/CoreApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/example/src/main/java/com/midtrans/sample/controller/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/controller/SnapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/example/src/main/java/com/midtrans/sample/controller/SnapController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/midtrans/sample/data/DataMockup.java" beforeDir="false" afterPath="$PROJECT_DIR$/example/src/main/java/com/midtrans/sample/data/DataMockup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/example/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/coreapi/core-api.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/src/main/resources/templates/coreapi/core-api.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/coreapi/credit-card.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/src/main/resources/templates/coreapi/credit-card.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/coreapi/gopay.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/src/main/resources/templates/coreapi/gopay.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/fragments/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/src/main/resources/templates/fragments/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/src/main/resources/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/src/main/resources/templates/layout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/snap/check-out.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/src/main/resources/templates/snap/check-out.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/src/main/resources/templates/snap/snap.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/src/main/resources/templates/snap/snap.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/META-INF/mid-sample-application.kotlin_module" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/META-INF/mid-sample-application.kotlin_module" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/Credentials.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/com/midtrans/sample/Credentials.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/SampleApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/com/midtrans/sample/SampleApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/CoreApiController.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/com/midtrans/sample/controller/CoreApiController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/HomeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/com/midtrans/sample/controller/HomeController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/controller/SnapController.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/com/midtrans/sample/controller/SnapController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/com/midtrans/sample/data/DataMockup.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/com/midtrans/sample/data/DataMockup.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/templates/coreapi/core-api.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/templates/coreapi/core-api.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/templates/coreapi/credit-card.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/templates/coreapi/credit-card.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/templates/coreapi/gopay.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/templates/coreapi/gopay.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/templates/fragments/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/templates/fragments/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/templates/layout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/templates/snap/check-out.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/templates/snap/check-out.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/target/classes/templates/snap/snap.html" beforeDir="false" afterPath="$PROJECT_DIR$/example/target/classes/templates/snap/snap.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/APIHttpClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/APIHttpClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/CoreApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/CoreApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/error/ErrorUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/httpclient/error/ErrorUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransCoreApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/MidtransCoreApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/MidtransCoreApiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/MidtransCoreApiImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/MidtransSnapApiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/library/src/main/java/com/midtrans/api/service/impl/MidtransSnapApiImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/Config.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/impl/MidtransCoreApiImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/impl/MidtransCoreApiImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/impl/MidtransSnapApiImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/library/target/classes/com/midtrans/api/service/impl/MidtransSnapApiImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mid-multi-module.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,6 +82,7 @@
     <option name="importingSettings">
       <MavenImportingSettings>
         <option name="importAutomatically" value="true" />
+        <option name="vmOptionsForImporter" value="-Xmx768m" />
       </MavenImportingSettings>
     </option>
   </component>
@@ -57,6 +93,10 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="coverage" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
@@ -88,7 +128,7 @@
   <component name="RunManager" selected="Application.SampleApplication">
     <configuration name="SampleApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.midtrans.sample.SampleApplication" />
-      <module name="mid-sample-application" />
+      <module name="midtrams-springboot-sample" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.midtrans.sample.*" />
@@ -156,6 +196,53 @@
       <option name="MAIN_CLASS_NAME" value="com.midtrans.java.SnapApiTest" />
       <option name="METHOD_NAME" value="badRequestBodyOnSnapTrans" />
       <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+      <module name="midtrans-java-module" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
+      <module name="midtrans-java-module" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -286,7 +373,21 @@
       <option name="project" value="LOCAL" />
       <updated>1568622012956</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Initial commit">
+      <created>1568622118407</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1568622118407</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Initial commit">
+      <created>1568693249872</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1568693249872</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -315,7 +416,8 @@
     <MESSAGE value="Unit Testing Initial Commit" />
     <MESSAGE value="Snap: can resetting config via snapApi class&#10;CoreAPI: add denyTransaction method and add note method" />
     <MESSAGE value="initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial commit" />
+    <MESSAGE value="Initial commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial commit" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">

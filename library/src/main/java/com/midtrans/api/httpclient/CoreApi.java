@@ -47,7 +47,4 @@ public interface CoreApi {
     @GET("{orderId}/status/b2b")
     Call<ResponseBody> getStatusB2B(@Path("orderId") String orderId);
 
-
-
-
 }

@@ -4,25 +4,32 @@ import com.midtrans.api.Config;
 import org.json.JSONObject;
 import java.util.Map;
 
+/**
+ *
+ */
 public interface MidtransCoreApi {
 
     /**
      * Do re-setting config Class like clientKey, serverKey, isProduction
-     * @return {Config class}
+     * @return Config.class
      */
     Config apiConfig();
 
     /**
-     * Do `/charge` API request to Core API
-     * @param {Map Object} parameter - object of Core API JSON body as parameter, will be converted to JSON (more params detail refer to: https://api-docs.midtrans.com)
-     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     * Do /charge API request to Core API
+     * Map Object parameter - object of Core API JSON body as parameter, will be converted to JSON (more params detail refer to: https://api-docs.midtrans.com)
+     * @param params
+     * @return
+     * {JSONObject} - org.json Promise contains Object from JSON decoded response
      */
     JSONObject chargeTransaction(Map<String, Object> params);
 
     /**
-     * Do `/<orderId>/status` API request to Core API
-     * @param {String} orderId - orderId of the transaction (more detail refer to: https://api-docs.midtrans.com/#get-transaction-status)
-     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     * Do /<orderId>/status API request to Core API
+     * {String} orderId - orderId of the transaction (more detail refer to: https://api-docs.midtrans.com/#get-transaction-status)
+     * @param orderId
+     * @return
+     * {JSONObject} - org.json Promise contains Object from JSON decoded response
      */
     JSONObject checkTransaction(String orderId);
 

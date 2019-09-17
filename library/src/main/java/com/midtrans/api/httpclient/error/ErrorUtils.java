@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class ErrorUtils {
-    private static final Logger LOGGER = Logger.getLogger("MIDTRANS");
 
     private static ErrorMessage parseError(final Response<?> response) {
         JSONObject bodyObj;
@@ -42,23 +41,23 @@ public class ErrorUtils {
                 .build();
     }
 
-    public void httpErrorHandle(int code, Response response) {
+    public void catchHttpErrorMessage(int code, Response response) {
         ErrorMessage errorMessage = parseError(response);
         switch (code) {
             case 400:
-                LOGGER.warning("400 Bad Request: There was a problem in the JSON you submitted " + errorMessage.getErrorMessages());
+                System.out.println("400 Bad Request: There was a problem in the JSON you submitted " + errorMessage.getErrorMessages());
                 break;
             case 401:
-                LOGGER.warning("401 Unauthorized: " + errorMessage.getErrorMessages());
+                System.out.println("401 Unauthorized: " + errorMessage.getErrorMessages());
                 return;
             case 404:
-                LOGGER.info("404 Not Found " + errorMessage.getErrorMessages());
+                System.out.println("404 Not Found " + errorMessage.getErrorMessages());
                 break;
             case 500:
-                LOGGER.warning("HTTP ERROR 500: Internal Server ERROR! " + errorMessage.getErrorMessages());
+                System.out.println("HTTP ERROR 500: Internal Server ERROR! " + errorMessage.getErrorMessages());
                 break;
             default:
-                LOGGER.warning(errorMessage.getErrorMessages().toString());
+                System.out.println(errorMessage.getErrorMessages().toString());
                 break;
         }
     }
