@@ -5,7 +5,7 @@ Midtrans :heart: Java, This is the Official Java API client/library for Midtrans
 
 ### 1.a Using Maven or Gradle
 Maven:
-```Maven
+```xml
 <repositories>
     <repository>
         <id>jcenter</id>
