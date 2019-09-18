@@ -57,9 +57,9 @@ Get your client key and server key from [Midtrans Dashboard](https://dashboard.m
 Create API client object
 
 ```java
-import com.midtrans.api.Config;
-import com.midtrans.api.ConfigFactory;
-import com.midtrans.api.service.MidtransCoreApi;
+import Config;
+import ConfigFactory;
+import MidtransCoreApi;
 
 MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getCoreApi();
 
@@ -71,9 +71,9 @@ MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CL
 
 
 ```java
-import com.midtrans.api.Config;
-import com.midtrans.api.ConfigFactory;
-import com.midtrans.api.service.MidtransCoreApi;
+import Config;
+import ConfigFactory;
+import MidtransCoreApi;
 
 MidtransSnapApi snapApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getSnapApi();
 
@@ -100,9 +100,9 @@ coreApi.apiConfig().setSERVER_KEY("YOUR_SERVER_KEY");
 #### CoreAPI Simple Sample Usage
 ```java
 
-import com.midtrans.api.Config;
-import com.midtrans.api.ConfigFactory;
-import com.midtrans.api.service.MidtransCoreApi;
+import Config;
+import ConfigFactory;
+import MidtransCoreApi;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,19 +1,17 @@
 package com.midtrans.sample.controller;
 
-import com.midtrans.api.Config;
-import com.midtrans.api.ConfigFactory;
-import com.midtrans.api.service.MidtransCoreApi;
+import com.midtrans.Config;
+import com.midtrans.ConfigFactory;
+import com.midtrans.service.MidtransCoreApi;
 import com.midtrans.sample.data.DataMockup;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import retrofit2.http.POST;
 
 import java.util.HashMap;
 import java.util.Map;

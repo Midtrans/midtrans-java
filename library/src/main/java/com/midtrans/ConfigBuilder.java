@@ -1,7 +1,7 @@
-package com.midtrans.api;
+package com.midtrans;
 
 /**
- * {@link com.midtrans.api.Config Config} builder class
+ * {@link Config Config} builder class
  */
 public final class ConfigBuilder {
     private String SERVER_KEY;
@@ -18,7 +18,7 @@ public final class ConfigBuilder {
      * Set merchant client key configuration
      *
      * @param SERVER_KEY merchant server key
-     * @return {@link com.midtrans.api.ConfigBuilder ConfigBuilder}
+     * @return {@link ConfigBuilder ConfigBuilder}
      */
     public ConfigBuilder setSERVER_KEY(String SERVER_KEY) {
         this.SERVER_KEY = SERVER_KEY;
@@ -29,7 +29,7 @@ public final class ConfigBuilder {
      * Set merchant client key configuration
      *
      * @param CLIENT_KEY merchant client key
-     * @return {@link com.midtrans.api.ConfigBuilder ConfigBuilder}
+     * @return {@link ConfigBuilder ConfigBuilder}
      */
     public ConfigBuilder setCLIENT_KEY(String CLIENT_KEY) {
         this.CLIENT_KEY = CLIENT_KEY;
@@ -39,7 +39,7 @@ public final class ConfigBuilder {
     /**
      * Set environment type configuration
      * @param isProduction true or false
-     * @return              {@link com.midtrans.api.ConfigBuilder ConfigBuilder}
+     * @return              {@link ConfigBuilder ConfigBuilder}
      */
     public ConfigBuilder setIsProduction(Boolean isProduction) {
         this.isProduction = isProduction;
@@ -48,7 +48,7 @@ public final class ConfigBuilder {
 
     /**
      * Build Config object from builder
-     * @return {@link com.midtrans.api.Config Config}
+     * @return {@link Config Config}
      */
     public Config build() {
         return new Config(SERVER_KEY, CLIENT_KEY, isProduction);

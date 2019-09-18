@@ -1,13 +1,12 @@
-package com.midtrans.api.service.impl;
+package com.midtrans.service.impl;
 
-import com.midtrans.api.Config;
-import com.midtrans.api.httpclient.APIHttpClient;
-import com.midtrans.api.httpclient.CoreApi;
-import com.midtrans.api.httpclient.error.ErrorUtils;
-import com.midtrans.api.service.MidtransCoreApi;
+import com.midtrans.Config;
+import com.midtrans.httpclient.APIHttpClient;
+import com.midtrans.httpclient.CoreApi;
+import com.midtrans.httpclient.error.ErrorUtils;
+import com.midtrans.service.MidtransCoreApi;
 import okhttp3.ResponseBody;
 import org.json.JSONObject;
-import org.springframework.stereotype.Service;
 import retrofit2.Call;
 import retrofit2.Response;
 import java.io.IOException;
@@ -17,7 +16,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
- * Implements from {@link com.midtrans.api.service.MidtransCoreApi MidtransCoreApi}
+ * Implements from {@link MidtransCoreApi MidtransCoreApi}
  */
 public class MidtransCoreApiImpl implements MidtransCoreApi {
     private static final Logger LOGGER = Logger.getLogger(MidtransCoreApi.class.getName());
@@ -28,7 +27,7 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
     /**
      * CoreAPI constructor
      *
-     * @param config Midtrans {@link com.midtrans.api.Config configuration}
+     * @param config Midtrans {@link Config configuration}
      */
     public MidtransCoreApiImpl(Config config) {
         this.config = config;

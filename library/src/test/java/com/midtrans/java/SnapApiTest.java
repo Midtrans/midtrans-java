@@ -2,9 +2,9 @@ package com.midtrans.java;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.midtrans.api.ConfigBuilder;
-import com.midtrans.api.ConfigFactory;
-import com.midtrans.api.service.MidtransSnapApi;
+import com.midtrans.ConfigBuilder;
+import com.midtrans.ConfigFactory;
+import com.midtrans.service.MidtransSnapApi;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;

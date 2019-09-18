@@ -1,4 +1,4 @@
-package com.midtrans.api.httpclient.error;
+package com.midtrans.httpclient.error;
 
 import org.json.JSONArray;
 import org.json.JSONException;

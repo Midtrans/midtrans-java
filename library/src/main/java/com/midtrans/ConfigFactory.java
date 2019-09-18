@@ -1,10 +1,7 @@
-package com.midtrans.api;
+package com.midtrans;
 
-import com.midtrans.api.service.impl.MidtransCoreApiImpl;
-import com.midtrans.api.service.impl.MidtransSnapApiImpl;
-import org.springframework.stereotype.Service;
-
-import java.util.Objects;
+import com.midtrans.service.impl.MidtransCoreApiImpl;
+import com.midtrans.service.impl.MidtransSnapApiImpl;
 
 /**
  * Convenience "factory" class to facilitate setup for connection to Midtrans API using SnapAPI or CoreAPI.
@@ -16,7 +13,7 @@ public class ConfigFactory {
     /**
      * ConfigFactory constructor
      *
-     * @param config Midtrans {@link com.midtrans.api.Config configuration} (not null)
+     * @param config Midtrans {@link Config configuration} (not null)
      */
     public ConfigFactory(Config config) {
         if (config == null) {
@@ -28,7 +25,7 @@ public class ConfigFactory {
     /**
      * Get CoreAPI gateway
      *
-     * @return {@link com.midtrans.api.service.impl.MidtransCoreApiImpl MidtransCoreApi} to connecting midtrans gateway CoreAPI
+     * @return {@link MidtransCoreApiImpl MidtransCoreApi} to connecting midtrans gateway CoreAPI
      */
     public MidtransCoreApiImpl getCoreApi() {
         config.getCoreApiURL();
@@ -38,7 +35,7 @@ public class ConfigFactory {
     /**
      * Get SnapAPI gateway
      *
-     * @return {@link com.midtrans.api.service.impl.MidtransSnapApiImpl MidtransSnapApi} to connecting midtrans gateway SnapAPI
+     * @return {@link MidtransSnapApiImpl MidtransSnapApi} to connecting midtrans gateway SnapAPI
      */
     public MidtransSnapApiImpl getSnapApi() {
         config.getSnapApiURL();
@@ -48,7 +45,7 @@ public class ConfigFactory {
     /**
      * Get midtrans config.
      *
-     * @return {@link com.midtrans.api.Config configuration} when connectng to midtrans API
+     * @return {@link Config configuration} when connectng to midtrans API
      */
     public Config getConfig() {
         return config;

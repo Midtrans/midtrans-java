@@ -1,4 +1,4 @@
-package com.midtrans.api.httpclient.error;
+package com.midtrans.httpclient.error;
 
 import java.util.ArrayList;
 
@@ -34,7 +34,7 @@ public class ErrorMessage {
          * Set error message
          *
          * @param errorMessages error message from Midtrans error response
-         * @return {@link com.midtrans.api.httpclient.error.ErrorMessage.Builder ErrorMesage.Builder}
+         * @return {@link ErrorMessage.Builder ErrorMesage.Builder}
          */
         public Builder errorMessage(final ArrayList errorMessages) {
             this.errorMessages = errorMessages;
@@ -44,7 +44,7 @@ public class ErrorMessage {
         /**
          * Set default error
          *
-         * @return {@link com.midtrans.api.httpclient.error.ErrorMessage.Builder ErrorMesage.Builder}
+         * @return {@link ErrorMessage.Builder ErrorMesage.Builder}
          */
         public Builder defaultError() {
             this.errorMessages.add("Unknown ERROR");
@@ -54,7 +54,7 @@ public class ErrorMessage {
         /**
          * Build ErrorMessage object from builder
          *
-         * @return {@link com.midtrans.api.httpclient.error.ErrorMessage ErrorMessage}
+         * @return {@link ErrorMessage ErrorMessage}
          */
         public ErrorMessage build() {
             return new ErrorMessage(this);

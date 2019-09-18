@@ -1,8 +1,8 @@
 package com.midtrans.sample.controller;
 
-import com.midtrans.api.Config;
-import com.midtrans.api.ConfigFactory;
-import com.midtrans.api.service.MidtransSnapApi;
+import com.midtrans.Config;
+import com.midtrans.ConfigFactory;
+import com.midtrans.service.MidtransSnapApi;
 import com.midtrans.sample.Credentials;
 import com.midtrans.sample.data.DataMockup;
 import org.springframework.beans.factory.annotation.Autowired;

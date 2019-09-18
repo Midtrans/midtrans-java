@@ -1,15 +1,13 @@
-package com.midtrans.api.service.impl;
+package com.midtrans.service.impl;
 
-import com.midtrans.api.Config;
-import com.midtrans.api.httpclient.APIHttpClient;
-import com.midtrans.api.httpclient.error.ErrorMessage;
-import com.midtrans.api.httpclient.error.ErrorUtils;
-import com.midtrans.api.httpclient.SnapApi;
-import com.midtrans.api.service.MidtransSnapApi;
+import com.midtrans.Config;
+import com.midtrans.httpclient.APIHttpClient;
+import com.midtrans.httpclient.error.ErrorUtils;
+import com.midtrans.httpclient.SnapApi;
+import com.midtrans.service.MidtransSnapApi;
 import okhttp3.ResponseBody;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.stereotype.Service;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -18,7 +16,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * Implements from {@link com.midtrans.api.service.MidtransSnapApi MidtransSnapApi}
+ * Implements from {@link MidtransSnapApi MidtransSnapApi}
  */
 public class MidtransSnapApiImpl implements MidtransSnapApi {
     private static final Logger LOGGER = Logger.getLogger(MidtransSnapApi.class.getName());
@@ -28,7 +26,7 @@ public class MidtransSnapApiImpl implements MidtransSnapApi {
     /**
      * SnapAPI constructor
      *
-     * @param config Midtrans {@link com.midtrans.api.Config configuration}
+     * @param config Midtrans {@link Config configuration}
      */
     public MidtransSnapApiImpl(Config config) {
         this.config = config;

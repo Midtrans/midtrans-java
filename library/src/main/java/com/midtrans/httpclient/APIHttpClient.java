@@ -1,6 +1,6 @@
-package com.midtrans.api.httpclient;
+package com.midtrans.httpclient;
 
-import com.midtrans.api.Config;
+import com.midtrans.Config;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
@@ -20,7 +20,7 @@ public class APIHttpClient {
     /**
      * APIHttpClient constructor
      *
-     * @param config Midtrans {@link com.midtrans.api.Config configuration}
+     * @param config Midtrans {@link Config configuration}
      */
     public APIHttpClient(Config config) {
         this.config = config;

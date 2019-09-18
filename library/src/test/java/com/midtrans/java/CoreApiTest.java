@@ -1,8 +1,8 @@
 package com.midtrans.java;
 
-import com.midtrans.api.ConfigBuilder;
-import com.midtrans.api.ConfigFactory;
-import com.midtrans.api.service.MidtransCoreApi;
+import com.midtrans.ConfigBuilder;
+import com.midtrans.ConfigFactory;
+import com.midtrans.service.MidtransCoreApi;
 import com.midtrans.java.mockupdata.DataMockup;
 import org.json.JSONObject;
 import org.junit.Before;

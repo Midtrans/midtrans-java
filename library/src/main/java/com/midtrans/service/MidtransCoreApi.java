@@ -1,6 +1,6 @@
-package com.midtrans.api.service;
+package com.midtrans.service;
 
-import com.midtrans.api.Config;
+import com.midtrans.Config;
 import org.json.JSONObject;
 import java.util.Map;
 

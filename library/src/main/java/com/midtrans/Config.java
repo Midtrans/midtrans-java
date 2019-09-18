@@ -1,4 +1,4 @@
-package com.midtrans.api;
+package com.midtrans;
 
 
 /**

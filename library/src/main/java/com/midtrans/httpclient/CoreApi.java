@@ -1,4 +1,4 @@
-package com.midtrans.api.httpclient;
+package com.midtrans.httpclient;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
