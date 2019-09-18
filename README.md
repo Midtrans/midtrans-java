@@ -57,9 +57,9 @@ Get your client key and server key from [Midtrans Dashboard](https://dashboard.m
 Create API client object
 
 ```java
-import com.midtrans.api.Config;
-import com.midtrans.api.ConfigFactory;
-import com.midtrans.api.service.MidtransCoreApi;
+import com.midtrans.Config;
+import com.midtrans.ConfigFactory;
+import com.midtrans.service.MidtransCoreApi;
 
 MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getCoreApi();
 
@@ -71,9 +71,9 @@ MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CL
 
 
 ```java
-import com.midtrans.api.Config;
-import com.midtrans.api.ConfigFactory;
-import com.midtrans.api.service.MidtransCoreApi;
+import com.midtrans.Config;
+import com.midtrans.ConfigFactory;
+import com.midtrans.service.MidtransSnapApi;
 
 MidtransSnapApi snapApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getSnapApi();
 
@@ -100,9 +100,9 @@ coreApi.apiConfig().setSERVER_KEY("YOUR_SERVER_KEY");
 #### CoreAPI Simple Sample Usage
 ```java
 
-import com.midtrans.api.Config;
-import com.midtrans.api.ConfigFactory;
-import com.midtrans.api.service.MidtransCoreApi;
+import com.midtrans.Config;
+import com.midtrans.ConfigFactory;
+import com.midtrans.service.MidtransCoreApi;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -136,7 +136,7 @@ public class MidtransExample {
 ```
 
 ### 2.2.A Snap
-You can see Snap example [here](example/src/main/java/com/midtrans/sample/controller/SnapController.java).
+You can see Snap example [here](sample/src/main/java/com/midtrans/sample/controller/SnapController.java).
 
 Available methods for `MidtransSnapApi` class
 ```java
@@ -155,6 +155,10 @@ String createTransactionRedirectUrl(Map<String, Object> params);
 #### Get Snap Token
 
 ```java
+import com.midtrans.Config;
+import com.midtrans.ConfigFactory;
+import com.midtrans.service.MidtransSnapApi;
+
 // Create new Object SnapAPI
 MidtransSnapApi snapApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getSnapApi();
 
@@ -188,7 +192,7 @@ model.addAttribute("transactionToken", transactionToken);
 #### Initialize Snap JS when customer click pay button
 
 On frontend / html:
-Replace `PUT_TRANSACTION_TOKEN_HERE` with `transactionToken` acquired above, you can use java template engine like Thymeleaf to parse `transactionToken` to frontEnd like [this](https://github.com/Xaxxis/midtrans-java/blob/master/application/src/main/resources/templates/snap/check-out.html#L90) `[[${transactionToken}]]`
+Replace `PUT_TRANSACTION_TOKEN_HERE` with `transactionToken` acquired above, you can use java template engine like Thymeleaf to parse `transactionToken` to frontEnd like [this](https://github.com/Xaxxis/midtrans-java/blob/master/sample/src/main/resources/templates/snap/check-out.html#L90) `[[${transactionToken}]]`
 ```html
 <html>
   <body>
@@ -225,11 +229,15 @@ Replace `PUT_TRANSACTION_TOKEN_HERE` with `transactionToken` acquired above, you
 
 ### 2.2.B Snap Redirect
 
-Also available as examples [here](/application/src/main/java/com/midtrans/sample/controller/SnapController.java).
+Also available as examples [here](sample/src/main/java/com/midtrans/sample/controller/SnapController.java).
 
 #### Get Redirection URL of a Payment Page
 
 ```java
+import com.midtrans.Config;
+import com.midtrans.ConfigFactory;
+import com.midtrans.service.MidtransSnapApi;
+
 // Create new Object SnapAPI
 MidtransSnapApi snapApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getSnapApi();
 
@@ -263,7 +271,7 @@ return "redirect:" +redirectURL;
 
 ### 2.2.C Core API (VT-Direct)
 
-You can see some Core API examples [here](example/src/main/java/com/midtrans/sample/controller/CoreApiController.java).
+You can see some Core API examples [here](sample/src/main/java/com/midtrans/sample/controller/CoreApiController.java).
 
 Available methods for `MidtransCoreApi` class
 ```java
@@ -353,8 +361,11 @@ Get token should be handled on  Frontend please refer to [API docs](https://api-
 #### Credit Card Charge
 
 ```java
-MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getCoreApi();
+import com.midtrans.Config;
+import com.midtrans.ConfigFactory;
+import com.midtrans.service.MidtransCoreApi;
 
+MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getCoreApi();
 
 // Create Function JSON Raw Object
 public Map<String, Object> requestBody() {
@@ -385,7 +396,7 @@ System.out.println(result);
 The credit card charge result may contains `redirect_url` for 3DS authentication. 3DS Authentication should be handled on Frontend please refer to [API docs](https://api-docs.midtrans.com/#card-features-3d-secure)
 
 For full example on Credit Card 3DS transaction refer to:
-- [App examples](example/src/main/java/com/midtrans/sample) that implement Snap & Core Api
+- [App examples](sample) that implement Snap & Core Api
 
 ### 2.3 Handle HTTP Notification
 
@@ -424,7 +435,7 @@ Example also available [here](example/src/main/java/com/midtrans/sample/controll
 ```
 
 ### 2.4 Transaction Action
-Also available as examples [here](example/src/main/java/com/midtrans/sample/controller/CoreApiController.java)
+Also available as examples [here](sample/src/main/java/com/midtrans/sample/controller/CoreApiController.java)
 #### Get Status
 ```java
 // get status of transaction that already recorded on midtrans (already `charge`-ed) 
@@ -473,10 +484,10 @@ JSONObject refundTransaction("YOUR_ORDER_ID OR TRANSACTION_ID", params());
 ```
 
 ## 4. Examples
-Examples are available on [/examples](example/src/main/java/com/midtrans/sample/) folder.
+Examples are available on [/examples](sample) folder.
 There are:
-- [Core Api examples](example/src/main/java/com/midtrans/sample/controller/CoreApiController.java)
-- [Snap examples](example/src/main/java/com/midtrans/sample/controller/SnapController.java)
+- [Core Api examples](sample/src/main/java/com/midtrans/sample/controller/CoreApiController.java)
+- [Snap examples](sample/src/main/java/com/midtrans/sample/controller/SnapController.java)
 
 ## Get help
 
