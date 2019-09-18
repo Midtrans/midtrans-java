@@ -188,7 +188,7 @@ model.addAttribute("transactionToken", transactionToken);
 #### Initialize Snap JS when customer click pay button
 
 On frontend / html:
-Replace `PUT_TRANSACTION_TOKEN_HERE` with `transactionToken` acquired above, you can use java template engine like Thymeleaf to parse `transactionToken` to frontEnd like [this](https://github.com/Xaxxis/midtrans-java/blob/master/application/src/main/resources/templates/snap/check-out.html#L90) `[[${transactionToken}]]`
+Replace `PUT_TRANSACTION_TOKEN_HERE` with `transactionToken` acquired above, you can use java template engine like Thymeleaf to parse `transactionToken` to frontEnd like [this](https://github.com/Xaxxis/midtrans-java/blob/master/example/src/main/resources/templates/snap/check-out.html#L90) `[[${transactionToken}]]`
 ```html
 <html>
   <body>
@@ -225,7 +225,7 @@ Replace `PUT_TRANSACTION_TOKEN_HERE` with `transactionToken` acquired above, you
 
 ### 2.2.B Snap Redirect
 
-Also available as examples [here](/application/src/main/java/com/midtrans/sample/controller/SnapController.java).
+Also available as examples [here](example/src/main/java/com/midtrans/sample/controller/SnapController.java).
 
 #### Get Redirection URL of a Payment Page
 
