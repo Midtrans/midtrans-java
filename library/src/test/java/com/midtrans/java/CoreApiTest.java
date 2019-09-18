@@ -97,7 +97,7 @@ public class CoreApiTest {
 
     @Test
     public void approveTransaction() {
-        JSONObject result = coreApi.approveTransaction(makeFDSTransaction());
+        JSONObject result = coreApi.approveTransaction(makeTransaction());
         assert result.getString("status_code").equals("412");
 
     }
@@ -153,7 +153,7 @@ public class CoreApiTest {
         params.put("amount", "265000");
         params.put("reason", "Test direct refund");
 
-        JSONObject result = coreApi.directRefundTransaction(makeFDSTransaction(), params);
+        JSONObject result = coreApi.directRefundTransaction(makeTransaction(), params);
         assert result.getString("status_code").equals("412");
     }
 
@@ -181,7 +181,7 @@ public class CoreApiTest {
         dataMockup = new DataMockup();
         dataMockup.setPaymentType("credit_card");
         Map<String, String> cc = new HashMap<>();
-        String cardNumberFDS = "4811 1111 1111 1114";
+        String cardNumberFDS = "4811111111111114";
         cc.put("token_id", genCardToken(cardNumberFDS));
         dataMockup.creditCard(cc);
 
