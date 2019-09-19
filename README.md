@@ -111,15 +111,15 @@ import org.json.JSONObject;
 
 
 public class MidtransExample {
-    private MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getCoreApi();
 
     public static void main(String[] args) {
-        
+        MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getCoreApi();
+
         UUID idRand = UUID.randomUUID();
         Map<String, Object> chargeParams = new HashMap<>();
     
         Map<String, String> transactionDetails = new HashMap<>();
-        transactionDetails.put("order_id", idRand);
+        transactionDetails.put("order_id", idRand.toString());
         transactionDetails.put("gross_amount", "265000");
     
         Map<String, String> creditCard = new HashMap<>();
