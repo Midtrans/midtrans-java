@@ -17,8 +17,8 @@ Maven:
 <dependencies>
     <dependency>
         <groupId>com.midtrans</groupId>
-        <artifactId>midtrans-java-client</artifactId>
-        <version>1.0.0</version>
+		<artifactId>java-library</artifactId>
+		<version>0.0.1</version>
     </dependency>
 </dependencies>
 ```
