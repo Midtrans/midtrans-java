@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.midtrans</groupId>
-    <artifactId>mid-multi-module</artifactId>
+    <artifactId>midtrans-java</artifactId>
     <version>0.0.1</version>
     <packaging>pom</packaging>
 
@@ -12,5 +12,7 @@
         <module>library</module>
         <module>example</module>
     </modules>
+
+
 
 </project>
