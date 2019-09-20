@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
-      xmlns:sec="http://www.w3.org/1999/xhtml"
-      layout:decorate="layout">
-<head th:replace="layout :: common-header">
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: common_header}">
     <title>Midtrans Snap JAVA Springboot Demo</title>
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 
 <main role="main" class="container" style="padding-top: 30px">
     <h2 class="mt-5">Midtrans SNAP Demo</h2>
@@ -127,6 +126,6 @@
     </div>
 </main>
 
-<div th:replace="layout :: body-bottom-scripts"/>
+<div th:replace="~{layout :: body_bottom_scripts}"/>
 </body>
 </html>

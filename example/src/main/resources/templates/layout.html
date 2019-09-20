@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="common-header">
+<head th:fragment="common_header">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,7 +13,7 @@
     </style>
 </head>
 <body>
-<div th:replace="fragments/header"></div>
+<div th:insert="~{fragments/header}"></div>
 
 <!-- Begin page content -->
 <main role="main" class="container" style="padding-top: 30px">
@@ -22,7 +22,7 @@
 
 
 </body>
-<div th:fragment="body-bottom-scripts">
+<div th:fragment="body_bottom_scripts">
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

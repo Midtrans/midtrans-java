@@ -74,6 +74,12 @@ public class CoreApiController {
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
+    @PostMapping(value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> testPost(@RequestBody Map<String, Object> body) {
+        JSONObject result = coreApi.chargeTransaction(body);
+        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+    }
+
     @PostMapping(value = "/notification", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<String> handleNotification(@RequestBody Map<String, Object> response) {
         String notifResponse = null;
