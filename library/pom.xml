@@ -7,8 +7,7 @@
 	<artifactId>java-library</artifactId>
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
-
-
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
@@ -42,6 +41,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>3.1.0</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -55,6 +55,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.2</version>
 				<executions>
 					<execution>
 						<goals>
@@ -66,9 +67,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
 				<configuration>
-					<source>8</source>
-					<target>8</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -76,9 +78,9 @@
 
 	<distributionManagement>
 		<repository>
-			<id>bintray-zakiibrahim-midtrans-java</id>
-			<name>zakiibrahim-midtrans-java</name>
-			<url>https://api.bintray.com/maven/zakiibrahim/midtrans-java/com.midtrans/;publish=1</url>
+			<id>bintray-midtrans-midtrans-java</id>
+			<name>midtrans-midtrans-java</name>
+			<url>https://api.bintray.com/maven/midtrans/midtrans-java/com.midtrans/;publish=1</url>
 		</repository>
 	</distributionManagement>
 
