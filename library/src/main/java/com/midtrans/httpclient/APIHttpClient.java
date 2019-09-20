@@ -1,10 +1,10 @@
 package com.midtrans.httpclient;
 
 import com.midtrans.Config;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import okhttp3.*;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.logging.Logger;
@@ -40,7 +40,7 @@ public class APIHttpClient {
     }
 
     private OkHttpClient defaultHttpClient = new OkHttpClient.Builder()
-            .addInterceptor(chain -> {
+            .addInterceptor((Interceptor.Chain chain) -> {
                 if (config.getSERVER_KEY().isEmpty() || config.getSERVER_KEY() == null) {
                     if (!config.isProduction()) {
                         LOGGER.info("Server key is empty....");
@@ -48,9 +48,8 @@ public class APIHttpClient {
                     return chain.proceed(chain.request());
                 }
                 Request header = chain.request().newBuilder()
-                        .header("Accept", "application/json")
-                        .header("Content-Type", "application/json")
-                        .header("Authorization", encodeServerKey())
+                        .addHeader("Accept", "application/json")
+                        .addHeader("Authorization", encodeServerKey())
                         .build();
                 return chain.proceed(header);
             }).build();
