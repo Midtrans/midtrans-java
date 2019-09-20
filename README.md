@@ -16,10 +16,10 @@ Maven:
 
 <dependencies>
     <dependency>
-        <groupId>com.midtrans</groupId>
-		<artifactId>java-library</artifactId>
-		<version>0.0.1</version>
-    </dependency>
+	<groupId>com.midtrans</groupId>
+	<artifactId>java-library</artifactId>
+	<version>0.0.1</version>
+</dependency>
 </dependencies>
 ```
 Gradle:
@@ -31,13 +31,20 @@ repositories {
 }
 
 dependencies {
-    compile 'com.midtrans:midtrans-java-client:1.0'
+    compile 'com.midtrans:java-library:0.0.1'
 }
+```
+
+Ivy:
+```xml
+<dependency org="com.midtrans" name="java-library" rev="0.0.1">
+	<artifact name="java-library" ext="pom"></artifact>
+</dependency>
 ```
 
 ### 1.b Using JAR File
 
-If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on this link
+If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on this [link](https://dl.bintray.com/midtrans/midtrans-java/com/midtrans/java-library/0.0.1/java-library-0.0.1.jar)
 
 ## 2. Usage
 
