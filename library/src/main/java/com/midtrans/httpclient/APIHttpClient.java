@@ -47,9 +47,12 @@ public class APIHttpClient {
                     }
                     return chain.proceed(chain.request());
                 }
+
                 Request header = chain.request().newBuilder()
                         .addHeader("Accept", "application/json")
                         .addHeader("Authorization", encodeServerKey())
+                        .addHeader("Content-Type", "application/json")
+                        .addHeader("User-Agent","Midtrans-Java-Library")
                         .build();
                 return chain.proceed(header);
             }).build();

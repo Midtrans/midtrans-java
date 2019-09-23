@@ -13,7 +13,6 @@ import java.util.Map;
  */
 public interface SnapApi {
 
-    @Headers({"Content-Type: application/json", "User-Agent: Midtrans-Java-Lib"})
     @POST("transactions")
     Call<ResponseBody> createTransactions(@Body Map<String, Object> objectMap);
 
