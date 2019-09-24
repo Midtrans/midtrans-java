@@ -21,7 +21,7 @@ import java.util.Map;
 public class CoreApiController {
 
     // Midtrans CoreApi Class library
-    private MidtransCoreApi coreApi = new ConfigFactory(new Config("SB-Mid-server-Wh2cEDd4H661g4lrcig8sQMf", "SB-Mid-client-N7N5b2n_ZUQOOVba", false)).getCoreApi();
+    private MidtransCoreApi coreApi = new ConfigFactory(new Config("SB-Mid-server-zPtluafD-kgcvOMVtsNYhXVD", "SB-Mid-client-I4ekVNAD4Cr4KJ1V", false)).getCoreApi();
 
     @Autowired
     private DataMockup dataMockup;

@@ -3,7 +3,6 @@ package com.midtrans.sample.controller;
 import com.midtrans.Config;
 import com.midtrans.ConfigFactory;
 import com.midtrans.service.MidtransSnapApi;
-import com.midtrans.sample.Credentials;
 import com.midtrans.sample.data.DataMockup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,14 +16,11 @@ import java.util.*;
 @Controller
 public class SnapController {
 
-    @Autowired
-    private Credentials config;
-
     //Data transaction Mockup
     @Autowired
     private DataMockup dataMockup;
 
-    private MidtransSnapApi snapApi = new ConfigFactory(new Config("SB-Mid-server-Wh2cEDd4H661g4lrcig8sQMf", "SB-Mid-client-N7N5b2n_ZUQOOVba", false)).getSnapApi();
+    private MidtransSnapApi snapApi = new ConfigFactory(new Config("SB-Mid-server-zPtluafD-kgcvOMVtsNYhXVD", "SB-Mid-client-I4ekVNAD4Cr4KJ1V", false)).getSnapApi();
 
     @RequestMapping(value = "/snap", method = RequestMethod.GET)
     public String snap(Model model) {
@@ -38,7 +34,7 @@ public class SnapController {
                            @RequestParam(value = "snapType") String snapType,
                            Model model) {
         // Get ClientKey from Midtrans Configuration class
-        String clientKey = config.getClientKey();
+        String clientKey = snapApi.apiConfig().getCLIENT_KEY();
 
         // New Map Object for JSON raw request body
         Map<String, Object> requestBody = new HashMap<>();
