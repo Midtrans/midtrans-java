@@ -4,6 +4,7 @@ Midtrans :heart: Java, This is the Official Java API client/library for Midtrans
 ## 1. Installation
 
 ### 1.a Using Maven or Gradle
+If you're using Maven as the build tools for your project, please add jcenter repository to your build definition, then add the following dependency to your project's build definition (pom.xml):
 Maven:
 ```xml
 <repositories>
@@ -23,6 +24,7 @@ Maven:
 </dependencies>
 ```
 Gradle:
+If you're using Gradle as the build tools for your project, please add jcenter repository to your build script then add the following dependency to your project's build definition (build.gradle):
 ```Gradle
 repositories {
     maven {
@@ -37,7 +39,7 @@ dependencies {
 
 ### 1.b Using JAR File
 
-If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on this [link](https://dl.bintray.com/midtrans/midtrans-java/com/midtrans/java-library/1.0.0/:java-library-1.0.0.jar)
+If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://dl.bintray.com/midtrans/midtrans-java/com/midtrans/java-library/1.0.0/:java-library-1.0.0.jar)
 
 ## 2. Usage
 
