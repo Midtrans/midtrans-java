@@ -45,6 +45,35 @@ After that, you can use method api like ```chargeTransaction``` from ```Midtrans
 Before charge a transaction, you need to construct request params that will be used as BodyRequest MapObject charge parameter. 
 For example, sample store application use ```DataMockup``` object for request parameter.
 
+> an important if you use ```MidtransCoreAPI``` for credit card transaction, you need to convert customer card credentials into token first before you can charge the transaction. If you use ```MidtransSnapAPI``` you must create snap token transaction before you can charge the transaction. This part will be explained more detail on javascript part below.
+
+### 2.a Midtrans javascript (credit card) | CoreAPI
+Credit card transaction have special handling compare than another payment type. For security reason, merchant will not recieve any customer card credentials and will be replaced with midtrans card token.
+
+Midtrans card token can be obtained using javascript library that you need to setup on merchant web page. You can see detail overview about this javascript library on Midtrans credit card [documentation](https://api-docs.midtrans.com/#get-token). For example on sample store application, midtrans javascript file need to setup on merchant web page see [credit-card.html](https://github.com/Midtrans/midtrans-java/blob/master/example/src/main/resources/templates/coreapi/credit-card.html#L153)
+
+[midtrans-new-3ds.min.js](https://api.midtrans.com/v2/assets/js/midtrans-new-3ds.min.js) file was used to trigger ```get_token``` transaction request to midtrans payment api. This request will translate customer card credentials into midtrans card token that can be use to charge a credit card transaction.
+
+
+### 2.b Midtrans javascript (Snap Token) | SnapAPI
+Snap frontend integration goal is to show Snap payment page within your site. You can see detail overview about [snap.js](https://app.sandbox.midtrans.com/snap/snap.js) library on [check-out.html](https://github.com/Midtrans/midtrans-java/blob/master/example/src/main/resources/templates/snap/check-out.html#L83) file. You can start payment process by calling snap.pay with SNAP_TOKEN acquired from ```MidtransSnapApi``` object with method ``createToken`` return tokenSnap as parameter. if you need more detail about snap.js you can see Snap.jS [documentation](https://snap-docs.midtrans.com/#frontend-integration) for detail.
+
+example:
+```javascript
+snap.pay(your_snap_token, {
+          // Optional
+          onSuccess: function(result){
+            /* You may add your own js here, this is just example */
+          },
+          // Optional
+          onPending: function(result){
+            /* You may add your own js here, this is just example */
+          },
+          // Optional
+          onError: function(result){
+            /* You may add your own js here, this is just example */
+          }
+```
 ## Get help
 
 * [Midtrans Docs](https://docs.midtrans.com)
