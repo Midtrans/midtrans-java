@@ -57,9 +57,9 @@ Get your client key and server key from [Midtrans Dashboard](https://dashboard.m
 Create API client object
 
 ```java
-import Config;
-import ConfigFactory;
-import MidtransCoreApi;
+import com.midtrans.Config;
+import com.midtrans.ConfigFactory;
+import com.midtrans.service.MidtransCoreApi;
 
 MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getCoreApi();
 
@@ -71,9 +71,9 @@ MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CL
 
 
 ```java
-import Config;
-import ConfigFactory;
-import MidtransCoreApi;
+import com.midtrans.Config;
+import com.midtrans.ConfigFactory;
+import com.midtrans.service.MidtransSnapApi;
 
 MidtransSnapApi snapApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getSnapApi();
 
@@ -97,12 +97,50 @@ coreApi.apiConfig().setSERVER_KEY("YOUR_SERVER_KEY");
 coreApi.apiConfig().setSERVER_KEY("YOUR_SERVER_KEY");
 ```
 
+In production environment, LOG is automatically turn off, if you want enable LOG, you can turn on log with this
+
+```java
+coreApi.apiConfig().setEnabledLog(true);
+```
+
+Using internal proxy, you can set ProxyConfig object with ProxyConfigBuilder to set hostname, port, username, and password. and also connectionTimeout, readTimeout, and writeTimeout. But if you not define network configuration like
+ProxyConfig, connectionTimeout, readTimeout and writeTimeout, default value is 10 second and the connection no proxy configuration.
+
+example:
+```java
+import com.midtrans.proxy.ProxyConfig;
+import com.midtrans.proxy.ProxyConfigBuilder;
+import com.midtrans.service.MidtransCoreApi;
+
+private ProxyConfig proxyConfig = new ProxyConfigBuilder().setHost("36.92.108.150").setPort(3128).setUsername("").setPassword("").build();
+
+//Intitialize MidtransCoreApi config with proxy and network configuration
+private MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false, 10, 10, 10, proxyConfig)).getCoreApi();
+```
+add new 4 params to use http proxy and network config,
+- connectionTimeout
+- readTimeout
+- writeTimeout
+- proxyConfig
+
+and also you can set value for connectionTimeout or etc with configuration class,
+example: 
+```java
+//TimeUnit for integer value is SECONDS
+
+coreApi.apiConfig().setConnectionTimeout(5);
+coreApi.apiConfig().setReadTimeout(5);
+coreApi.apiConfig().setWriteTimeout(5);
+
+```
+
 #### CoreAPI Simple Sample Usage
 ```java
 
-import Config;
-import ConfigFactory;
-import MidtransCoreApi;
+import com.midtrans.Config;
+import com.midtrans.ConfigFactory;
+import com.midtrans.service.MidtransCoreApi;
+import com.midtrans.httpclient.error.MidtransError;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -112,7 +150,7 @@ import org.json.JSONObject;
 
 public class MidtransExample {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws MidtransError {
         MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getCoreApi();
 
         UUID idRand = UUID.randomUUID();
