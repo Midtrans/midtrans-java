@@ -515,7 +515,7 @@ JSONObject refundTransaction("YOUR_ORDER_ID OR TRANSACTION_ID", params());
 ```
 
 ## 4. Examples
-Examples are available on [/examples](example/src/main/java/com/midtrans/sample/) folder.
+Examples are available on [/examples](example) folder.
 There are:
 - [Core Api examples](example/src/main/java/com/midtrans/sample/controller/CoreApiController.java)
 - [Snap examples](example/src/main/java/com/midtrans/sample/controller/SnapController.java)
