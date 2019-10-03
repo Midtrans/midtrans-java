@@ -2,6 +2,9 @@ package com.midtrans.sample.controller;
 
 import com.midtrans.Config;
 import com.midtrans.ConfigFactory;
+import com.midtrans.httpclient.error.MidtransError;
+import com.midtrans.proxy.ProxyConfig;
+import com.midtrans.proxy.ProxyConfigBuilder;
 import com.midtrans.service.MidtransCoreApi;
 import com.midtrans.sample.data.DataMockup;
 import org.json.JSONObject;
@@ -20,14 +23,20 @@ import java.util.Map;
 @RestController
 public class CoreApiController {
 
-    // Midtrans CoreApi Class library
-    private MidtransCoreApi coreApi = new ConfigFactory(new Config("SB-Mid-server-Wh2cEDd4H661g4lrcig8sQMf", "SB-Mid-client-N7N5b2n_ZUQOOVba", false)).getCoreApi();
+    // ProxyConfig object
+    //private ProxyConfig proxyConfig = new ProxyConfigBuilder().setHost("36.92.108.150").setPort(3128).setUsername("").setPassword("").build();
+
+    // Midtrans CoreApi Class library with proxy config
+    //private MidtransCoreApi coreApi = new ConfigFactory(new Config("SB-Mid-server-zPtluafD-kgcvOMVtsNYhXVD", "SB-Mid-client-I4ekVNAD4Cr4KJ1V", false, 10, 10,10,proxyConfig)).getCoreApi();
+
+    // Midtrans CoreApi Class library without proxy config
+    private MidtransCoreApi coreApi = new ConfigFactory(new Config("SB-Mid-server-zPtluafD-kgcvOMVtsNYhXVD", "SB-Mid-client-I4ekVNAD4Cr4KJ1V", false)).getCoreApi();
 
     @Autowired
     private DataMockup dataMockup;
 
     @PostMapping(value = "/charge", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> charge(@RequestBody Map<String, String> cc) {
+    public ResponseEntity<String> charge(@RequestBody Map<String, String> cc) throws MidtransError {
         dataMockup.setPaymentType("credit_card");
         Map<String, String> creditCard = new HashMap<>(cc);
         dataMockup.creditCard(creditCard);
@@ -40,42 +49,44 @@ public class CoreApiController {
     }
 
     @PostMapping(value = "/gopay", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> goPay() {
+    public ResponseEntity<String> goPay() throws MidtransError {
         dataMockup.setPaymentType("gopay");
 
         Map<String, Object> body = new HashMap<>(dataMockup.initDataMock());
 
+        coreApi.apiConfig().setEnabledLog(true);
         JSONObject object = coreApi.chargeTransaction(body);
         String result = object.toString();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(value = "/check-transaction", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> checkTransaction(@RequestBody Map<String, String> transaction) {
+    public ResponseEntity<String> checkTransaction(@RequestBody Map<String, String> transaction) throws MidtransError {
         JSONObject result = coreApi.checkTransaction(transaction.get("transaction_id"));
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
     @PostMapping(value = "/approve-transaction", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> approveTransaction(@RequestBody Map<String, String> transaction) {
+    public ResponseEntity<String> approveTransaction(@RequestBody Map<String, String> transaction) throws MidtransError {
         JSONObject result = coreApi.approveTransaction(transaction.get("transaction_id"));
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
     @PostMapping(value = "/cancel-transaction", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> cancelTransaction(@RequestBody Map<String, String> transaction) {
+    public ResponseEntity<String> cancelTransaction(@RequestBody Map<String, String> transaction) throws MidtransError {
         JSONObject result = coreApi.cancelTransaction(transaction.get("transaction_id"));
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
     @PostMapping(value = "/expire-transaction", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> expireTransaction(@RequestBody Map<String, String> transaction) {
+    public ResponseEntity<String> expireTransaction(@RequestBody Map<String, String> transaction) throws MidtransError {
         JSONObject result = coreApi.expireTransaction(transaction.get("transaction_id"));
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
     @PostMapping(value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> testPost(@RequestBody Map<String, Object> body) {
+    public ResponseEntity<String> testPost(@RequestBody Map<String, Object> body) throws MidtransError {
+        coreApi.apiConfig().setEnabledLog(false);
         JSONObject result = coreApi.chargeTransaction(body);
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }

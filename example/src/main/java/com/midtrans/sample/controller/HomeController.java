@@ -1,6 +1,5 @@
 package com.midtrans.sample.controller;
 
-import com.midtrans.sample.Credentials;
 import com.midtrans.sample.data.DataMockup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,8 +14,7 @@ import java.util.Map;
 @Controller("/")
 public class HomeController {
 
-    @Autowired
-    private Credentials config;
+    String clientKey = "SB-Mid-client-I4ekVNAD4Cr4KJ1V";
 
     @Autowired
     private DataMockup dataMockup;
@@ -44,7 +42,7 @@ public class HomeController {
                            Model model) {
         Map<String, Object> result = dataMockup.initDataMock();
         model.addAttribute("result", result);
-        model.addAttribute("clientKey", config.getClientKey());
+        model.addAttribute("clientKey", clientKey);
         if (typePayment.equals("cc")) {
             return "coreapi/credit-card";
         } else if (typePayment.equals("gopay")) {

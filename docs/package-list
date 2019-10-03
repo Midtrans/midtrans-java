@@ -1,0 +1,6 @@
+com.midtrans
+com.midtrans.httpclient
+com.midtrans.httpclient.error
+com.midtrans.proxy
+com.midtrans.service
+com.midtrans.service.impl

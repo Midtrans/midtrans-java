@@ -65,9 +65,9 @@ public class DataMockup {
         items.add(item3);
 
         Map<String, Object> billingAddres = new HashMap<>();
-        billingAddres.put("first_name", "Zaki");
+        billingAddres.put("first_name", "Biznet - Zaki");
         billingAddres.put("last_name", "Ibrhim");
-        billingAddres.put("email", "zaki@mailnesia.com");
+        billingAddres.put("email", "midtrans-java@mailnesia.com");
         billingAddres.put("phone", "0928282828");
         billingAddres.put("address", "Jalan Iskandarsyah II");
         billingAddres.put("city", "Jakarta Selatan");
@@ -77,7 +77,7 @@ public class DataMockup {
         Map<String, Object> custDetail = new HashMap<>();
         custDetail.put("first_name", "Zaki");
         custDetail.put("last_name", "ibrahim");
-        custDetail.put("email", "zaki@mailnesia.com");
+        custDetail.put("email", "midtrans-java@mailnesia.com");
         custDetail.put("phone", "62783737373");
         custDetail.put("billing_address", billingAddres);
 
