@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class ErrorUtils {
 
-    private static ErrorMessage parseError(final Response<?> response) {
+    private static MidtransError parseError(final Response<?> response) {
         JSONObject bodyObj;
         ArrayList<Object> errorMessages = new ArrayList<>();
         try {
@@ -28,17 +28,21 @@ public class ErrorUtils {
                         }
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    throw new MidtransError(e.getMessage());
                 }
             } else {
-                return new ErrorMessage.Builder()
+                return new MidtransError.Builder()
                         .defaultError()
                         .build();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                throw new MidtransError(e.getMessage());
+            } catch (MidtransError midtransError) {
+                midtransError.printStackTrace();
+            }
         }
-        return new ErrorMessage.Builder()
+        return new MidtransError.Builder()
                 .errorMessage(errorMessages)
                 .build();
     }
@@ -50,22 +54,22 @@ public class ErrorUtils {
      * @param response Retrofit response from midtrans
      */
     public void catchHttpErrorMessage(int code, Response response) {
-        ErrorMessage errorMessage = parseError(response);
+        MidtransError midtransError = parseError(response);
         switch (code) {
             case 400:
-                System.out.println("400 Bad Request: There was a problem in the JSON you submitted " + errorMessage.getErrorMessages());
+                System.out.println("400 Bad Request: There was a problem in the JSON you submitted " + midtransError.getErrorMessages());
                 break;
             case 401:
-                System.out.println("401 Unauthorized: " + errorMessage.getErrorMessages());
+                System.out.println("401 Unauthorized: " + midtransError.getErrorMessages());
                 return;
             case 404:
-                System.out.println("404 Not Found " + errorMessage.getErrorMessages());
+                System.out.println("404 Not Found " + midtransError.getErrorMessages());
                 break;
             case 500:
-                System.out.println("HTTP ERROR 500: Internal Server ERROR! " + errorMessage.getErrorMessages());
+                System.out.println("HTTP ERROR 500: Internal Server ERROR! " + midtransError.getErrorMessages());
                 break;
             default:
-                System.out.println(errorMessage.getErrorMessages().toString());
+                System.out.println(midtransError.getErrorMessages().toString());
                 break;
         }
     }

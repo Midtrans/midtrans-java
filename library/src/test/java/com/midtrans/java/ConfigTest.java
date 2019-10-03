@@ -1,7 +1,7 @@
 package com.midtrans.java;
 
 import com.midtrans.Config;
-import org.junit.After;
+import com.midtrans.proxy.ProxyConfig;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,12 +13,8 @@ public class ConfigTest {
     private Config config;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         config = new Config(serverKey, clientKey, isProduction);
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test
@@ -37,6 +33,40 @@ public class ConfigTest {
     public void setProduction() {
         config.setProduction(true);
         assertEquals(true, config.isProduction());
+    }
+
+    @Test
+    public void setConnetionTimeout() {
+        config.setConnectionTimeout(20);
+        assertEquals(20, config.getConnectionTimeout());
+    }
+
+    @Test
+    public void setEnabledLog() {
+        config.setEnabledLog(true);
+        assertEquals(true, config.isEnabledLog());
+    }
+
+    @Test
+    public void setReadTimeOut() {
+        config.setReadTimeout(200);
+        assertEquals(200, config.getReadTimeout());
+    }
+
+    @Test
+    public void setWriteTimeOut() {
+        config.setWriteTimeout(200);
+        assertEquals(200, config.getWriteTimeout());
+    }
+
+    @Test
+    public void setProxyConfig() {
+        ProxyConfig proxyConfig = new ProxyConfig("localhost", 8080, "username", "password" );
+        config.setProxyConfig(proxyConfig);
+        assertEquals("localhost", config.getProxyConfig().getHost());
+        assertEquals(8080, config.getProxyConfig().getPort());
+        assertEquals("username", config.getProxyConfig().getUsername());
+        assertEquals("password", config.getProxyConfig().getPassword());
     }
 
     @Test
