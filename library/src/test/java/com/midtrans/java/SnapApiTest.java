@@ -4,10 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midtrans.ConfigBuilder;
 import com.midtrans.ConfigFactory;
+import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.service.MidtransSnapApi;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import java.io.IOException;
 import java.util.*;
@@ -26,19 +29,23 @@ public class SnapApiTest {
                 .setCLIENT_KEY(clientKey)
                 .setIsProduction(isProduction)
                 .build());
-
         snapApi = configFactory.getSnapApi();
     }
 
+    @Parameterized.Parameters
+    public static Object[][] data() {
+        return new Object[10][0];
+    }
+
     @Test
-    public void createTransactionSimpleParam() {
+    public void createTransactionSimpleParam() throws MidtransError {
         JSONObject result = snapApi.createTransaction(miniDataMockUp());
         assert result.has("token");
         assert result.has("redirect_url");
     }
 
     @Test
-    public void createTransactionMaxParam() throws IOException {
+    public void createTransactionMaxParam() throws IOException, MidtransError {
         JSONObject result = snapApi.createTransaction(maxDataMockUp());
 
         assert result.has("token");
@@ -46,28 +53,27 @@ public class SnapApiTest {
     }
 
     @Test
-    public void createTransactionToken() {
+    public void createTransactionToken() throws MidtransError {
         String token = snapApi.createTransactionToken(miniDataMockUp());
         assert token.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}");
     }
 
     @Test
-    public void createTransactionRedirectUrl() {
+    public void createTransactionRedirectUrl() throws MidtransError {
         String redirectURL = snapApi.createTransactionRedirectUrl(miniDataMockUp());
-
         String expected = "https://app.sandbox.midtrans.com/snap/v2/vtweb/";
         assertEquals(expected, redirectURL.substring(0, 47));
     }
 
     @Test
-    public void badRequestBodyOnSnapTrans() {
+    public void badRequestBodyOnSnapTrans() throws MidtransError {
         JSONObject result = snapApi.createTransaction(badDataMockUp());
         assert result.toString().contentEquals("{}");
         assert result.length() == 0;
     }
 
     @Test
-    public void errorServerKey() {
+    public void errorServerKey() throws MidtransError {
         snapApi.apiConfig().setSERVER_KEY("");
         JSONObject result = snapApi.createTransaction(miniDataMockUp());
         assert result.toString().contentEquals("{}");

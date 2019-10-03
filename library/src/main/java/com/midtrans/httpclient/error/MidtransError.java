@@ -3,9 +3,10 @@ package com.midtrans.httpclient.error;
 import java.util.ArrayList;
 
 /**
- * ErrorMessage class to catch error messages
+ * MidtransError class to catch error messages
  */
-public class ErrorMessage {
+public class MidtransError extends Exception {
+
     private ArrayList errorMessages;
 
     /**
@@ -17,12 +18,24 @@ public class ErrorMessage {
         return errorMessages;
     }
 
-    private ErrorMessage(final Builder builder) {
+    public MidtransError(String message) {
+        super(message);
+    }
+
+    public MidtransError(Throwable cause) {
+        super(cause);
+    }
+
+    public MidtransError(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    private MidtransError(final Builder builder) {
         errorMessages = builder.errorMessages;
     }
 
     /**
-     * ErrorMessage Builder
+     * MidtransError Builder
      */
     public static class Builder {
         private ArrayList errorMessages;
@@ -34,7 +47,7 @@ public class ErrorMessage {
          * Set error message
          *
          * @param errorMessages error message from Midtrans error response
-         * @return {@link ErrorMessage.Builder ErrorMesage.Builder}
+         * @return {@link MidtransError.Builder ErrorMesage.Builder}
          */
         public Builder errorMessage(final ArrayList errorMessages) {
             this.errorMessages = errorMessages;
@@ -44,7 +57,7 @@ public class ErrorMessage {
         /**
          * Set default error
          *
-         * @return {@link ErrorMessage.Builder ErrorMesage.Builder}
+         * @return {@link MidtransError.Builder ErrorMesage.Builder}
          */
         public Builder defaultError() {
             this.errorMessages.add("Unknown ERROR");
@@ -52,12 +65,12 @@ public class ErrorMessage {
         }
 
         /**
-         * Build ErrorMessage object from builder
+         * Build MidtransError object from builder
          *
-         * @return {@link ErrorMessage ErrorMessage}
+         * @return {@link MidtransError MidtransError}
          */
-        public ErrorMessage build() {
-            return new ErrorMessage(this);
+        public MidtransError build() {
+            return new MidtransError(this);
         }
 
     }

@@ -2,6 +2,7 @@ package com.midtrans.sample.controller;
 
 import com.midtrans.Config;
 import com.midtrans.ConfigFactory;
+import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.service.MidtransSnapApi;
 import com.midtrans.sample.data.DataMockup;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class SnapController {
     @RequestMapping(value = "snap/check-out", method = RequestMethod.POST)
     public String checkout(@RequestParam(value = "enablePay", required = false) List<String> listPay,
                            @RequestParam(value = "snapType") String snapType,
-                           Model model) {
+                           Model model) throws MidtransError {
         // Get ClientKey from Midtrans Configuration class
         String clientKey = snapApi.apiConfig().getCLIENT_KEY();
 
@@ -71,6 +72,4 @@ public class SnapController {
             return "snap/check-out";
         }
     }
-
-
 }
