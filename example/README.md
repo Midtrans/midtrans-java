@@ -16,16 +16,28 @@ Before build and run sample store application, you need to setup several config 
 ### 1.a Setup config on Controller file:
 
 * [CoreApiController.java](https://github.com/Midtrans/midtrans-java/blob/master/example/src/main/java/com/midtrans/sample/controller/CoreApiController.java#L24)
+
+Config for MidtransCoreApi object, value false is environment type. True is production and false is SandBox
+
+`~/midtrans-java/example/src/main/java/com/midtrans/sample/controller/CoreApiController.java`
 ```java
-~/midtrans-java/example/src/main/java/com/midtrans/sample/controller/CoreApiController.java
+MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getCoreApi();
 ```
 * [SnapController.java](https://github.com/Midtrans/midtrans-java/blob/master/example/src/main/java/com/midtrans/sample/controller/SnapController.java#L23)
+
+Config for MidtransSnapApi object, value false is environment type. True is production and false is SandBox
+
+`~/midtrans-java/example/src/main/java/com/midtrans/sample/controller/SnapController.java`
 ```java
-~/midtrans-java/example/src/main/java/com/midtrans/sample/controller/SnapController.java
+MidtransSnapApi snapApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getSnapApi();
 ```
 * [HomeController.java](https://github.com/Midtrans/midtrans-java/blob/master/example/src/main/java/com/midtrans/sample/controller/HomeController.java#L17)
+
+This clientKey value for `midtrans-new-3ds.min.js`
+
+`~/midtrans-java/example/src/main/java/com/midtrans/sample/controller/HomeController.java`
 ```java
-~/midtrans-java/example/src/main/java/com/midtrans/sample/controller/HomeController.java
+String clientKey = "YOUR-CLIENT-KEY";
 ```
 
 ### 1.b Run and build apps:
