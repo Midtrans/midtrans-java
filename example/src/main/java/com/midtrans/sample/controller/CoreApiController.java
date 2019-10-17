@@ -3,10 +3,9 @@ package com.midtrans.sample.controller;
 import com.midtrans.Config;
 import com.midtrans.ConfigFactory;
 import com.midtrans.httpclient.error.MidtransError;
-import com.midtrans.proxy.ProxyConfig;
-import com.midtrans.proxy.ProxyConfigBuilder;
 import com.midtrans.service.MidtransCoreApi;
 import com.midtrans.sample.data.DataMockup;
+import com.midtrans.service.MidtransSnapApi;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,10 +31,21 @@ public class CoreApiController {
     // Midtrans CoreApi Class library without proxy config
     private MidtransCoreApi coreApi = new ConfigFactory(new Config("SB-Mid-server-zPtluafD-kgcvOMVtsNYhXVD", "SB-Mid-client-I4ekVNAD4Cr4KJ1V", false)).getCoreApi();
 
+    private MidtransSnapApi snapApi = new ConfigFactory(new Config("SB-Mid-server-zPtluafD-kgcvOMVtsNYhXVD", "SB-Mid-client-I4ekVNAD4Cr4KJ1V", false)).getSnapApi();
+
+
     @Autowired
     private DataMockup dataMockup;
 
     @PostMapping(value = "/charge", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object createTokeSnap(@RequestBody Map<String, Object> body) throws MidtransError {
+        JSONObject token = snapApi.createTransaction(body);
+
+        System.out.println(body.toString());
+        return token.toString();
+    }
+
+    @PostMapping(value = "/chargesss", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> charge(@RequestBody Map<String, String> cc) throws MidtransError {
         dataMockup.setPaymentType("credit_card");
         Map<String, String> creditCard = new HashMap<>(cc);

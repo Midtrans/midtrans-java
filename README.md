@@ -21,7 +21,7 @@ Maven:
     <dependency>
 	<groupId>com.midtrans</groupId>
 	<artifactId>java-library</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 </dependency>
 </dependencies>
 ```
@@ -35,7 +35,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.midtrans:java-library:1.0.0'
+    compile 'com.midtrans:java-library:1.1.0'
 }
 ```
 
