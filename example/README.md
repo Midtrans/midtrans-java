@@ -3,7 +3,7 @@ Midtrans Java Client Sample App
 ​
 Midtrans ❤️ Java! 
 ​
-This is the Official [Midtrans](https://midtrans.com) java-client sample store Spring Boot web application. For more information about the product and documentation please refer to [http://docs.midtrans.com](https://docs.midtrans.com).
+This is the Official [Midtrans](https://midtrans.com) java-client sample store Spring Boot web application. For more information about the product and documentation please refer to [http://docs.midtrans.com](https://docs.midtrans.com) and also you can try visit [demo app](https://midtrans-java.herokuapp.com/).
 ​
 ## 1. How to build and run
 ​
