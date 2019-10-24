@@ -515,10 +515,11 @@ JSONObject refundTransaction("YOUR_ORDER_ID OR TRANSACTION_ID", params());
 ```
 
 ## 4. Examples
-Examples are available on [/examples](example) folder.
+Examples are available on [/examples](example) folder 
 There are:
 - [Core Api examples](example/src/main/java/com/midtrans/sample/controller/CoreApiController.java)
 - [Snap examples](example/src/main/java/com/midtrans/sample/controller/SnapController.java)
+- [Live Demo App](https://midtrans-java.herokuapp.com/)
 
 ## Get help
 
@@ -527,4 +528,3 @@ There are:
 * [SNAP documentation](http://snap-docs.midtrans.com)
 * [Core API documentation](http://api-docs.midtrans.com)
 * Can't find answer you looking for? email to [support@midtrans.com](mailto:support@midtrans.com)
-
