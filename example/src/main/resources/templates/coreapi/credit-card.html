@@ -176,7 +176,7 @@
                 // Implement success handling here
             console.log(response);
 
-            fetch("/charge", {
+            fetch("/chargesss", {
                 method : "POST",
                 body: JSON.stringify({
                     "token_id" : response.token_id,
@@ -251,7 +251,7 @@
         return {
           openPopup(url){
             modal = picoModal({
-              content:'<iframe frameborder="0" width="100%" height="100%" src="'+url+'"></iframe>',
+              content:'<iframe frameborder="0" style="height:90vh; width:100%;" src="'+url+'"></iframe>',
               width: "75%",
               height: "75% !important",
               closeButton: false,
