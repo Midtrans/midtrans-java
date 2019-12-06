@@ -41,7 +41,7 @@ dependencies {
 
 ### 1.b Using JAR File
 
-If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://dl.bintray.com/midtrans/midtrans-java/com/midtrans/java-library/1.0.0/:java-library-1.0.0.jar)
+If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://dl.bintray.com/midtrans/midtrans-java/com/midtrans/java-library/1.1.0/java-library-1.1.0.jar)
 
 ## 2. Usage
 
