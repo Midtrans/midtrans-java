@@ -159,18 +159,14 @@ public class MidtransExample {
 
         UUID idRand = UUID.randomUUID();
         Map<String, Object> chargeParams = new HashMap<>();
-    
+
         Map<String, String> transactionDetails = new HashMap<>();
         transactionDetails.put("order_id", idRand.toString());
         transactionDetails.put("gross_amount", "265000");
-    
-        Map<String, String> creditCard = new HashMap<>();
-        creditCard.put("authentication", "true");
-    
-        chargeParams.put("transaction_details", transactionDetails);
-        chargeParams.put("credit_card", creditCard);
-        
 
+        chargeParams.put("transaction_details", transactionDetails);
+        chargeParams.put("payment_type", "gopay");
+        
             JSONObject result = coreApi.chargeTransaction(chargeParams);
             System.out.println(result);
     }
