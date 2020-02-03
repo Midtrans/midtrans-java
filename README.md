@@ -13,7 +13,7 @@ Maven:
     <repository>
         <id>jcenter</id>
         <name>bintray</name>
-        <url>http://jcenter.bintray.com</url>
+        <url>https://jcenter.bintray.com</url>
     </repository>
 </repositories>
 
@@ -30,7 +30,7 @@ If you're using Gradle as the build tools for your project, please add jcenter r
 ```Gradle
 repositories {
     maven {
-        url  "http://jcenter.bintray.com" 
+        url  "https://jcenter.bintray.com" 
     }
 }
 
