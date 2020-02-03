@@ -41,7 +41,7 @@ dependencies {
 
 ### 1.b Using JAR File
 
-If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://dl.bintray.com/midtrans/midtrans-java/com/midtrans/java-library/1.0.0/:java-library-1.0.0.jar)
+If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://dl.bintray.com/midtrans/midtrans-java/com/midtrans/java-library/1.1.0/java-library-1.1.0.jar)
 
 ## 2. Usage
 
@@ -159,18 +159,14 @@ public class MidtransExample {
 
         UUID idRand = UUID.randomUUID();
         Map<String, Object> chargeParams = new HashMap<>();
-    
+
         Map<String, String> transactionDetails = new HashMap<>();
         transactionDetails.put("order_id", idRand.toString());
         transactionDetails.put("gross_amount", "265000");
-    
-        Map<String, String> creditCard = new HashMap<>();
-        creditCard.put("authentication", "true");
-    
-        chargeParams.put("transaction_details", transactionDetails);
-        chargeParams.put("credit_card", creditCard);
-        
 
+        chargeParams.put("transaction_details", transactionDetails);
+        chargeParams.put("payment_type", "gopay");
+        
             JSONObject result = coreApi.chargeTransaction(chargeParams);
             System.out.println(result);
     }
@@ -515,10 +511,11 @@ JSONObject refundTransaction("YOUR_ORDER_ID OR TRANSACTION_ID", params());
 ```
 
 ## 4. Examples
-Examples are available on [/examples](example) folder.
+Examples are available on [/examples](example) folder 
 There are:
 - [Core Api examples](example/src/main/java/com/midtrans/sample/controller/CoreApiController.java)
 - [Snap examples](example/src/main/java/com/midtrans/sample/controller/SnapController.java)
+- [Live Demo App](https://midtrans-java.herokuapp.com/)
 
 ## Get help
 
@@ -527,4 +524,3 @@ There are:
 * [SNAP documentation](http://snap-docs.midtrans.com)
 * [Core API documentation](http://api-docs.midtrans.com)
 * Can't find answer you looking for? email to [support@midtrans.com](mailto:support@midtrans.com)
-
