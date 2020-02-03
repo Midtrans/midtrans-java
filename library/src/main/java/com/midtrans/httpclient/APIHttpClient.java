@@ -4,6 +4,7 @@ import com.midtrans.Config;
 import com.midtrans.proxy.ProxyConfig;
 import okhttp3.*;
 import okhttp3.Authenticator;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -21,7 +22,6 @@ public class APIHttpClient {
 
     private Config config;
     private OkHttpClient defaultHttpClient;
-
 
     /**
      * APIHttpClient constructor
@@ -42,6 +42,7 @@ public class APIHttpClient {
         OkHttpClient httpClient = new OkHttpClient();
         if (config.getProxyConfig() == null) {
             return httpClient.newBuilder()
+                    .addInterceptor(loggingInterceptor())
                     .connectTimeout(config.getConnectionTimeout(), TimeUnit.SECONDS)
                     .readTimeout(config.getReadTimeout(), TimeUnit.SECONDS)
                     .writeTimeout(config.getWriteTimeout(), TimeUnit.SECONDS)
@@ -101,6 +102,21 @@ public class APIHttpClient {
                 .addConverterFactory(JacksonConverterFactory.create())
                 .client(defaultHttpClient)
                 .build();
+    }
+
+    /**
+     * OkHttpClient Logging Interceptor Configuration. Auto disable when production mode
+     *
+     * @return HttpLoggingInterceptor
+     */
+    private HttpLoggingInterceptor loggingInterceptor() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        if (config.isEnabledLog()) {
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        } else {
+            logging.setLevel(HttpLoggingInterceptor.Level.NONE);
+        }
+        return logging;
     }
 
     private String encodeServerKey(){
