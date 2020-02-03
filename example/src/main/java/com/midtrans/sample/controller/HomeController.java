@@ -14,7 +14,7 @@ import java.util.Map;
 @Controller("/")
 public class HomeController {
 
-    String clientKey = "SB-Mid-client-I4ekVNAD4Cr4KJ1V";
+    String clientKey = "SB-Mid-client-nKsqvar5cn60u2Lv";
 
     @Autowired
     private DataMockup dataMockup;
