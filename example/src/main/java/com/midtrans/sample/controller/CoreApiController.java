@@ -113,7 +113,7 @@ public class CoreApiController {
             notifResponse = "Transaction notification received. Order ID: " + orderId + ". Transaction status: " + transactionStatus + ". Fraud status: " + fraudStatus;
             System.out.println(notifResponse);
 
-            if (fraudStatus.equals("capture")) {
+            if (transactionStatus.equals("capture")) {
                 if (fraudStatus.equals("challenge")) {
                     // TODO set transaction status on your database to 'challenge' e.g: 'Payment status challenged. Please take action on your Merchant Administration Portal
                 } else if (fraudStatus.equals("accept")) {
