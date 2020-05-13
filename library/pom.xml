@@ -5,7 +5,7 @@
 
 	<groupId>com.midtrans</groupId>
 	<artifactId>java-library</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.2</version>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -17,6 +17,12 @@
 			<groupId>com.squareup.retrofit2</groupId>
 			<artifactId>retrofit-mock</artifactId>
 			<version>2.6.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor -->
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>logging-interceptor</artifactId>
+			<version>3.14.6</version>
 		</dependency>
 		<dependency>
 			<groupId>com.squareup.retrofit2</groupId>
@@ -74,13 +80,22 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>version.properties</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 
 	<distributionManagement>
 		<repository>
 			<id>bintray-midtrans-midtrans-java</id>
 			<name>midtrans-midtrans-java</name>
-			<url>https://api.bintray.com/maven/midtrans/midtrans-java/com.midtrans/;publish=1</url>
+            <url>https://api.bintray.com/maven/midtrans/midtrans-java/com.midtrans/;publish=1</url>
 		</repository>
 	</distributionManagement>
 
