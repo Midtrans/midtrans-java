@@ -6,7 +6,7 @@
     <groupId>com.midtrans</groupId>
     <artifactId>sample-application</artifactId>
     <version>0.0.1</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>com.midtrans</groupId>
             <artifactId>java-library</artifactId>
-            <version>1.0.0</version>
+            <version>1.1.2</version>
         </dependency>
 
         <dependency>
@@ -54,7 +54,17 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>com.heroku.sdk</groupId>
+                <artifactId>heroku-maven-plugin</artifactId>
+                <configuration>
+                    <appName>midtrans-java</appName>
+                    <processTypes>
+                        <web>java $JAVA_OPTS -cp target/classes:target/dependency/* Main</web>
+                    </processTypes>
+                </configuration>
+                <version>2.0.16</version>
+            </plugin>
         </plugins>
     </build>
-
 </project>

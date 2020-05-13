@@ -21,7 +21,7 @@ public class SnapController {
     @Autowired
     private DataMockup dataMockup;
 
-    private MidtransSnapApi snapApi = new ConfigFactory(new Config("SB-Mid-server-zPtluafD-kgcvOMVtsNYhXVD", "SB-Mid-client-I4ekVNAD4Cr4KJ1V", false)).getSnapApi();
+    private MidtransSnapApi snapApi = new ConfigFactory(new Config("SB-Mid-server-TOq1a2AVuiyhhOjvfs3U_KeO", "SB-Mid-client-nKsqvar5cn60u2Lv", false)).getSnapApi();
 
     @RequestMapping(value = "/snap", method = RequestMethod.GET)
     public String snap(Model model) {
@@ -30,7 +30,7 @@ public class SnapController {
         return "snap/snap";
     }
 
-    @RequestMapping(value = "snap/check-out", method = RequestMethod.POST)
+    @RequestMapping(value = "/snap/check-out", method = RequestMethod.POST)
     public String checkout(@RequestParam(value = "enablePay", required = false) List<String> listPay,
                            @RequestParam(value = "snapType") String snapType,
                            Model model) throws MidtransError {
@@ -45,7 +45,10 @@ public class SnapController {
         if (listPay != null) {
             paymentList.addAll(listPay);
         }
+        Map<String, String> creditCard = new HashMap<>();
+        creditCard.put("secure", "true");
         dataMockup = new DataMockup();
+        dataMockup.creditCard(creditCard);
         dataMockup.enablePayments(paymentList);
 
         // PutAll data mockUp to requestBody

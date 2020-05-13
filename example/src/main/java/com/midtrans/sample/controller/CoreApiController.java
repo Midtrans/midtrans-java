@@ -3,8 +3,6 @@ package com.midtrans.sample.controller;
 import com.midtrans.Config;
 import com.midtrans.ConfigFactory;
 import com.midtrans.httpclient.error.MidtransError;
-import com.midtrans.proxy.ProxyConfig;
-import com.midtrans.proxy.ProxyConfigBuilder;
 import com.midtrans.service.MidtransCoreApi;
 import com.midtrans.sample.data.DataMockup;
 import org.json.JSONObject;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @RestController
 public class CoreApiController {
 
@@ -30,81 +27,87 @@ public class CoreApiController {
     //private MidtransCoreApi coreApi = new ConfigFactory(new Config("SB-Mid-server-zPtluafD-kgcvOMVtsNYhXVD", "SB-Mid-client-I4ekVNAD4Cr4KJ1V", false, 10, 10,10,proxyConfig)).getCoreApi();
 
     // Midtrans CoreApi Class library without proxy config
-    private MidtransCoreApi coreApi = new ConfigFactory(new Config("SB-Mid-server-zPtluafD-kgcvOMVtsNYhXVD", "SB-Mid-client-I4ekVNAD4Cr4KJ1V", false)).getCoreApi();
+    private MidtransCoreApi coreApi = new ConfigFactory(
+            new Config("SB-Mid-server-TOq1a2AVuiyhhOjvfs3U_KeO",
+                    "SB-Mid-client-nKsqvar5cn60u2Lv",
+                    false))
+            .getCoreApi();
 
     @Autowired
     private DataMockup dataMockup;
 
-    @PostMapping(value = "/charge", produces = MediaType.APPLICATION_JSON_VALUE)
+    // Core API Controller for fetch credit card transaction
+    @PostMapping(value = "/cards/charge", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> charge(@RequestBody Map<String, String> cc) throws MidtransError {
         dataMockup.setPaymentType("credit_card");
         Map<String, String> creditCard = new HashMap<>(cc);
         dataMockup.creditCard(creditCard);
         Map<String, Object> body = new HashMap<>(dataMockup.initDataMock());
 
+        coreApi.apiConfig().paymentAppendNotification("http://midtrans-java.herokuapp.com/notif/append1,http://midtrans-java.herokuapp.com/notif/append2");
         JSONObject object = coreApi.chargeTransaction(body);
 
         String result = object.toString();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/gopay", produces = MediaType.APPLICATION_JSON_VALUE)
+    // Core API Controller for fetch Gopay transaction
+    @PostMapping(value = "/gopay/charge", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> goPay() throws MidtransError {
         dataMockup.setPaymentType("gopay");
 
         Map<String, Object> body = new HashMap<>(dataMockup.initDataMock());
 
-        coreApi.apiConfig().setEnabledLog(true);
+        coreApi.apiConfig().paymentOverrideNotification("http://midtrans-java.herokuapp.com/notif/override1,http://midtrans-java.herokuapp.com/notif/override2");
         JSONObject object = coreApi.chargeTransaction(body);
         String result = object.toString();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/check-transaction", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/transactions/status", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> checkTransaction(@RequestBody Map<String, String> transaction) throws MidtransError {
         JSONObject result = coreApi.checkTransaction(transaction.get("transaction_id"));
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/approve-transaction", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/transactions/approve", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> approveTransaction(@RequestBody Map<String, String> transaction) throws MidtransError {
         JSONObject result = coreApi.approveTransaction(transaction.get("transaction_id"));
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/cancel-transaction", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/transactions/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> cancelTransaction(@RequestBody Map<String, String> transaction) throws MidtransError {
         JSONObject result = coreApi.cancelTransaction(transaction.get("transaction_id"));
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/expire-transaction", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/transactions/expire", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> expireTransaction(@RequestBody Map<String, String> transaction) throws MidtransError {
         JSONObject result = coreApi.expireTransaction(transaction.get("transaction_id"));
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> testPost(@RequestBody Map<String, Object> body) throws MidtransError {
-        coreApi.apiConfig().setEnabledLog(false);
-        JSONObject result = coreApi.chargeTransaction(body);
-        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
-    }
-
+    // Midtrans Handling Notification
     @PostMapping(value = "/notification", produces = MediaType.APPLICATION_JSON_VALUE)
-    private ResponseEntity<String> handleNotification(@RequestBody Map<String, Object> response) {
+    private ResponseEntity<String> handleNotification(@RequestBody Map<String, Object> response) throws MidtransError {
         String notifResponse = null;
         if (!(response.isEmpty())) {
+            //Get Order ID from notification body
             String orderId = (String) response.get("order_id");
-            String transactionStatus = (String) response.get("transaction_status");
-            String fraudStatus = (String) response.get("fraud_status");
+
+            // Get status transaction to api with order id
+            JSONObject transactionResult = coreApi.checkTransaction(orderId);
+
+            String transactionStatus = (String) transactionResult.get("transaction_status");
+            String fraudStatus = (String) transactionResult.get("fraud_status");
 
             notifResponse = "Transaction notification received. Order ID: " + orderId + ". Transaction status: " + transactionStatus + ". Fraud status: " + fraudStatus;
             System.out.println(notifResponse);
 
-            if (fraudStatus.equals("capture")) {
+            if (transactionStatus.equals("capture")) {
                 if (fraudStatus.equals("challenge")) {
-                    // TODO set transaction status on your database to 'challenge'
+                    // TODO set transaction status on your database to 'challenge' e.g: 'Payment status challenged. Please take action on your Merchant Administration Portal
                 } else if (fraudStatus.equals("accept")) {
                     // TODO set transaction status on your database to 'success'
                 }
@@ -116,6 +119,36 @@ public class CoreApiController {
         }
         return new ResponseEntity<>(notifResponse, HttpStatus.OK);
     }
+
+
+    /*
+     * Sample for append / override notifications
+     */
+    @PostMapping(value = "/notif/append1", produces = MediaType.APPLICATION_JSON_VALUE)
+    private ResponseEntity<String> appendNotif1(@RequestBody Map<String, Object> response) throws MidtransError {
+        String append1 = "################# TEST - Received Append Notification 1 ###################";
+        System.out.println(append1);
+        return new ResponseEntity<>(append1, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/notif/append2", produces = MediaType.APPLICATION_JSON_VALUE)
+    private ResponseEntity<String> appendNotif2(@RequestBody Map<String, Object> response) throws MidtransError {
+        String append2 = "################# TEST - Received Append Notification 2 ###################";
+        System.out.println(append2);
+        return new ResponseEntity<>(append2, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/notif/override1", produces = MediaType.APPLICATION_JSON_VALUE)
+    private ResponseEntity<String> overrideNotif1(@RequestBody Map<String, Object> response) throws MidtransError {
+        String append1 = "################# TEST - Received Override Notification 1 ###################";
+        System.out.println(append1);
+        return new ResponseEntity<>(append1, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/notif/override2", produces = MediaType.APPLICATION_JSON_VALUE)
+    private ResponseEntity<String> overrideNotif2(@RequestBody Map<String, Object> response) throws MidtransError {
+        String append2 = "################# TEST - Received Override Notification 2 ###################";
+        System.out.println(append2);
+        return new ResponseEntity<>(append2, HttpStatus.OK);
+    }
 }
-
-

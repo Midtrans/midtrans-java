@@ -6,22 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
-  </style>
+    </style>
 </head>
 <body>
 <div th:replace="~{fragments/header}"></div>
 
 <!-- Begin page content -->
 <main role="main" class="container" style="padding-top: 30px">
-    <div class="container">
-        <h2 class="mt-5">Midtrans Java Library Demo</h2>
-        <p class="lead">This is java springboot demo app to consume Midtrans API with Midtrans Java Library.</p>
-        <p>Please, read <a target="_blank" href="http://docs.midtrans.com">Midtrans Docs</a> if you need details
-            documentation.
-        </p>
-        <a target="_blank" href="https://bintray.com/midtrans/midtrans-java/com.midtrans/_latestVersion"> <img src="https://api.bintray.com/packages/midtrans/midtrans-java/com.midtrans/images/download.svg"></a>
-        <a target="_blank" href="https://travis-ci.org/Xaxxis/midtrans-java"> <img src="https://travis-ci.org/Xaxxis/midtrans-java.svg?branch=master"></a>
-        <a target="_blank" href="https://github.com/Midtrans/midtrans-java"> <img src="https://img.shields.io/badge/Go%20to-GitHub%20project-blue?style=flat"></a>
+    <div class="jumbotron">
+        <h2>Iris Disbursement</h2>
+        <h5>Current Balance</h5>
+        <h1><td>Rp. <span th:text="${#numbers.formatDecimal(balance, 0, 'COMMA', 0, 'POINT')}">,-</span></td></h1>
+    </div>
+
+    <h3>Transaction History : <span th:text="${fromDate}"></span> - <span th:text="${toDate}"></span></h3>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                <tr class="headings">
+                    <th th:each="header: ${headers}" class="column-title" th:text="${header}" />
+                </tr>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="even pointer" th:each="row: ${rows}" id="tablerow">
+                    <td th:each="header: ${headers}" th:text="${row.get(header)}" />
+                </tr>
+            </tbody>
+        </table>
     </div>
 </main>
 

@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header">
+    <title>Midtrans API Intergration</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header}"></div>
+
+<!-- Begin page content -->
+<main role="main" class="container" style="padding-top: 30px">
+    <h3 class="mt-5">Midtrans Iris Demo - Create Payout</h3>
+    <div class="row">
+        <div class="col-md-8 order-md-1">
+            <form class="needs-validation">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="bank">Beneficiary</label>
+                        <select class="bank custom-select d-block w-100" id="bank">
+                            <option id="beneficiaryName" th:each="name : ${names}" th:value="${name}" th:text="${name}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="amount">Amount</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">IDR</span>
+                            </div>
+                            <input type="text" class="amount form-control" id="amount" placeholder="amount" th:value="${amounts}">
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="notes">Notes </label>
+                    <input type="text" class="notes form-control" id="notes" value="Bonus payout" placeholder="Pay day">
+                </div>
+            </form>
+            <button id="payout-button" class="btn btn-primary btn-lg btn-block" type="submit">1. Create Payout!</button>
+            <hr class="mb-1">
+            <code>
+                <b>Payout details result:</b>
+                <pre><div id="create-details">JSON result will appear here after create payout!<br></div></pre>
+            </code>
+        </div>
+        <div class="col-md-4 order-md-2 mb-4">
+            <hr class="mb-1">
+                <code>
+                    <b>Create payout result:</b>
+                    <pre><div id="create-result">JSON result will appear here after create payout!<br></div></pre>
+                </code>
+        </div>
+    </div>
+    <hr class="mb-1">
+    <h3 class="mt-5">Midtrans Iris Demo - Approve/Reject Payout</h3>
+    <input type="radio" onclick="approveOrReject();" name="approveReject" id="approve"/> Approve
+    <input type="radio" onclick="approveOrReject();" name="approveReject" id="reject"/> Reject
+    <div id="approved" style="display:none">
+        <hr class="mb-1">
+        <div class="row">
+            <div class="col-md-8 order-md-1">
+                <form class="needs-validation">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="referenceNumber">Reference No:</label>
+                            <div class="input-group">
+                                <input type="text" class="reference form-control" id="referenceNumber" placeholder=" Copy reference number from create payout result" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="otp">OTP</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">OTP</span>
+                                </div>
+                                <input type="text" class="otp form-control" id="otp" placeholder="amount" value="335163" required>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <button id="approve-button" class="btn btn-primary btn-lg btn-block" type="submit">2. Approve Payout!</button>
+                <code>
+                    <hr class="mb-1">
+                    <b>Payout details result:</b>
+                    <pre><div id="approve-details">JSON result will appear here after create payout!<br></div></pre>
+                </code>
+            </div>
+            <div class="col-md-4 order-md-2 mb-4">
+                <code>
+                    <b>Approve payout result:</b>
+                    <pre><div id="approve-result">JSON result will appear here after approve payout!<br></div></pre>
+                </code>
+            </div>
+        </div>
+    </div>
+    <div id="rejected" style="display:none">
+        <hr class="mb-1">
+        <div class="row">
+            <div class="col-md-8 order-md-1">
+                <form class="needs-validation">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="rejectRef">Reference No:</label>
+                            <div class="input-group">
+                                <input type="text" class="rejectRef form-control" id="rejectRef" placeholder=" Copy reference number from create payout result" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="reject-reasons">Reject reasons:</label>
+                            <div class="input-group">
+                                <input type="text" class="rejectReasons form-control" id="reject-reasons" placeholder="Reject reasons" value="Invalid amount" required>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <button id="reject-button" class="btn btn-primary btn-lg btn-block" type="submit">2. Reject Payout!</button>
+                <code>
+                    <hr class="mb-1">
+                    <b>Reject details result:</b>
+                    <pre><div id="reject-details">JSON result will appear here after reject payout!<br></div></pre>
+                </code>
+            </div>
+            <div class="col-md-4 order-md-2 mb-4">
+                <code>
+                    <b>Reject payout result:</b>
+                    <pre><div id="reject-result">JSON result will appear here after reject payout!<br></div></pre>
+                </code>
+            </div>
+        </div>
+    </div>
+    <hr class="mb-1">
+    <div class="row">
+        <div class="col-md-8 order-md-1">
+            <div class="md-4">
+                <form action="/iris/index" class="inline">
+                    <button class="btn btn-secondary btn-lg btn-block">3. Go to Transaction History</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script th:inline="javascript">
+    let createButton = document.getElementById('payout-button');
+    let type = 'create';
+    createButton.onclick = function (event) {
+        console.log("CREATE PAYOUT button clicked");
+        fetch("/iris/payouts/create", {
+            method : "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "name": $( "#bank option:selected" ).text(),
+                "amount": document.querySelector(".amount").value,
+                "notes": document.querySelector(".notes").value
+            }),
+        })
+            .then(function(response) {return response.json();})
+            .then(function(responseObj) {
+                console.log("Create payout response: "+responseObj);
+                document.querySelector("#create-result").innerText = JSON.stringify(responseObj, null, 2);
+                let ref = responseObj.payouts[0].reference_no;
+                document.querySelector(".reference").value = ref;
+                document.querySelector(".rejectRef").value = ref;
+                getDetailsPayout(ref, type);
+            });
+        event.preventDefault();
+        return false;
+    };
+
+    let approveButton = document.getElementById('approve-button');
+    approveButton.onclick = function (event) {
+        console.log("APPROVE button clicked");
+        let referenceNo = document.querySelector(".reference").value;
+        let type = 'approve';
+        fetch("/iris/payouts/approve", {
+            method : "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "reference_nos": [
+                    referenceNo
+                ],
+                "amount": document.querySelector(".otp").value
+            }),
+        })
+            .then(function(response) {return response.json();})
+            .then(function(responseObj) {
+                console.log("approve response:"+responseObj);
+                document.querySelector("#approve-result").innerText = JSON.stringify(responseObj, null, 2);
+                getDetailsPayout(referenceNo, type);
+            });
+        event.preventDefault();
+        return false;
+    };
+
+    let rejectButton = document.getElementById('reject-button');
+    rejectButton.onclick = function (event) {
+        console.log("REJECT button clicked");
+        let referenceNo = document.querySelector(".rejectRef").value;
+        let type = 'reject';
+        fetch("/iris/payouts/reject", {
+            method : "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "reference_nos": [
+                    referenceNo
+                ],
+                "reject_reason": document.querySelector(".rejectReasons").value
+            }),
+        })
+            .then(function(response) {return response.json();})
+            .then(function(responseObj) {
+                console.log("reject response:"+responseObj);
+                document.querySelector("#reject-result").innerText = JSON.stringify(responseObj, null, 2);
+                getDetailsPayout(referenceNo, type);
+            });
+        event.preventDefault();
+        return false;
+    };
+
+    function getDetailsPayout(referenceNo, type) {
+        fetch("/iris/payouts/details", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "reference_no" : referenceNo
+            }),
+        })
+            .then(function (response) {return response.json()
+                ;})
+            .then(function (responseObj) {
+                console.log("details response:", responseObj);
+                if (type === 'create') {
+                    document.querySelector("#create-details").innerText = JSON.stringify(responseObj, null, 2);
+                } else if (type === 'approve') {
+                    document.querySelector("#approve-details").innerText = JSON.stringify(responseObj, null, 2);
+                } else if (type === 'reject') {
+                    document.querySelector("#reject-details").innerText = JSON.stringify(responseObj, null, 2);
+                }
+            })
+    }
+
+    function approveOrReject() {
+        if (document.getElementById('approve').checked) {
+            document.getElementById('approved').style.display = 'block';
+            document.getElementById('rejected').style.display = 'none';
+        } else {
+            document.getElementById('rejected').style.display = 'block';
+            document.getElementById('approved').style.display = 'none';
+        }
+    }
+</script>
+</body>
+</html>
