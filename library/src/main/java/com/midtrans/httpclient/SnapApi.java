@@ -12,7 +12,6 @@ import java.util.Map;
  */
 public interface SnapApi {
 
-    @POST("transactions")
+    @POST("snap/v1/transactions")
     Call<ResponseBody> createTransactions(@Body Map<String, Object> objectMap);
-
 }
