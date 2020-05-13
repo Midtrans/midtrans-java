@@ -4,7 +4,6 @@ import com.midtrans.Config;
 import com.midtrans.httpclient.APIHttpClient;
 import com.midtrans.httpclient.CoreApi;
 import com.midtrans.httpclient.error.MidtransError;
-import com.midtrans.httpclient.error.ErrorUtils;
 import com.midtrans.service.MidtransCoreApi;
 import okhttp3.ResponseBody;
 import org.json.JSONException;
@@ -15,14 +14,11 @@ import retrofit2.Response;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 /**
  * Implements from {@link MidtransCoreApi MidtransCoreApi}
  */
 public class MidtransCoreApiImpl implements MidtransCoreApi {
-    private static final Logger LOGGER = Logger.getLogger(MidtransCoreApi.class.getName());
-
     private CoreApi coreApi;
     private Config config;
 
@@ -38,7 +34,6 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
     }
 
     private JSONObject httpHandle(Call<ResponseBody> call) throws MidtransError {
-        ErrorUtils errorUtils = new ErrorUtils();
         JSONObject object = new JSONObject();
         try {
             Response<ResponseBody> response = call.execute();
@@ -46,15 +41,14 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
                 try {
                     if (response.body() != null) {
                         object = new JSONObject(response.body().string());
-                        if (config.isEnabledLog()) {
-                            LOGGER.info("Midtrans response: " + object);
-                        }
                     }
                 } catch (JSONException je) {
                     throw new MidtransError(je);
                 }
             } else {
-                errorUtils.catchHttpErrorMessage(response.code(), response);
+                if (response.errorBody() != null) {
+                    object = new JSONObject(response.errorBody().string());
+                }
             }
         } catch (Exception e) {
             throw new MidtransError(e);
@@ -144,6 +138,12 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
     @Override
     public JSONObject denyTransaction(String orderId) throws MidtransError {
         Call<ResponseBody> call = coreApi.denyTransaction(orderId);
+        return httpHandle(call);
+    }
+
+    @Override
+    public JSONObject getBIN(String binNumber) throws MidtransError {
+        Call<ResponseBody> call = coreApi.getBIN(binNumber);
         return httpHandle(call);
     }
 }
