@@ -6,6 +6,7 @@ import com.midtrans.ConfigBuilder;
 import com.midtrans.ConfigFactory;
 import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.service.MidtransSnapApi;
+import okhttp3.*;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,14 +33,14 @@ public class SnapApiTest {
         snapApi = configFactory.getSnapApi();
     }
 
-    @Parameterized.Parameters
-    public static Object[][] data() {
-        return new Object[10][0];
-    }
-
     @Test
-    public void createTransactionSimpleParam() throws MidtransError {
-        JSONObject result = snapApi.createTransaction(miniDataMockUp());
+    public void createTransactionSimpleParam() {
+        JSONObject result = null;
+        try {
+            result = snapApi.createTransaction(miniDataMockUp());
+        } catch (MidtransError midtransError) {
+            midtransError.printStackTrace();
+        }
         assert result.has("token");
         assert result.has("redirect_url");
     }
@@ -68,17 +69,18 @@ public class SnapApiTest {
     @Test
     public void badRequestBodyOnSnapTrans() throws MidtransError {
         JSONObject result = snapApi.createTransaction(badDataMockUp());
-        assert result.toString().contentEquals("{}");
-        assert result.length() == 0;
+        assert result.getJSONArray("error_messages").get(0).toString()
+                .equals("transaction_details.gross_amount is required");
+        assert result.getJSONArray("error_messages").get(1).toString()
+                .equals("transaction_details.gross_amount is not a number");
     }
 
     @Test
     public void errorServerKey() throws MidtransError {
         snapApi.apiConfig().setSERVER_KEY("");
         JSONObject result = snapApi.createTransaction(miniDataMockUp());
-        assert result.toString().contentEquals("{}");
-        assert result.length() == 0;
-
+        assert result.getJSONArray("error_messages").get(0).toString()
+                .equals("Access denied due to unauthorized transaction, please check client or server key");
     }
 
     //Minimal data mockUp
