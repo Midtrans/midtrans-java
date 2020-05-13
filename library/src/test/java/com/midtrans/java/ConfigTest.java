@@ -57,6 +57,8 @@ public class ConfigTest {
     public void setWriteTimeOut() {
         config.setWriteTimeout(200);
         assertEquals(200, config.getWriteTimeout());
+        config.setWriteTimeout(-200);
+        assertEquals(10, config.getWriteTimeout());
     }
 
     @Test
@@ -67,6 +69,46 @@ public class ConfigTest {
         assertEquals(8080, config.getProxyConfig().getPort());
         assertEquals("username", config.getProxyConfig().getUsername());
         assertEquals("password", config.getProxyConfig().getPassword());
+    }
+
+    @Test
+    public void setConnectionPool() {
+        config.setMaxConnectionPool(20);
+        assertEquals(20, config.getMaxConnectionPool());
+        config.setMaxConnectionPool(-10);
+        assertEquals(16, config.getMaxConnectionPool());
+    }
+
+    @Test
+    public void setKeepAliveDuration() {
+        config.setKeepAliveDuration(100);
+        assertEquals(100, config.getKeepAliveDuration());
+        config.setKeepAliveDuration(-200);
+        assertEquals(300, config.getKeepAliveDuration());
+    }
+
+    @Test
+    public void setIrisIdempotencyKey() {
+        config.setIrisIdempotencyKey("IRIS-IDEMPOTENCY-KEY");
+        assertEquals("IRIS-IDEMPOTENCY-KEY", config.getIrisIdempotencyKey());
+    }
+
+    @Test
+    public void setPaymentIdempotencyKey() {
+        config.setPaymentIdempotencyKey("PAYMENT-IDEMPOTENCY-KEY");
+        assertEquals("PAYMENT-IDEMPOTENCY-KEY", config.getPaymentIdempotencyKey());
+    }
+
+    @Test
+    public void paymentAppendNotification() {
+        config.paymentAppendNotification("http://example.com/");
+        assertEquals("http://example.com/", config.getPaymentAppendNotification());
+    }
+
+    @Test
+    public void paymentOverrideNotification() {
+        config.paymentOverrideNotification("http://example.com/");
+        assertEquals("http://example.com/", config.getPaymentOverrideNotification());
     }
 
     @Test
@@ -96,6 +138,16 @@ public class ConfigTest {
             assertEquals(SNAP_PRODUCTION_BASE_URL, config.getBASE_URL());
         } else {
             assertEquals(SNAP_SANDBOX_BASE_URL, config.getBASE_URL());
+        }
+    }
+
+    @Test
+    public void getIrisApiURL() {
+        config.getIrisApiURL();
+        if (isProduction) {
+            assertEquals(IRIS_PRODUCTION_BASE_URL, config.getBASE_URL());
+        } else {
+            assertEquals(IRIS_SANDBOX_BASE_URL, config.getBASE_URL());
         }
     }
 }
