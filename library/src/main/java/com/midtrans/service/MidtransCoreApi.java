@@ -122,4 +122,12 @@ public interface MidtransCoreApi {
      * @throws MidtransError when an exception was occurred during executing the request.
      */
     JSONObject denyTransaction(String orderId) throws MidtransError;
+
+    /**
+     * Do `v1/bins/{bin}` API request to Core API
+     * @param binNumber {String} of the transaction (more detail refer to: https://api-docs.midtrans.com/#bin-api)
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     * @throws MidtransError when an exception was occurred during executing the request.
+     */
+    JSONObject getBIN(String binNumber) throws MidtransError;
 }
