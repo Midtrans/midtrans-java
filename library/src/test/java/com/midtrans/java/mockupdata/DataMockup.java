@@ -1,5 +1,6 @@
 package com.midtrans.java.mockupdata;
 
+import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -10,6 +11,8 @@ public class DataMockup {
     private List<String> listedPayment;
     private Map<String, String> creditCard;
     private String paymentType = "";
+
+    public static final String refNumber = "032b1bae14578690bb";
 
     public void enablePayments(List<String> listPayment) {
         listedPayment = new ArrayList<>();
@@ -97,4 +100,46 @@ public class DataMockup {
 
         return body;
     }
+
+    public Map<String, String> initDataBeneficiaries() {
+        int prefix = random();
+        String ptName = "PT Unit Test " +prefix;
+        String email = "midjava"+prefix+"@mail.com";
+
+        Map<String, String> beneficiarie = new HashMap<>();
+        beneficiarie.put("bank", "bca");
+        beneficiarie.put("name", ptName);
+        beneficiarie.put("alias_name", ptName.toLowerCase().replaceAll("\\s+", ""));
+        beneficiarie.put("account", String.valueOf(prefix)+ prefix);
+        beneficiarie.put("email", email.trim());
+        return beneficiarie;
+    }
+
+    public int random() {
+        Random r = new Random( System.currentTimeMillis() );
+        return 10000 + r.nextInt(20000);
+    }
+
+    public Map<String, Object> initDataRequestPayout(JSONObject beneficiaries) {
+        /*
+        Initialize beneficiaries for request payout
+         */
+        Map<String, String> payoutObject = new HashMap<>();
+        payoutObject.put("beneficiary_name", beneficiaries.getString("name"));
+        payoutObject.put("beneficiary_account", beneficiaries.getString("account"));
+        payoutObject.put("beneficiary_bank", beneficiaries.getString("bank"));
+        payoutObject.put("beneficiary_email", beneficiaries.getString("email"));
+        payoutObject.put("amount", String.valueOf(random()*2));
+        payoutObject.put("notes", "Payout Unit Test "+ random());
+
+        ArrayList<Map<String,String>> payoutBeneficiaries = new ArrayList<>();
+        payoutBeneficiaries.add(payoutObject);
+
+        Map<String, Object> payouts = new HashMap<>();
+        payouts.put("payouts", payoutBeneficiaries);
+
+        return payouts;
+    }
+
+
 }
