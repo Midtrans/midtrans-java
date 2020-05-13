@@ -24,7 +24,7 @@ public final class ProxyConfigBuilder {
      * @param port Proxy port
      * @return ProxyConfigBuilder
      */
-    public ProxyConfigBuilder setPort(int port) {
+    public ProxyConfigBuilder setPort(final int port) {
         this.port = port;
         return this;
     }
