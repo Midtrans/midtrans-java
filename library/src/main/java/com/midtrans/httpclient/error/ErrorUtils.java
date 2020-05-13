@@ -10,7 +10,6 @@ import java.util.ArrayList;
 /**
  * ErrorUtils parse error from midtrans
  */
-@Deprecated
 public class ErrorUtils {
 
     private static MidtransError parseError(final Response<?> response) {
