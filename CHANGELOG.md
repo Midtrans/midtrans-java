@@ -1,6 +1,6 @@
 ## CHANGELOG MIDTRANS JAVA LIBRARY
 
-## v1.1.2 (April 27, 2020)
+## v2.1.1 (April 27, 2020)
 
 Feature:
 
