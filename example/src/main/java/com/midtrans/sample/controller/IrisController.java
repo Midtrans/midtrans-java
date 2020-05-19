@@ -6,6 +6,7 @@ import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.service.MidtransIrisApi;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
 
 @Controller
 public class IrisController {
@@ -29,6 +33,11 @@ public class IrisController {
                     null,
                     false))
             .getIrisApi();
+
+    public IrisController() {
+        String irisSandboxMerchantKey = "IRIS-merchant-c8709d85-09d6-49c4-8ff5-9eaf81ec31cd";
+        irisApi.apiConfig().setIrisMerchantKey(irisSandboxMerchantKey);
+    }
 
     @GetMapping(value = "/iris/ping", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> ping() throws MidtransError {
@@ -157,6 +166,94 @@ public class IrisController {
         irisApi.apiConfig().setSERVER_KEY(sandboxCreatorKey);
         JSONObject result = irisApi.getPayoutsDetails(referenceNo);
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/iris/notifications", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> notifications(@RequestHeader("Iris-Signature") String irisSignature, HttpEntity<String> httpEntity) {
+        // Get json body request
+        String jsonBodyRequest = httpEntity.getBody();
+
+        // Create hash Signature from payload + iris-merchant-key
+        String hashParam = jsonBodyRequest + irisApi.apiConfig().getIrisMerchantKey();
+        String hashSignature = sha512(hashParam);
+
+        JSONObject jsonObject = new JSONObject(jsonBodyRequest);
+
+        // 1. Validate the value header Iris-Signature
+        if (irisSignature.equals(hashSignature)) {
+
+            if (jsonObject.getString("status").equals("approved")) {
+                // TODO set payouts status on your database to 'approved' e.g: STATUS 'Payout status approved
+                System.out.println("IRIS NOTIFICATION RECEIVED  : STATUS APPROVED");
+            }
+
+            else if (jsonObject.getString("status").equals("rejected")) {
+                // TODO set payouts status on your database to 'rejected'
+                System.out.println("IRIS NOTIFICATION RECEIVED  : STATUS REJECTED");
+            }
+
+            else if (jsonObject.getString("status").equals("processed")) {
+                // TODO set payouts status on your database to 'processed'
+                System.out.println("IRIS NOTIFICATION RECEIVED  : STATUS PROCESSED");
+            }
+
+            else if (jsonObject.getString("status").equals("completed")) {
+                // TODO set payouts status on your database to 'completed'
+                System.out.println("IRIS NOTIFICATION RECEIVED  : STATUS COMPLETED");
+            }
+
+            else if (jsonObject.getString("status").equals("failed")) {
+                // TODO set payouts status on your database to 'failed'
+                System.out.println("IRIS NOTIFICATION RECEIVED  : STATUS FAILED");
+            }
+
+            else if (jsonObject.getString("status").equals("topup")) {
+                // TODO set topup status on your database to 'topup'
+                System.out.println("IRIS NOTIFICATION RECEIVED  : TOPUP");
+            }
+
+            /*
+            For testing purpose from Iris dashboard
+             */
+            else if (jsonObject.getString("status").equals("test")) {
+                System.out.println("IRIS NOTIFICATION RECEIVED : STATUS TEST");
+            }
+        } else {
+            System.out.println("IRIS NOTIFICATION RECEIVED : SIGNATURE NOT VALID");
+            return new ResponseEntity<>("SIGNATURE NOT VALID", HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+
+
+    private static String sha512(String input)
+    {
+        try {
+            // getInstance() method is called with algorithm SHA-512
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+
+            /*
+            digest() method is called to calculate message digest of the input string.
+            returned as array of byte
+             */
+            byte[] messageDigest = md.digest(input.getBytes(StandardCharsets.UTF_8));
+
+            // Convert byte array into signum representation
+            BigInteger no = new BigInteger(1, messageDigest);
+
+            // Convert message digest into hex value
+            String signature = no.toString(16);
+
+            // Add preceding 0s to make it 32 bit
+            while (signature.length() < 32) {
+                signature = "0" + signature;
+            }
+            // return the HashString
+           return signature;
+        }
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
