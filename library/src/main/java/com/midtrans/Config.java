@@ -1,9 +1,6 @@
 package com.midtrans;
 
-import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.proxy.ProxyConfig;
-
-import java.util.Optional;
 
 /**
  * Midtrans configuration
@@ -13,6 +10,7 @@ public class Config {
     private String SERVER_KEY;
     private String CLIENT_KEY;
     private boolean isProduction;
+    private String irisMerchantKey;
 
     private String BASE_URL;
 
@@ -288,6 +286,14 @@ public class Config {
         return xOverrideNotification;
     }
 
+
+    /**
+     * Get Iris merchant key
+     *
+     * @return String iris merchant key
+     */
+    public String getIrisMerchantKey() { return irisMerchantKey; }
+
     /**
      * set server-key for Basic Authentication while calling Midtrans API from backend.
      *
@@ -413,4 +419,13 @@ public class Config {
     public void paymentOverrideNotification(String xOverrideNotification) {
         this.xOverrideNotification = xOverrideNotification;
     }
-}
+
+    /**
+     * Set Iris Merchant key
+     *
+     * @param irisMerchantKey String iris merchant key
+     */
+    public void setIrisMerchantKey(String irisMerchantKey) {
+        this.irisMerchantKey = irisMerchantKey;
+    }
+} 

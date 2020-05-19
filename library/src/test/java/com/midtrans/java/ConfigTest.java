@@ -112,6 +112,12 @@ public class ConfigTest {
     }
 
     @Test
+    public void setIrisMerchantKey() {
+        config.setIrisMerchantKey("IRIS-MERCHANT-KEY");
+        assertEquals(config.getIrisMerchantKey(), "IRIS-MERCHANT-KEY");
+    }
+
+    @Test
     public void getSERVER_KEY() {
         assertEquals(serverKey, config.getSERVER_KEY());
     }
