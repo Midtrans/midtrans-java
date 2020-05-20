@@ -21,7 +21,7 @@ Maven:
   <dependency>
 	  <groupId>com.midtrans</groupId>
 	  <artifactId>java-library</artifactId>
-	  <version>1.1.2</version>
+	  <version>2.1.1</version>
 </dependency>
 </dependencies>
 ```
@@ -35,13 +35,13 @@ repositories {
 }
 
 dependencies {
-    compile 'com.midtrans:java-library:1.1.2'
+    compile 'com.midtrans:java-library:2.1.1'
 }
 ```
 
 ### 1.b Using JAR File
 
-If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://dl.bintray.com/midtrans/midtrans-java/com/midtrans/java-library/1.1.2/java-library-1.1.2.jar)
+If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://dl.bintray.com/midtrans/midtrans-java/com/midtrans/java-library/2.1.1/java-library-2.1.1.jar)
 
 ## 2. Usage
 
