@@ -78,7 +78,6 @@ public class MidtransIrisApiImpl implements MidtransIrisApi {
 
     @Override
     public String ping() {
-        /** Remove Credentials for ping API **/
         Call<ResponseBody> call = irisApi.ping();
         try {
             Response<ResponseBody> response = call.execute();
