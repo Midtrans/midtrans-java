@@ -18,10 +18,10 @@ Maven:
 </repositories>
 
 <dependencies>
-    <dependency>
-	<groupId>com.midtrans</groupId>
-	<artifactId>java-library</artifactId>
-	<version>1.1.2</version>
+  <dependency>
+	  <groupId>com.midtrans</groupId>
+	  <artifactId>java-library</artifactId>
+	  <version>2.1.1</version>
 </dependency>
 </dependencies>
 ```
@@ -35,13 +35,13 @@ repositories {
 }
 
 dependencies {
-    compile 'com.midtrans:java-library:1.1.2'
+    compile 'com.midtrans:java-library:2.1.1'
 }
 ```
 
 ### 1.b Using JAR File
 
-If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://dl.bintray.com/midtrans/midtrans-java/com/midtrans/java-library/1.1.2/java-library-1.1.2.jar)
+If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://dl.bintray.com/midtrans/midtrans-java/com/midtrans/java-library/2.1.1/java-library-2.1.1.jar)
 
 ## 2. Usage
 
@@ -478,20 +478,25 @@ Example also available [here](example/src/main/java/com/midtrans/sample/controll
 
 ```java
 @PostMapping(value = "/notification", produces = MediaType.APPLICATION_JSON_VALUE)
-    private ResponseEntity<String> handleNotification(@RequestBody Map<String, Object> response) {
+    private ResponseEntity<String> handleNotification(@RequestBody Map<String, Object> response) throws MidtransError {
         String notifResponse = null;
         if (!(response.isEmpty())) {
+            //Get Order ID from notification body
             String orderId = (String) response.get("order_id");
-            String transactionStatus = (String) response.get("transaction_status");
-            String fraudStatus = (String) response.get("fraud_status");
 
-            notifResponse = "Transaction notification received. Order ID: "+orderId+". Transaction status: "+transactionStatus+". Fraud status: "+fraudStatus;
+            // Get status transaction to api with order id
+            JSONObject transactionResult = coreApi.checkTransaction(orderId);
+
+            String transactionStatus = (String) transactionResult.get("transaction_status");
+            String fraudStatus = (String) transactionResult.get("fraud_status");
+
+            notifResponse = "Transaction notification received. Order ID: " + orderId + ". Transaction status: " + transactionStatus + ". Fraud status: " + fraudStatus;
             System.out.println(notifResponse);
 
-            if (fraudStatus.equals("capture")) {
+            if (transactionStatus.equals("capture")) {
                 if (fraudStatus.equals("challenge")) {
-                    // TODO set transaction status on your database to 'challenge'
-                } else if (fraudStatus.equals("accept")){
+                    // TODO set transaction status on your database to 'challenge' e.g: 'Payment status challenged. Please take action on your Merchant Administration Portal
+                } else if (fraudStatus.equals("accept")) {
                     // TODO set transaction status on your database to 'success'
                 }
             } else if (transactionStatus.equals("cancel") || transactionStatus.equals("deny") || transactionStatus.equals("expire")) {

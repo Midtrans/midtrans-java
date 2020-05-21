@@ -5,6 +5,7 @@ import com.midtrans.ConfigFactory;
 import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.service.MidtransCoreApi;
 import com.midtrans.sample.data.DataMockup;
+import com.midtrans.service.MidtransSnapApi;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
