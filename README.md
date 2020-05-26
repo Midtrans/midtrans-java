@@ -101,7 +101,7 @@ MidtransIrisApi irisApi = new ConfigFactory(new Config("IRIS-CREDENTIALS",null ,
 `isProduction`
 ```
 
-You can also re-setting config using `apiConfig()` method on MidtransCoreApi.Class, MidtransSnapApi.Class or MidtransIrisApi.class like `coreApi.apiConfig.set( ... )`
+You can also re-set config using `apiConfig()` method on MidtransCoreApi.Class, MidtransSnapApi.Class or MidtransIrisApi.class like `coreApi.apiConfig.set( ... )`
 example:
 
 ```java
@@ -121,7 +121,7 @@ irisApi.apiConfig().setIrisIdempotencyKey("IRIS-IDEMPOTENCY-KEY");
 
 ```
 
-In production environment, LOG is automatically turn off, if you want enable LOG, you can `setEnabledLog` like this
+In production environment, LOG is by default turned off, you can enable by `setEnabledLog`, e.g:
 
 ```java
 coreApi.apiConfig().setEnabledLog(true);
@@ -344,12 +344,12 @@ return "redirect:" +redirectURL;
 
 ### 2.2.C Core API (VT-Direct)
 
-You can see some Core API examples [here](example/src/main/java/com/midtrans/sample/controller/CoreApiController.java).
+You can see Core API examples [here](example/src/main/java/com/midtrans/sample/controller/CoreApiController.java).
 
 Available methods for `MidtransCoreApi` class
 ```java
     /**
-     * Do re-setting config Class like clientKey, serverKey, isProduction
+     * Do re-set config Class like clientKey, serverKey, isProduction
      * @return {Config class}
      */
     Config apiConfig();
@@ -558,7 +558,7 @@ JSONObject refundTransaction("YOUR_ORDER_ID OR TRANSACTION_ID", params());
     //do something with `result` JSON Raw Object
 ```
 ### 2.2.D Iris API (Disbursement)
-You can see some Iris API examples [here](example/src/main/java/com/midtrans/sample/controller/IrisController.java).
+You can see Iris API examples [here](example/src/main/java/com/midtrans/sample/controller/IrisController.java).
 
 #### IrisAPI Simple Sample Usage
 ```java
@@ -598,7 +598,7 @@ public class MidtransIrisExample {
 Available methods for `MidtransIrisApi` class
 ```java
     /**
-     * Do re-setting config Class iris-credentials, IrisIdempotencyKey
+     * Do re-set config Class iris-credentials, IrisIdempotencyKey
      *
      * @return {Config class}
      */
