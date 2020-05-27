@@ -10,7 +10,7 @@ import java.util.Map;
 public interface MidtransIrisApi {
 
     /**
-     * Do re-setting config Class iris-credential, IrisIdempotencyKey
+     * Do re-set config Class iris-credential, IrisIdempotencyKey
      *
      * @return {Config class}
      */
@@ -30,7 +30,7 @@ public interface MidtransIrisApi {
      * @return {JSONObject} - org.json Promise contains Object from JSON decoded response refer to: https://iris-docs.midtrans.com/#check-balance-aggregator
      * @throws MidtransError when an exception was occurred during executing the request.
      */
-    JSONObject getAggregatorBalance() throws MidtransError;
+    JSONObject getBalance() throws MidtransError;
 
     /**
      * Do create `/beneficiaries` Use this API to create a new beneficiary information for quick access on the payout page in Iris Portal.
@@ -57,7 +57,7 @@ public interface MidtransIrisApi {
      * @return {JSONObject} - org.json Promise contains Object from JSON decoded response refer to: https://iris-docs.midtrans.com/#list-beneficiaries
      * @throws MidtransError when an exception was occurred during executing the request.
      */
-    JSONArray getListBeneficiaries() throws MidtransError;
+    JSONArray getBeneficiaries() throws MidtransError;
 
     /**
      * Do create `/payouts` This API is for Creator to create a payout. It can be used for single payout and also multiple payouts.
@@ -93,7 +93,7 @@ public interface MidtransIrisApi {
      * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
      * @throws MidtransError when an exception was occurred during executing the request.
      */
-    JSONObject getPayoutsDetails(String referenceNo) throws MidtransError;
+    JSONObject getPayoutDetails(String referenceNo) throws MidtransError;
 
     /**
      * Do get `/statements` Use this API for list all transactions history for a month. You can specified start date and also end date for range transaction history.
@@ -136,7 +136,7 @@ public interface MidtransIrisApi {
      * @return {JSONObject} - org.json Promise contains Object from JSON decoded response (more params detail refer to: https://iris-docs.midtrans.com/#list-banks)
      * @throws MidtransError when an exception was occurred during executing the request.
      */
-    JSONObject getListBank() throws MidtransError;
+    JSONObject getBeneficiaryBanks() throws MidtransError;
 
     /**
      * Do validate `/account_validation` Use this API for check if an account is valid, if valid return account information.

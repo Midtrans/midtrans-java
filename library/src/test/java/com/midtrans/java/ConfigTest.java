@@ -113,8 +113,8 @@ public class ConfigTest {
 
     @Test
     public void setIrisMerchantKey() {
-        config.setIrisMerchantKey("IRIS-MERCHANT-KEY");
-        assertEquals(config.getIrisMerchantKey(), "IRIS-MERCHANT-KEY");
+        config.setIRIS_MERCHANT_KEY("IRIS-MERCHANT-KEY");
+        assertEquals(config.getIRIS_MERCHANT_KEY(), "IRIS-MERCHANT-KEY");
     }
 
     @Test

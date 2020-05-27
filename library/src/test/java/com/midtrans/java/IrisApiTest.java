@@ -39,7 +39,7 @@ public class IrisApiTest {
 
     @Test
     public void getAggregatorBalance() throws MidtransError {
-        JSONObject result = irisApi.getAggregatorBalance();
+        JSONObject result = irisApi.getBalance();
         assert result.has("balance");
     }
 
@@ -62,7 +62,7 @@ public class IrisApiTest {
     }
 
     private void getListBeneficiaries() throws MidtransError {
-        JSONArray result = irisApi.getListBeneficiaries();
+        JSONArray result = irisApi.getBeneficiaries();
         JSONObject jsonResult = new JSONObject(result.get(result.length() - 1).toString());
         assert jsonResult.getString("alias_name").equals(beneficiaries.get("alias_name"));
     }
@@ -147,8 +147,8 @@ public class IrisApiTest {
     }
 
     @Test
-    public void getListBank() throws MidtransError {
-        JSONObject result = irisApi.getListBank();
+    public void getBeneficiaryBanks() throws MidtransError {
+        JSONObject result = irisApi.getBeneficiaryBanks();
         JSONArray beneficiaryBanks = result.getJSONArray("beneficiary_banks");
         JSONObject arrayList = null;
         for (int i = 0; i < beneficiaryBanks.length(); i++) {
@@ -169,15 +169,10 @@ public class IrisApiTest {
 
     @Test
     public void createBeneficiaryWithIdempotencyKey() throws MidtransError {
-        Map<String, String> beneficiary = new HashMap<>();
-        beneficiary.put("bank", "bca");
-        beneficiary.put("name", "PT Jon Snow");
-        beneficiary.put("alias_name", "ptjonsnow");
-        beneficiary.put("account", "1145532134");
-        beneficiary.put("email", "jonsnow@mail.com");
+        Map beneficiary = dataMockup.initDataBeneficiaries();
 
         // Use idempotency key
-        irisApi.apiConfig().setIrisIdempotencyKey("Iris-Idempotency-Key");
+        irisApi.apiConfig().setIrisIdempotencyKey("Iris-Idempotency-Key"+dataMockup.random());
 
         // Request create beneficiary to Iris API
         JSONObject result1 = irisApi.createBeneficiaries(beneficiary);
@@ -190,7 +185,7 @@ public class IrisApiTest {
     @Test
     public void failureCredentials() throws MidtransError {
         irisApi.apiConfig().setSERVER_KEY(".");
-        JSONObject result = irisApi.getAggregatorBalance();
+        JSONObject result = irisApi.getBalance();
         assert result.getString("HTTP Basic").equals("Access denied.");
     }
 
@@ -199,7 +194,7 @@ public class IrisApiTest {
         irisApi.apiConfig().setSERVER_KEY(approverKey);
         JSONObject result = null;
         try {
-            result = irisApi.getPayoutsDetails(refNumber);
+            result = irisApi.getPayoutDetails(refNumber);
         } catch (MidtransError midtransError) {
             midtransError.printStackTrace();
         }
@@ -207,7 +202,7 @@ public class IrisApiTest {
     }
 
     private JSONObject getRandomBeneficiaries() throws MidtransError {
-        JSONArray result = irisApi.getListBeneficiaries();
+        JSONArray result = irisApi.getBeneficiaries();
         return new JSONObject(result.get(result.length() - 2).toString());
     }
 

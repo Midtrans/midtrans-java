@@ -9,8 +9,8 @@ public class Config {
 
     private String SERVER_KEY;
     private String CLIENT_KEY;
+    private String IRIS_MERCHANT_KEY;
     private boolean isProduction;
-    private String irisMerchantKey;
 
     private String BASE_URL;
 
@@ -292,7 +292,7 @@ public class Config {
      *
      * @return String iris merchant key
      */
-    public String getIrisMerchantKey() { return irisMerchantKey; }
+    public String getIRIS_MERCHANT_KEY() { return IRIS_MERCHANT_KEY; }
 
     /**
      * set server-key for Basic Authentication while calling Midtrans API from backend.
@@ -423,9 +423,9 @@ public class Config {
     /**
      * Set Iris Merchant key
      *
-     * @param irisMerchantKey String iris merchant key
+     * @param IRIS_MERCHANT_KEY String iris merchant key
      */
-    public void setIrisMerchantKey(String irisMerchantKey) {
-        this.irisMerchantKey = irisMerchantKey;
+    public void setIRIS_MERCHANT_KEY(String IRIS_MERCHANT_KEY) {
+        this.IRIS_MERCHANT_KEY = IRIS_MERCHANT_KEY;
     }
 }

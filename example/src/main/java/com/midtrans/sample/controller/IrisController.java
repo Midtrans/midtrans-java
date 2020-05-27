@@ -36,7 +36,7 @@ public class IrisController {
 
     public IrisController() {
         String irisSandboxMerchantKey = "IRIS-merchant-c8709d85-09d6-49c4-8ff5-9eaf81ec31cd";
-        irisApi.apiConfig().setIrisMerchantKey(irisSandboxMerchantKey);
+        irisApi.apiConfig().setIRIS_MERCHANT_KEY(irisSandboxMerchantKey);
     }
 
     @GetMapping(value = "/iris/ping", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -51,7 +51,7 @@ public class IrisController {
         String fromDate  = DateTimeFormatter.ofPattern("yyy-MM-dd").format(localDate);
         String toDate = DateTimeFormatter.ofPattern("yyy-MM-dd").format(localDate);
 
-        JSONObject currentBalance = irisApi.getAggregatorBalance();
+        JSONObject currentBalance = irisApi.getBalance();
         JSONArray transactionHistory = irisApi.getTransactionHistory(fromDate, toDate);
 
         List<Map<String, Object>> rows = new ArrayList<>();
@@ -91,7 +91,7 @@ public class IrisController {
 
     @RequestMapping(value = "/iris/payouts", method = RequestMethod.GET)
     public String payout(Model model) throws MidtransError {
-        JSONArray response = irisApi.getListBeneficiaries();
+        JSONArray response = irisApi.getBeneficiaries();
         List<String> listNameBeneficiaries = new ArrayList<>();
         if (response != null) {
             int len = response.length();
@@ -125,8 +125,7 @@ public class IrisController {
 
     private Map<String, String> getBeneficiaries(Map<String, String> params) throws MidtransError {
         irisApi.apiConfig().setSERVER_KEY(sandboxCreatorKey);
-        JSONArray result = irisApi.getListBeneficiaries();
-        System.out.println(result);
+        JSONArray result = irisApi.getBeneficiaries();
         Map<String, String> beneficiary = new HashMap<>();
         if (result != null) {
             for (int i=0;i<result.length();i++){
@@ -164,7 +163,7 @@ public class IrisController {
     public ResponseEntity<String> payoutDetails(@RequestBody Map<String, String> params) throws MidtransError {
         String referenceNo = params.get("reference_no");
         irisApi.apiConfig().setSERVER_KEY(sandboxCreatorKey);
-        JSONObject result = irisApi.getPayoutsDetails(referenceNo);
+        JSONObject result = irisApi.getPayoutDetails(referenceNo);
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
@@ -174,7 +173,7 @@ public class IrisController {
         String jsonBodyRequest = httpEntity.getBody();
 
         // Create hash Signature from payload + iris-merchant-key
-        String hashParam = jsonBodyRequest + irisApi.apiConfig().getIrisMerchantKey();
+        String hashParam = jsonBodyRequest + irisApi.apiConfig().getIRIS_MERCHANT_KEY();
         String hashSignature = sha512(hashParam);
 
         JSONObject jsonObject = new JSONObject(jsonBodyRequest);
