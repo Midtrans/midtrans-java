@@ -17,7 +17,7 @@ public interface IrisApi {
     Call<ResponseBody> ping();
 
     @GET(API_VERSION + "balance")
-    Call<ResponseBody> getAggregatorBalance();
+    Call<ResponseBody> getBalance();
 
     @POST(API_VERSION + "beneficiaries")
     Call<ResponseBody> createBeneficiaries(@Body Map<String, String> params);
@@ -26,7 +26,7 @@ public interface IrisApi {
     Call<ResponseBody> updateBeneficiaries(@Path("aliasName") String aliasName, @Body Map<String, String> params);
 
     @GET(API_VERSION + "beneficiaries")
-    Call<ResponseBody> getListBeneficiaries();
+    Call<ResponseBody> getBeneficiaries();
 
     @POST(API_VERSION + "payouts")
     Call<ResponseBody> createPayouts(@Body Map<String, Object> params);
@@ -53,7 +53,7 @@ public interface IrisApi {
     Call<ResponseBody> getFacilitatorBalance(@Path("bankAccountId") String bankAccountId);
 
     @GET(API_VERSION + "beneficiary_banks")
-    Call<ResponseBody> getListBanks();
+    Call<ResponseBody> getBeneficiaryBanks();
 
     @GET(API_VERSION + "account_validation")
     Call<ResponseBody> validateBankAccount(@Query("bank") String bank, @Query("account") String account);

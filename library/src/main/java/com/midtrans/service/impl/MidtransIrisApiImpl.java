@@ -92,7 +92,7 @@ public class MidtransIrisApiImpl implements MidtransIrisApi {
 
     @Override
     public JSONObject getBalance() throws MidtransError {
-        Call<ResponseBody> call = irisApi.getAggregatorBalance();
+        Call<ResponseBody> call = irisApi.getBalance();
         return httpHandle(call);
     }
 
@@ -118,7 +118,7 @@ public class MidtransIrisApiImpl implements MidtransIrisApi {
 
     @Override
     public JSONArray getBeneficiaries() throws MidtransError {
-        Call<ResponseBody> call = irisApi.getListBeneficiaries();
+        Call<ResponseBody> call = irisApi.getBeneficiaries();
         return jsonArrayHttpHandle(call);
     }
 
@@ -182,7 +182,7 @@ public class MidtransIrisApiImpl implements MidtransIrisApi {
 
     @Override
     public JSONObject getBeneficiaryBanks() throws MidtransError {
-        Call<ResponseBody> call = irisApi.getListBanks();
+        Call<ResponseBody> call = irisApi.getBeneficiaryBanks();
         return httpHandle(call);    }
 
     @Override
