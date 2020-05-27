@@ -176,7 +176,7 @@
                 // Implement success handling here
             console.log(response);
 
-            fetch("/charge-transaction", {
+            fetch("/cards/charge", {
                 method : "POST",
                 body: JSON.stringify({
                     "token_id" : response.token_id,
@@ -200,7 +200,7 @@
           // fail to get card token
           transactionComplete(response);
         }
-      }
+      };
       var callback3dsAuthentication = {
         performAuthentication: function(redirect_url){
           // [3.2] 3ds authentication redirect_url received, open iframe to display to customer
@@ -219,7 +219,7 @@
         onPending: function(response){
           transactionComplete(response);
         }
-      }
+      };
       function transactionComplete(responseObj){
         // Close 3DS popup, then display the result (for example)
         console.log("transactionComplete with status: ",responseObj);
@@ -230,7 +230,7 @@
         if (responseObj.transaction_id){
           // [4] Inform the result to backend update DB status and verify to Midtrans
           // Check backend implementation on `app.js` file, section `[4]`
-          fetch('/check-transaction', {
+          fetch('/transactions/status', {
             method : "POST",
             body: JSON.stringify({ "transaction_id" : responseObj.transaction_id }),
             headers: {'Content-Type': 'application/json'},

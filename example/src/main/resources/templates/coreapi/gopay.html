@@ -92,7 +92,7 @@
       var payButton = document.getElementById('pay-button');
       payButton.onclick = function (event) {
         console.log("PAY button clicked");
-        fetch("/gopay", {
+        fetch("/gopay/charge", {
                 method : "POST",
                 headers: {'Content-Type': 'application/json'},
             })
@@ -121,7 +121,7 @@
         if (responseObj.transaction_id){
           // [4] Inform the result to backend update DB status and verify to Midtrans
           // Check backend implementation on `app.js` file, section `[4]`
-          fetch('/check-transaction', {
+          fetch('/transactions/status', {
             method : "POST",
             body: JSON.stringify({ "transaction_id" : responseObj.transaction_id }),
             headers: {'Content-Type': 'application/json'},

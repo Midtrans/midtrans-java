@@ -2,7 +2,6 @@ package com.midtrans.service.impl;
 
 import com.midtrans.Config;
 import com.midtrans.httpclient.APIHttpClient;
-import com.midtrans.httpclient.error.ErrorUtils;
 import com.midtrans.httpclient.SnapApi;
 import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.service.MidtransSnapApi;
@@ -13,14 +12,11 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Implements from {@link MidtransSnapApi MidtransSnapApi}
  */
 public class MidtransSnapApiImpl implements MidtransSnapApi {
-    private static final Logger LOGGER = Logger.getLogger(MidtransSnapApi.class.getName());
-
     private Config config;
 
     /**
@@ -34,10 +30,8 @@ public class MidtransSnapApiImpl implements MidtransSnapApi {
 
     // Snap http request method with handle error exception
     private JSONObject snapHttpRequest(Map<String, Object> params) throws MidtransError {
-
         JSONObject rawResult = new JSONObject();
         APIHttpClient httpClient = new APIHttpClient(config);
-        ErrorUtils errorUtils = new ErrorUtils();
 
         // Initialize Retrofit http client
         SnapApi snapApi = httpClient.getClient().create(SnapApi.class);
@@ -49,15 +43,14 @@ public class MidtransSnapApiImpl implements MidtransSnapApi {
                 try {
                     if (response.body() != null) {
                         rawResult = new JSONObject(response.body().string());
-                        if (config.isEnabledLog()) {
-                            LOGGER.info("Midtrans Snap Response : " + rawResult.toString());
-                        }
                     }
                 } catch (JSONException je) {
                     throw new MidtransError(je);
                 }
             } else {
-                errorUtils.catchHttpErrorMessage(response.code(), response);
+                if (response.errorBody() != null) {
+                    rawResult = new JSONObject(response.errorBody().string());
+                }
             }
         } catch (Exception e) {
             throw new MidtransError(e);

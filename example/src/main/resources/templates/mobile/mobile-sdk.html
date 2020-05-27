@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: common_header}">
+    <title>Midtrans Snap JAVA Springboot Demo</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main role="main" class="container">
+    <div class="container">
+        <div class="col-sm-8 col-md-7 py-4">
+            <h2 class="mt-5">Midtrans Mobile SDK Demo</h2>
+            <a target="_blank" href="https://bintray.com/pt-midtrans/maven/uikit/_latestVersion"> <img
+                    src="https://api.bintray.com/packages/pt-midtrans/maven/uikit/images/download.svg"></a>
+            <a target="_blank" href="https://circleci.com/gh/veritrans/veritrans-android/tree/master"> <img
+                    src="https://circleci.com/gh/veritrans/veritrans-android/tree/master.svg?style=svg"></a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <iframe src="https://appetize.io/embed/27pf5ygkah7npwm16vpb8676d4?device=nexus5&scale=75&orientation=portrait&osVersion=8.1"
+                    width="378px" height="800px" frameborder="0" scrolling="no"></iframe>
+        </div>
+
+        <div class="col-md-8 order-md-1">
+            <div class="container">
+                <div class="col">
+                    <code>
+                         <pre>
+  <b>Testing cards:</b>
+
+    <b>For 3D Secure:</b>
+    Visa success              4811 1111 1111 1114
+    Visa deny by bank         4711 1111 1111 1115
+    Visa deny by FDS          4611 1111 1111 1116
+
+    MasterCard success        5211 1111 1111 1117
+    MasterCard deny by bank   5111 1111 1111 1118
+    MasterCard deny by FDS    5411 1111 1111 1115
+
+    Challenge by FDS          4511 1111 1111 1117
+    </pre>
+                    </code>
+                </div>
+            </div>
+            <div class="container">
+                <p class="lead">The Sample app Android SDK consume Java sample backend to get Snap token with our Midtrans-Java-Library.</p>
+                <p>There is only one endpoint that are required to use Midtrans mobile SDK `/charge`. Sample controller are located in the <a target="_blank" href="https://github.com/Midtrans/midtrans-java/blob/master/example/src/main/java/com/midtrans/sample/controller/MobileSdkController.java">MobileSdkController</a></p>
+                <p>For more detailed about Midtrans SDK, Please read <a target="_blank" href="http://mobile-docs.midtrans.com/">Midtrans Mobile SDK </a>documentation.</p>
+                <p><a target="_blank" href="https://github.com/veritrans/veritrans-android"> <img
+                        src="https://img.shields.io/badge/GitHub-Midtrans%20AndroidSDK-blue?style=flat"></a>
+                    <a target="_blank" href="https://github.com/Xaxxis/MidtransMobileSDKDemo"> <img
+                        src="https://img.shields.io/badge/Download-SDKSampleProject-blue?style=flat"></a>
+                    <a target="_blank" href="https://simulator.sandbox.midtrans.com/assets/index.html"> <img
+                            src="https://img.shields.io/badge/Go%20to-Payment%20simulator-lightgrey?style=flat"></a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{layout :: body_bottom_scripts}"/>
+</body>
+</html>

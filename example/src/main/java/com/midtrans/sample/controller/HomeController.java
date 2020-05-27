@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Map;
 
 
-@Controller("/")
+@Controller
 public class HomeController {
 
     String clientKey = "SB-Mid-client-nKsqvar5cn60u2Lv";
@@ -29,15 +29,19 @@ public class HomeController {
         return "index";
     }
 
-    @RequestMapping(value = "api/core-api", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile-sdk", method = RequestMethod.GET)
+    private String mobileSdk() {
+        return "mobile/mobile-sdk";
+    }
+
+    @RequestMapping(value = "/api/core-api", method = RequestMethod.GET)
     public String coreApi(Model model) {
         Map<String, Object> objectMap = dataMockup.initDataMock();
         model.addAttribute("data", objectMap);
         return "coreapi/core-api";
     }
 
-
-    @RequestMapping(value = "api/checkout", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/checkout", method = RequestMethod.GET)
     public String checkOut(@RequestParam(value = "paymentType") String typePayment,
                            Model model) {
         Map<String, Object> result = dataMockup.initDataMock();
@@ -50,5 +54,4 @@ public class HomeController {
         }
         return "redirect:/api/core-api";
     }
-
 }

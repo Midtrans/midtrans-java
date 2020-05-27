@@ -5,12 +5,10 @@ import com.midtrans.ConfigFactory;
 import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.service.MidtransCoreApi;
 import com.midtrans.java.mockupdata.DataMockup;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -25,7 +23,6 @@ public class CoreApiTest {
     private DataMockup dataMockup;
 
     private final String cardNumberAccept = "4811111111111114";
-
 
     @Before
     public void setUp() {
@@ -67,7 +64,7 @@ public class CoreApiTest {
     @Test
     public void failChargeWithEmptyBody() throws MidtransError {
         JSONObject result = coreApi.chargeTransaction(null);
-        assert result.toString().equals("{}");
+        assert result.getString("message").equals("An unexpected error occurred");
     }
 
     @Test
@@ -102,7 +99,6 @@ public class CoreApiTest {
     public void approveTransaction() throws MidtransError {
         JSONObject result = coreApi.approveTransaction(makeTransaction());
         assert result.getString("status_code").equals("412");
-
     }
 
     @Test
@@ -170,6 +166,14 @@ public class CoreApiTest {
         assert result.getString("status_code").equals("401");
     }
 
+    @Test
+    public void getBinCard() throws MidtransError {
+
+        coreApi.apiConfig().setSERVER_KEY(clientKey);
+        JSONObject result = coreApi.getBIN("420191");
+        assert result.getJSONObject("data").getString("country_name").equals("INDONESIA");
+        assert result.getJSONObject("data").getString("brand").equals("VISA");
+    }
 
     // Make dummy transaction for get orderId
     private String makeTransaction() throws MidtransError {

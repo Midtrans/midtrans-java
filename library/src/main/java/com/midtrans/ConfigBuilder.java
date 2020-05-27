@@ -13,9 +13,14 @@ public class ConfigBuilder {
     private int connectionTimeout = DEFAULT_CONNECT_TIMEOUT;
     private int readTimeout = DEFAULT_READ_TIMEOUT;
     private int writeTimeout = DEFAULT_WRITE_TIMEOUT;
-    static final int DEFAULT_CONNECT_TIMEOUT = 5;
-    static final int DEFAULT_READ_TIMEOUT = 5;
-    static final int DEFAULT_WRITE_TIMEOUT = 5;
+    private int maxConnectionPoolSize = DEFAULT_MAX_CONNECTION_POOL_SIZE;
+    private int keepAliveDuration = DEFAULT_KEEP_ALIVE_DURATION;
+
+    static final int DEFAULT_CONNECT_TIMEOUT = 10; //SECOND
+    static final int DEFAULT_READ_TIMEOUT = 10; //SECOND
+    static final int DEFAULT_WRITE_TIMEOUT = 10; //SECOND
+    static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 16;
+    static final int DEFAULT_KEEP_ALIVE_DURATION = 300; //SECOND
 
 
     /**
@@ -60,27 +65,28 @@ public class ConfigBuilder {
      * @param connectionTimeout Http client connect timeout
      * @return {@link com.midtrans.ConfigBuilder ConfigBuilder}
      */
-    public ConfigBuilder setConnectionTimeout(int connectionTimeout) {
+    public ConfigBuilder setConnectionTimeout(final int connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
     }
 
     /**
-     * Set http client socket timeout
-     * @param readTimeout Http client socket timeout
+     * Set http client read timeout
+     * @param readTimeout Http client read timeout
      * @return {@link com.midtrans.ConfigBuilder ConfigBuilder}
      */
-    public ConfigBuilder setReadTimeout(int readTimeout) {
+    public ConfigBuilder setReadTimeout(final int readTimeout) {
         this.readTimeout = readTimeout;
         return this;
     }
 
+
     /**
-     * Set Midtrans max connection pool size
-     * @param writeTimeout Max http client connection pool size
-     * @return                      {@link com.midtrans.ConfigBuilder ConfigBuilder}
+     * Set http client write timeout
+     * @param writeTimeout Http client write timeout
+     * @return {@link com.midtrans.ConfigBuilder ConfigBuilder}
      */
-    public ConfigBuilder setWriteTimeout(int writeTimeout) {
+    public ConfigBuilder setWriteTimeout(final int writeTimeout) {
         this.writeTimeout = writeTimeout;
         return this;
     }
@@ -96,10 +102,30 @@ public class ConfigBuilder {
     }
 
     /**
+     * Set Midtrans max connection pool size
+     * @param connectionPoolSize Max http client connection pool size
+     * @return {@link com.midtrans.ConfigBuilder ConfigBuilder}
+     */
+    public ConfigBuilder setMaxConnectionPoolSize(final int connectionPoolSize) {
+        this.maxConnectionPoolSize = connectionPoolSize;
+        return this;
+    }
+
+    /**
+     * Set Midtrans keep alive durtions
+     * @param keepAliveDuration http client keep alive durations
+     * @return {@link com.midtrans.ConfigBuilder ConfigBuilder}
+     */
+    public ConfigBuilder setKeepAliveDuration(final int keepAliveDuration) {
+        this.keepAliveDuration = keepAliveDuration;
+        return this;
+    }
+
+    /**
      * Build Config object from builder
      * @return {@link Config Config}
      */
     public Config build() {
-        return new Config(SERVER_KEY, CLIENT_KEY, isProduction, connectionTimeout, readTimeout, writeTimeout, proxyConfig);
+        return new Config(SERVER_KEY, CLIENT_KEY, isProduction, connectionTimeout, readTimeout, writeTimeout, maxConnectionPoolSize, keepAliveDuration, proxyConfig);
     }
 }

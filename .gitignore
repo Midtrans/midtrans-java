@@ -51,3 +51,10 @@ resources/templates/css/**
 resources/templates/js/**
 resources/templates/fonts/**
 dist
+
+## Maven:
+!.mvn/wrapper/maven-wrapper.jar
+/.mvn/
+/mvnw
+/mvnw.bat
+mvnw.cmd

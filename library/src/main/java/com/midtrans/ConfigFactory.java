@@ -1,6 +1,8 @@
 package com.midtrans;
 
+import com.midtrans.service.MidtransIrisApi;
 import com.midtrans.service.impl.MidtransCoreApiImpl;
+import com.midtrans.service.impl.MidtransIrisApiImpl;
 import com.midtrans.service.impl.MidtransSnapApiImpl;
 
 /**
@@ -40,6 +42,11 @@ public class ConfigFactory {
     public MidtransSnapApiImpl getSnapApi() {
         config.getSnapApiURL();
         return new MidtransSnapApiImpl(config);
+    }
+
+    public MidtransIrisApi getIrisApi() {
+        config.getIrisApiURL();
+        return new MidtransIrisApiImpl(config);
     }
 
     /**

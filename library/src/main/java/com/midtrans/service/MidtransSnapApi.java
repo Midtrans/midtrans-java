@@ -11,7 +11,7 @@ import java.util.Map;
 public interface MidtransSnapApi {
 
     /**
-     * Do re-setting config Class like clientKey, serverKey, isProduction
+     * Do re-set config Class like clientKey, serverKey, isProduction
      *
      * @return Config.class
      */
