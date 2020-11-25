@@ -42,6 +42,7 @@ public class CoreApiController {
     public ResponseEntity<String> charge(@RequestBody Map<String, String> cc) throws MidtransError {
         dataMockup.setPaymentType("credit_card");
         Map<String, String> creditCard = new HashMap<>(cc);
+        creditCard.put("authentication", "true");
         dataMockup.creditCard(creditCard);
         Map<String, Object> body = new HashMap<>(dataMockup.initDataMock());
 
