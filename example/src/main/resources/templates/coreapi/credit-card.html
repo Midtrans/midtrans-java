@@ -110,9 +110,6 @@
                                     Credit card number is required
                                 </div>
                             </div>
-                            <input class="authenticate_3ds" type="checkbox" name="authenticate_3ds" value="true"
-                                   checked>
-                            <label>3D Secure</label>
                         </div>
                     </div>
                     <div class="col-md-7">
@@ -179,8 +176,7 @@
             fetch("/cards/charge", {
                 method : "POST",
                 body: JSON.stringify({
-                    "token_id" : response.token_id,
-                    "authentication" : document.querySelector('.authenticate_3ds').checked
+                    "token_id" : response.token_id
                 }),
                 headers: {'Content-Type': 'application/json'},
             })
