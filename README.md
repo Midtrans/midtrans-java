@@ -1,5 +1,8 @@
 # Midtrans Client - Java
-[ ![Download](https://api.bintray.com/packages/midtrans/midtrans-java/com.midtrans/images/download.svg) ](https://bintray.com/midtrans/midtrans-java/com.midtrans/_latestVersion) [![Build Status](https://travis-ci.org/Xaxxis/midtrans-java.svg?branch=master)](https://travis-ci.org/Xaxxis/midtrans-java) [![Demo apps](https://img.shields.io/badge/Go%20to-Demo%20Apps-green)](https://midtrans-java.herokuapp.com/)
+[ ![Download](https://api.bintray.com/packages/midtrans/midtrans-java/com.midtrans/images/download.svg) ](https://bintray.com/midtrans/midtrans-java/com.midtrans/_latestVersion) 
+[![Total downloads](https://img.shields.io/bintray/dt/midtrans/midtrans-java/com.midtrans.svg)
+[![Build Status](https://travis-ci.org/Xaxxis/midtrans-java.svg?branch=master)](https://travis-ci.org/Xaxxis/midtrans-java) 
+[![Demo apps](https://img.shields.io/badge/Go%20to-Demo%20Apps-green)](https://midtrans-java.herokuapp.com/)
 
 Midtrans :heart: Java, This is the Official Java API client/library for Midtrans Payment API. Visit [https://midtrans.com](https://midtrans.com). More information about the product and see documentation at [http://docs.midtrans.com](https://beta-docs.midtrans.com/) for more technical details. This library used java version 1.8
 
