@@ -9,6 +9,7 @@ import java.util.Map;
 /**
  * HttpClient for midtrans CoreAPI
  */
+@Deprecated
 public interface CoreApi {
 
     String API_VERSION = "v2/";

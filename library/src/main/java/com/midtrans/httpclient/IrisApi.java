@@ -9,6 +9,7 @@ import java.util.Map;
 /**
  * HttpClient for midtrans IrisAPI
  */
+@Deprecated
 public interface IrisApi {
 
     String API_VERSION = "api/v1/";

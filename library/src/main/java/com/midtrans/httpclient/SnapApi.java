@@ -10,6 +10,7 @@ import java.util.Map;
 /**
  * HttpClient for midtrans SnapAPI
  */
+@Deprecated
 public interface SnapApi {
 
     @POST("snap/v1/transactions")
