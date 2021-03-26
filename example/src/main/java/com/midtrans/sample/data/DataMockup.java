@@ -2,7 +2,11 @@ package com.midtrans.sample.data;
 
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class DataMockup {
@@ -26,10 +30,9 @@ public class DataMockup {
     }
 
     public Map<String, Object> initDataMock(){
-        UUID idRand = UUID.randomUUID();
-
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Map<String, String> transDetail = new HashMap<>();
-        transDetail.put("order_id", idRand.toString());
+        transDetail.put("order_id", "MID-JAVA_DEMO-" + timestamp.getTime());
         transDetail.put("gross_amount", "265000");
 
         List<Map<String, String>> items = new ArrayList<>();
