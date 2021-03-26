@@ -1,10 +1,9 @@
 package com.midtrans.sample.controller;
 
-import com.midtrans.Config;
-import com.midtrans.ConfigFactory;
 import com.midtrans.httpclient.error.MidtransError;
-import com.midtrans.service.MidtransSnapApi;
 import com.midtrans.sample.data.DataMockup;
+import com.midtrans.v2.Midtrans;
+import com.midtrans.v2.gateway.SnapApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.midtrans.sample.data.Constant.sandboxClientKey;
+import static com.midtrans.sample.data.Constant.sandboxServerKey;
 
 @Controller
 public class SnapController {
@@ -20,8 +25,6 @@ public class SnapController {
     //Data transaction Mockup
     @Autowired
     private DataMockup dataMockup;
-
-    private MidtransSnapApi snapApi = new ConfigFactory(new Config("SB-Mid-server-TOq1a2AVuiyhhOjvfs3U_KeO", "SB-Mid-client-nKsqvar5cn60u2Lv", false)).getSnapApi();
 
     @RequestMapping(value = "/snap", method = RequestMethod.GET)
     public String snap(Model model) {
@@ -34,8 +37,6 @@ public class SnapController {
     public String checkout(@RequestParam(value = "enablePay", required = false) List<String> listPay,
                            @RequestParam(value = "snapType") String snapType,
                            Model model) throws MidtransError {
-        // Get ClientKey from Midtrans Configuration class
-        String clientKey = snapApi.apiConfig().getCLIENT_KEY();
 
         // New Map Object for JSON raw request body
         Map<String, Object> requestBody = new HashMap<>();
@@ -54,24 +55,48 @@ public class SnapController {
         // PutAll data mockUp to requestBody
         requestBody.putAll(dataMockup.initDataMock());
 
-        /*
-        If you want snap method return json raw object, you can use method
-        createTransaction() on MidtransSnapApi class.
+        /**
+         * Midtrans simple sample use : Using Midtrans Global Config class {@link Midtrans}.
+         * The Global Config will be use only for Midtrans API static Method {@link com.midtrans.v2}
+         * Sample use on Snap transaction request on this Controller @line 84 & 106
+         *
+         * Also you can setup global configuration for connectTimeout, enableLog, proxyConfig, etc.
          */
+        Midtrans.serverKey = sandboxServerKey;
+        Midtrans.clientKey = sandboxClientKey;
+        Midtrans.isProduction = false;
 
         // send data to frontEnd snapPopUp
         if (snapType.equals("snap")) {
             model.addAttribute("result", requestBody);
-            model.addAttribute("clientKey", clientKey);
-            // token object getData token to API with createTransactionToken() method return String token
-            model.addAttribute("transactionToken", snapApi.createTransactionToken(requestBody));
-            return "snap/check-out";
 
-            // send data to frontEnd redirect-url
-        } else {
+            /**
+             * Get ClientKey from Midtrans Global Config {@link Midtrans}
+             * */
+            String clientKey = Midtrans.getClientKey();
+            model.addAttribute("clientKey", clientKey);
+
+            /**
+             * Request Snap token to Midtrans API with static Method
+             * */
+            String snapToken = SnapApi.createTransactionToken(requestBody);
+
+            model.addAttribute("transactionToken", snapToken);
+            return "snap/check-out";
+        } // send data to frontEnd redirect-url
+        else {
             model.addAttribute("result", requestBody);
-            // redirectURL get url redirect to API with createTransactionRedirectUrl() method, with return String url redirect
-            model.addAttribute("redirectURL", snapApi.createTransactionRedirectUrl(requestBody));
+
+            // Setup custom headers for Midtrans API request
+            Map<String, String> customHeaders = new HashMap<>();
+            customHeaders.put("X-Client-User-Agent", "MidJAVACustomHeader");
+
+            /**
+             * Request Snap redirect_url to Midtrans API with static Method
+             * */
+            String redirectUrl = SnapApi.createTransactionRedirectUrl(requestBody);
+
+            model.addAttribute("redirectURL", redirectUrl);
             return "snap/check-out";
         }
     }
