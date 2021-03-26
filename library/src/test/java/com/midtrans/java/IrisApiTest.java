@@ -183,22 +183,26 @@ public class IrisApiTest {
     }
 
     @Test
-    public void failureCredentials() throws MidtransError {
+    public void failureCredentials() {
         irisApi.apiConfig().setSERVER_KEY(".");
-        JSONObject result = irisApi.getBalance();
-        assert result.getString("HTTP Basic").equals("Access denied.");
+        try {
+            irisApi.getBalance();
+        } catch (MidtransError midtransError) {
+            midtransError.printStackTrace();
+            assert midtransError.getStatusCode().equals(401);
+            assert midtransError.getMessage().contains("Midtrans API is returning API error. HTTP status code: 401 API response: ");
+        }
     }
 
     @Test
     public void failureGetPayoutsDetails() {
         irisApi.apiConfig().setSERVER_KEY(approverKey);
-        JSONObject result = null;
         try {
-            result = irisApi.getPayoutDetails(refNumber);
+            irisApi.getPayoutDetails(refNumber);
         } catch (MidtransError midtransError) {
             midtransError.printStackTrace();
+            assert midtransError.getResponseBody().equals("{\"error_message\":\"Specified payout not found\",\"errors\":\"Specified payout not found\"}");
         }
-        assert result.getString("error_message").equals("Specified payout not found");
     }
 
     private JSONObject getRandomBeneficiaries() throws MidtransError {

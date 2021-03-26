@@ -13,8 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.midtrans.java.mockupdata.Constant.clientKey;
-import static com.midtrans.java.mockupdata.Constant.serverKey;
+import static com.midtrans.java.mockupdata.Constant.*;
 
 public class CoreApiTest {
 
@@ -27,8 +26,8 @@ public class CoreApiTest {
     @Before
     public void setUp() {
         configFactory = new ConfigFactory(new ConfigBuilder()
-                .setCLIENT_KEY(clientKey)
-                .setSERVER_KEY(serverKey)
+                .setCLIENT_KEY(mainClientKey)
+                .setSERVER_KEY(mainServerKey)
                 .setIsProduction(false)
                 .build());
         coreApi = configFactory.getCoreApi();
@@ -62,9 +61,13 @@ public class CoreApiTest {
     }
 
     @Test
-    public void failChargeWithEmptyBody() throws MidtransError {
-        JSONObject result = coreApi.chargeTransaction(null);
-        assert result.getString("message").equals("An unexpected error occurred");
+    public void failChargeWithEmptyBody() {
+        try {
+            coreApi.chargeTransaction(null);
+        } catch (MidtransError midtransError) {
+            midtransError.printStackTrace();
+            assert midtransError.getMessage().contains("Midtrans API is returning API error. HTTP status code: 500 API response: {\"message\":\"An unexpected error occurred\"}");
+        }
     }
 
     @Test
@@ -77,7 +80,7 @@ public class CoreApiTest {
 
     @Test
     public void cardPointInquiry() throws MidtransError {
-        JSONObject result = coreApi.cardPointInquiry(genCardToken(cardNumberAccept));
+        JSONObject result = coreApi.cardPointInquiry(genCardToken(bniCardNumber));
         assert result.getString("status_code").equals("200");
         assert result.getString("status_message").equals("Success, Credit Card Point inquiry is successful");
     }
@@ -97,8 +100,16 @@ public class CoreApiTest {
 
     @Test
     public void approveTransaction() throws MidtransError {
-        JSONObject result = coreApi.approveTransaction(makeTransaction());
-        assert result.getString("status_code").equals("412");
+        JSONObject result = coreApi.approveTransaction(makeFDSTransaction());
+        assert result.getString("status_code").equals("200");
+        assert result.getString("status_message").equals("Success, transaction is approved");
+    }
+
+    @Test
+    public void denyTransaction() throws MidtransError {
+        JSONObject result = coreApi.denyTransaction(makeFDSTransaction());
+        assert result.getString("status_code").equals("200");
+        assert result.getString("status_message").equals("Success, transaction is denied");
     }
 
     @Test
@@ -157,19 +168,23 @@ public class CoreApiTest {
     }
 
     @Test
-    public void failChargeTransactionNoServerKey() throws MidtransError {
-        coreApi.apiConfig().setSERVER_KEY("");
+    public void failChargeTransactionBrokenServerKey() {
+        coreApi.apiConfig().setSERVER_KEY(".");
         dataMockup = new DataMockup();
         dataMockup.setPaymentType("gopay");
-        JSONObject result = coreApi.chargeTransaction(dataMockup.initDataMock());
+        try {
+            coreApi.chargeTransaction(dataMockup.initDataMock());
+        } catch (MidtransError midtransError) {
+            midtransError.printStackTrace();
+            assert midtransError.getMessage().contains("Midtrans API is returning API error. HTTP status code: 500 API response: {\"message\":\"An unexpected error occurred\"}");
+        }
 
-        assert result.getString("status_code").equals("401");
     }
 
     @Test
     public void getBinCard() throws MidtransError {
 
-        coreApi.apiConfig().setSERVER_KEY(clientKey);
+        coreApi.apiConfig().setSERVER_KEY(mainClientKey);
         JSONObject result = coreApi.getBIN("420191");
         assert result.getJSONObject("data").getString("country_name").equals("INDONESIA");
         assert result.getJSONObject("data").getString("brand").equals("VISA");
@@ -188,7 +203,6 @@ public class CoreApiTest {
         dataMockup = new DataMockup();
         dataMockup.setPaymentType("credit_card");
         Map<String, String> cc = new HashMap<>();
-        String cardNumberFDS = "4811111111111114";
         cc.put("token_id", genCardToken(cardNumberFDS));
         dataMockup.creditCard(cc);
 

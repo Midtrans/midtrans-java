@@ -14,7 +14,7 @@ public class ConfigTest {
 
     @Before
     public void setUp() {
-        config = new Config(serverKey, clientKey, isProduction);
+        config = new Config(mainServerKey, mainClientKey, isProduction);
     }
 
     @Test
@@ -119,12 +119,12 @@ public class ConfigTest {
 
     @Test
     public void getSERVER_KEY() {
-        assertEquals(serverKey, config.getSERVER_KEY());
+        assertEquals(mainServerKey, config.getSERVER_KEY());
     }
 
     @Test
     public void getCLIENT_KEY() {
-        assertEquals(clientKey, config.getCLIENT_KEY());
+        assertEquals(mainClientKey, config.getCLIENT_KEY());
     }
 
     @Test
