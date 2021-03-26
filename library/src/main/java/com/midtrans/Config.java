@@ -2,6 +2,8 @@ package com.midtrans;
 
 import com.midtrans.proxy.ProxyConfig;
 
+import java.util.Map;
+
 /**
  * Midtrans configuration
  */
@@ -30,6 +32,8 @@ public class Config {
     private ProxyConfig proxyConfig;
 
     private boolean enabledLog;
+
+    private Map<String, String> customHeaders;
 
     /**
      * Midtrans configuration constructor
@@ -61,7 +65,7 @@ public class Config {
      * @param maxConnectionPool value max for connection pool
      * @param keepAliveDuration Durations for Keep alive connection
      */
-    public Config(String SERVER_KEY, String CLIENT_KEY, boolean isProduction, int connectionTimeout, int readTimeout, int writeTimeout, int maxConnectionPool, int keepAliveDuration) {
+    public Config(String SERVER_KEY, String CLIENT_KEY, boolean isProduction, int connectionTimeout, int readTimeout, int writeTimeout, int maxConnectionPool, int keepAliveDuration, Map<String, String> customHeaders) {
         this.SERVER_KEY = SERVER_KEY;
         this.CLIENT_KEY = CLIENT_KEY;
         this.isProduction = isProduction;
@@ -70,22 +74,20 @@ public class Config {
         this.writeTimeout = writeTimeout;
         this.maxConnectionPool = maxConnectionPool;
         this.keepAliveDuration = keepAliveDuration;
+        this.customHeaders = customHeaders;
     }
 
     /**
      * Midtrans configuration constructor
-     *
      * @param SERVER_KEY   Merchant server-key
      * @param CLIENT_KEY   Merchant client-key
      * @param isProduction Merchant Environment Sandbox or Production
      * @param connectionTimeout Config for connection timeout
      * @param readTimeout Config for read timeout
      * @param writeTimeout Config for write timeout
-     * @param maxConnectionPool value max for connection pool
-     * @param keepAliveDuration Durations for Keep alive connection
-     * @param proxyConfig Config for use http proxy
+     * @param proxyConfig
      */
-    public Config(String SERVER_KEY, String CLIENT_KEY, boolean isProduction, int connectionTimeout, int readTimeout, int writeTimeout, int maxConnectionPool, int keepAliveDuration, ProxyConfig proxyConfig) {
+    public Config(String SERVER_KEY, String CLIENT_KEY, boolean isProduction, int connectionTimeout, int readTimeout, int writeTimeout, int maxConnectionPool, int keepAliveDuration ,Map<String, String> customHeaders, ProxyConfig proxyConfig) {
         this.SERVER_KEY = SERVER_KEY;
         this.CLIENT_KEY = CLIENT_KEY;
         this.isProduction = isProduction;
@@ -94,6 +96,7 @@ public class Config {
         this.writeTimeout = writeTimeout;
         this.maxConnectionPool = maxConnectionPool;
         this.keepAliveDuration = keepAliveDuration;
+        this.customHeaders = customHeaders;
         this.proxyConfig = proxyConfig;
     }
 
@@ -295,6 +298,15 @@ public class Config {
     public String getIRIS_MERCHANT_KEY() { return IRIS_MERCHANT_KEY; }
 
     /**
+     * Get custom headers for API Request
+     *
+     * @return Map String custom headers
+     */
+    public Map<String, String> getCustomHeaders() {
+        return customHeaders;
+    }
+
+    /**
      * set server-key for Basic Authentication while calling Midtrans API from backend.
      *
      * @param SERVER_KEY merchant server key
@@ -427,5 +439,15 @@ public class Config {
      */
     public void setIRIS_MERCHANT_KEY(String IRIS_MERCHANT_KEY) {
         this.IRIS_MERCHANT_KEY = IRIS_MERCHANT_KEY;
+    }
+
+
+    /**
+     * Set Custom headers for API Request
+     *
+     * @param customHeaders Map string for custom headers
+     */
+    public void setCustomHeaders(Map<String, String> customHeaders) {
+        this.customHeaders = customHeaders;
     }
 }

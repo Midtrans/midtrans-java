@@ -1,18 +1,21 @@
 package com.midtrans.httpclient;
 
 import com.midtrans.Config;
+import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.proxy.ProxyConfig;
 import okhttp3.*;
-import okhttp3.Authenticator;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.*;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -23,7 +26,10 @@ public class APIHttpClient {
     private static final Logger LOGGER = Logger.getLogger(APIHttpClient.class.getName());
 
     private Config config;
-    private OkHttpClient defaultHttpClient;
+
+    public final static String POST = "POST";
+    public final static String GET = "GET";
+    public final static String PATCH = "PATCH";
 
     /**
      * APIHttpClient constructor
@@ -32,13 +38,64 @@ public class APIHttpClient {
      */
     public APIHttpClient(Config config) {
         this.config = config;
-        defaultHttpClient = configHttpClient();
+    }
+
+    /**
+     * HTTP request method for API Request
+     */
+    public <T> T request(String method, String url, Map<String, ?> requestBody) throws MidtransError {
+        JSONObject jsonParam = new JSONObject(requestBody);
+        OkHttpClient client = this.configHttpClient();
+
+        RequestBody body = null;
+        if (!method.equals(GET)) {
+            MediaType mediaType = MediaType.parse("application/json");
+            body = RequestBody.create(mediaType, jsonParam.toString());
+        }
+
+        Request request = new Request.Builder()
+                .url(url)
+                .method(method, body)
+                .build();
+        Response response;
+        try {
+            response = client.newCall(request).execute();
+
+            assert response.body() != null;
+            String responseBody = response.body().string();
+
+            if (response.code() >= 400 && response.code() != 407) {
+                throw new MidtransError(
+                        "Midtrans API is returning API error. HTTP status code: " + response.code() + " API response: " + responseBody,
+                        response.code(),
+                        responseBody,
+                        response
+                );
+            } else if (response.code() >= 400) {
+                throw new MidtransError(
+                        "Midtrans API is returning API error. HTTP status code: " + response.code() + " API response: " + responseBody,
+                        response.code(),
+                        responseBody,
+                        response
+                );
+            } else {
+                return (T) responseBody;
+            }
+        } catch (IOException e) {
+            throw new MidtransError(
+                    "IOException during API request to Midtrans:" + url + " with message:" + e.getMessage() + ". Likely connection failure, please check your internet connection and try again.",
+                    0,
+                    null,
+                    null,
+                    e
+            );
+        }
     }
 
     /**
      * HttpClient configuration
      *
-     * @return  OkHttpClient {@link OkHttpClient}
+     * @return OkHttpClient {@link OkHttpClient}
      */
     private OkHttpClient configHttpClient() {
         OkHttpClient httpClient = new OkHttpClient();
@@ -79,7 +136,7 @@ public class APIHttpClient {
     /**
      * Headers set configuration
      *
-     * @return  Interceptor {@link Interceptor}
+     * @return Interceptor {@link Interceptor}
      */
     private Interceptor headers() {
         return chain -> {
@@ -89,11 +146,18 @@ public class APIHttpClient {
                 }
                 return chain.proceed(chain.request());
             }
+
             Map<String, String> headersMap = new HashMap<>();
+            if (config.getCustomHeaders() != null) {
+                for (Map.Entry<String, String> headerMap : config.getCustomHeaders().entrySet()) {
+                    headersMap.put(headerMap.getKey(), headerMap.getValue());
+                }
+            }
+
             headersMap.put("Accept", "application/json");
             headersMap.put("Content-Type", "application/json");
             headersMap.put("Authorization", encodeServerKey());
-            headersMap.put("User-Agent", "Midtrans-Java-Library-"+getLibraryVersion());
+            headersMap.put("User-Agent", "Midtrans-Java-Library-" + getLibraryVersion());
             if (!config.getIrisIdempotencyKey().isEmpty()) {
                 headersMap.put("X-Idempotency-Key", config.getIrisIdempotencyKey());
             }
@@ -114,18 +178,6 @@ public class APIHttpClient {
         };
     }
 
-    /**
-     * get client Retrofit configuration
-     *
-     * @return Retrofit
-     */
-    public Retrofit getClient() {
-        return new Retrofit.Builder()
-                .baseUrl(config.getBASE_URL())
-                .addConverterFactory(JacksonConverterFactory.create())
-                .client(defaultHttpClient)
-                .build();
-    }
 
     /**
      * OkHttpClient Logging Interceptor Configuration. Auto disable when production mode
@@ -141,7 +193,7 @@ public class APIHttpClient {
         }
     }
 
-    private String encodeServerKey(){
+    private String encodeServerKey() {
         return "Basic " + Base64.getEncoder().encodeToString((config.getSERVER_KEY() + ":").getBytes(StandardCharsets.UTF_8));
     }
 

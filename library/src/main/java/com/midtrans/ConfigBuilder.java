@@ -2,6 +2,8 @@ package com.midtrans;
 
 import com.midtrans.proxy.ProxyConfig;
 
+import java.util.Map;
+
 /**
  * {@link Config Config} builder class
  */
@@ -10,6 +12,7 @@ public class ConfigBuilder {
     private String CLIENT_KEY;
     private Boolean isProduction;
     private ProxyConfig proxyConfig;
+    private Map<String, String> customHeaders;
     private int connectionTimeout = DEFAULT_CONNECT_TIMEOUT;
     private int readTimeout = DEFAULT_READ_TIMEOUT;
     private int writeTimeout = DEFAULT_WRITE_TIMEOUT;
@@ -21,7 +24,6 @@ public class ConfigBuilder {
     static final int DEFAULT_WRITE_TIMEOUT = 10; //SECOND
     static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 16;
     static final int DEFAULT_KEEP_ALIVE_DURATION = 300; //SECOND
-
 
     /**
      * Default constructor ConfigBuilder
@@ -122,10 +124,21 @@ public class ConfigBuilder {
     }
 
     /**
+     * Set Custom headers for API Request
+     *
+     * @param customHeaders custom http client headers
+     * @return {@link com.midtrans.ConfigBuilder ConfigBuilder}
+     */
+    public ConfigBuilder setCustomHeaders(Map<String, String> customHeaders) {
+        this.customHeaders = customHeaders;
+        return this;
+    }
+
+    /**
      * Build Config object from builder
      * @return {@link Config Config}
      */
     public Config build() {
-        return new Config(SERVER_KEY, CLIENT_KEY, isProduction, connectionTimeout, readTimeout, writeTimeout, maxConnectionPoolSize, keepAliveDuration, proxyConfig);
+        return new Config(SERVER_KEY, CLIENT_KEY, isProduction, connectionTimeout, readTimeout, writeTimeout, maxConnectionPoolSize, keepAliveDuration, customHeaders, proxyConfig);
     }
 }
