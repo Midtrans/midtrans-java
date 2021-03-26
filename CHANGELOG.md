@@ -1,5 +1,17 @@
 ## CHANGELOG MIDTRANS JAVA LIBRARY
 
+## v3.1.1 (March 26, 2021)
+
+Feature:
+- Release with static method v2 `com.midtrans.v2`
+    - Can set a global config on v2
+- Can add custom headers
+- Can catch response http from MidtransError class
+
+Improvement:
+- No longer using Retrofit, but still use OkHttp as http client
+
+
 ## v2.1.1 (April 27, 2020)
 
 Feature:

@@ -5,7 +5,7 @@
 
     <groupId>com.midtrans</groupId>
     <artifactId>java-library</artifactId>
-    <version>2.1.1</version>
+    <version>3.1.1</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -39,6 +39,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <version>2.1.8.RELEASE</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
         </dependency>
     </dependencies>
 
@@ -79,6 +84,7 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
         </plugins>
         <resources>
             <resource>
