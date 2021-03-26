@@ -2,25 +2,20 @@ package com.midtrans.service.impl;
 
 import com.midtrans.Config;
 import com.midtrans.httpclient.APIHttpClient;
-import com.midtrans.httpclient.CoreApi;
 import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.service.MidtransCoreApi;
-import okhttp3.ResponseBody;
-import org.json.JSONException;
+import com.midtrans.v2.gateway.http.HttpClient;
 import org.json.JSONObject;
-import retrofit2.Call;
-import retrofit2.Response;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Implements from {@link MidtransCoreApi MidtransCoreApi}
  */
 public class MidtransCoreApiImpl implements MidtransCoreApi {
-    private CoreApi coreApi;
-    private Config config;
+    private final Config config;
+    private final APIHttpClient httpClient;
+    private final String API_VERSION = "v2";
 
     /**
      * CoreAPI constructor
@@ -29,31 +24,7 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
      */
     public MidtransCoreApiImpl(Config config) {
         this.config = config;
-        APIHttpClient httpClient = new APIHttpClient(config);
-        this.coreApi = httpClient.getClient().create(CoreApi.class);
-    }
-
-    private JSONObject httpHandle(Call<ResponseBody> call) throws MidtransError {
-        JSONObject object = new JSONObject();
-        try {
-            Response<ResponseBody> response = call.execute();
-            if (response.isSuccessful()) {
-                try {
-                    if (response.body() != null) {
-                        object = new JSONObject(response.body().string());
-                    }
-                } catch (JSONException je) {
-                    throw new MidtransError(je);
-                }
-            } else {
-                if (response.errorBody() != null) {
-                    object = new JSONObject(response.errorBody().string());
-                }
-            }
-        } catch (Exception e) {
-            throw new MidtransError(e);
-        }
-        return object;
+        this.httpClient = new APIHttpClient(config);
     }
 
     @Override
@@ -63,87 +34,120 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
 
     @Override
     public JSONObject chargeTransaction(Map<String, Object> body) throws MidtransError {
-        JSONObject result;
-        Call<ResponseBody> call = coreApi.chargeTransaction(Optional.ofNullable(body).orElse(new HashMap<>()));
-        result = httpHandle(call);
-        return result;
+        return new JSONObject((String) httpClient.request(
+                APIHttpClient.POST,
+                apiConfig().getBASE_URL() + API_VERSION + "/charge",
+                body));
     }
 
     @Override
-    public JSONObject checkTransaction(String orderId) throws MidtransError {
-        Call<ResponseBody> call = coreApi.checkTransaction(Optional.ofNullable(orderId).orElse("null"));
-        return httpHandle(call);
+    public JSONObject checkTransaction(String param) throws MidtransError {
+        return new JSONObject((String) httpClient.request(
+                HttpClient.GET,
+                apiConfig().getBASE_URL() + API_VERSION + "/" + param + "/status",
+                null));
     }
 
     @Override
-    public JSONObject approveTransaction(String orderId) throws MidtransError {
-        Call<ResponseBody> call = coreApi.approveTransaction(Optional.ofNullable(orderId).orElse("null"));
-        return httpHandle(call);
+    public JSONObject approveTransaction(String param) throws MidtransError {
+        return new JSONObject((String) httpClient.request(
+                APIHttpClient.POST,
+                apiConfig().getBASE_URL() + API_VERSION + "/" + param + "/approve",
+                null));
     }
 
     @Override
-    public JSONObject cancelTransaction(String orderId) throws MidtransError {
-        Call<ResponseBody> call = coreApi.cancelTransaction(Optional.ofNullable(orderId).orElse("null"));
-        return httpHandle(call);
+    public JSONObject cancelTransaction(String param) throws MidtransError {
+        return new JSONObject((String) httpClient.request(
+                APIHttpClient.POST,
+                apiConfig().getBASE_URL() + API_VERSION + "/" + param + "/cancel",
+                null));
     }
 
     @Override
-    public JSONObject expireTransaction(String orderId) throws MidtransError {
-        Call<ResponseBody> call = coreApi.expireTransaction(Optional.ofNullable(orderId).orElse("null"));
-        return httpHandle(call);
+    public JSONObject expireTransaction(String param) throws MidtransError {
+        return new JSONObject((String) httpClient.request(
+                APIHttpClient.POST,
+                apiConfig().getBASE_URL() + API_VERSION + "/" + param + "/expire",
+                null));
     }
 
     @Override
-    public JSONObject refundTransaction(String orderId, Map<String, String> body) throws MidtransError {
-        Call<ResponseBody> call = coreApi.refundTransaction(Optional.ofNullable(orderId).orElse("null"), Optional.ofNullable(body).orElse(new HashMap<>()));
-        return httpHandle(call);
+    public JSONObject refundTransaction(String param, Map<String, String> body) throws MidtransError {
+        return new JSONObject((String) httpClient.request(
+                APIHttpClient.POST,
+                apiConfig().getBASE_URL() + API_VERSION + "/" + param + "/refund",
+                body));
     }
 
     @Override
     public JSONObject cardToken(Map<String, String> params) throws MidtransError {
-        Call<ResponseBody> call = coreApi.cardToken(params);
-        return httpHandle(call);
+        String url = apiConfig().getBASE_URL() + API_VERSION +
+                "/token?client_key=" + apiConfig().getCLIENT_KEY() +
+                "&card_number=" + params.get("card_number") +
+                "&card_exp_month=" + params.get("card_exp_month") +
+                "&card_exp_year=" + params.get("card_exp_year") +
+                "&card_cvv=" + params.get("card_cvv");
+        return new JSONObject((String) httpClient.request(APIHttpClient.GET, url, null));
     }
 
     @Override
     public JSONObject registerCard(Map<String, String> params) throws MidtransError {
-        Call<ResponseBody> call = coreApi.registerCard(params);
-        return httpHandle(call);
+        String url = apiConfig().getBASE_URL() + API_VERSION +
+                "/card/register?client_key=" + apiConfig().getCLIENT_KEY() +
+                "&card_number=" + params.get("card_number") +
+                "&card_exp_month=" + params.get("card_exp_month") +
+                "&card_exp_year=" + params.get("card_exp_year") +
+                "&card_cvv=" + params.get("card_cvv");
+        return new JSONObject((String) httpClient.request(APIHttpClient.GET, url, null));
     }
 
     @Override
     public JSONObject cardPointInquiry(String tokenId) throws MidtransError {
-        Call<ResponseBody> call = coreApi.cardPointInquiry(tokenId);
-        return httpHandle(call);
+        return new JSONObject((String) httpClient.request(
+                APIHttpClient.GET,
+                apiConfig().getBASE_URL() + API_VERSION + "/point_inquiry/" + tokenId,
+                null)
+        );
     }
 
     @Override
     public JSONObject captureTransaction(Map<String, String> params) throws MidtransError {
-        Call<ResponseBody> call = coreApi.captureTransaction(params);
-        return httpHandle(call);
+        return new JSONObject((String) httpClient.request(
+                APIHttpClient.POST,
+                apiConfig().getBASE_URL() + API_VERSION + "/capture",
+                params));
     }
 
     @Override
-    public JSONObject getTransactionStatusB2B(String orderId) throws MidtransError {
-        Call<ResponseBody> call = coreApi.getStatusB2B(orderId);
-        return httpHandle(call);
+    public JSONObject getTransactionStatusB2B(String param) throws MidtransError {
+        return new JSONObject((String) httpClient.request(
+                APIHttpClient.GET,
+                apiConfig().getBASE_URL() + API_VERSION + "/" + param + "/status/b2b",
+                null));
     }
 
     @Override
-    public JSONObject directRefundTransaction(String orderId, Map<String, String> params) throws MidtransError {
-        Call<ResponseBody> call = coreApi.directRefundTransaction(orderId, params);
-        return httpHandle(call);
+    public JSONObject directRefundTransaction(String param, Map<String, String> requestBody) throws MidtransError {
+        return new JSONObject((String) httpClient.request(
+                APIHttpClient.POST,
+                apiConfig().getBASE_URL() + API_VERSION + "/" + param + "/refund/online/direct",
+                requestBody));
     }
 
     @Override
-    public JSONObject denyTransaction(String orderId) throws MidtransError {
-        Call<ResponseBody> call = coreApi.denyTransaction(orderId);
-        return httpHandle(call);
+    public JSONObject denyTransaction(String param) throws MidtransError {
+        return new JSONObject((String) httpClient.request(
+                APIHttpClient.POST,
+                apiConfig().getBASE_URL() + API_VERSION + "/" + param + "/deny",
+                null));
     }
 
     @Override
     public JSONObject getBIN(String binNumber) throws MidtransError {
-        Call<ResponseBody> call = coreApi.getBIN(binNumber);
-        return httpHandle(call);
+        return new JSONObject((String) httpClient.request(
+                APIHttpClient.GET,
+                apiConfig().getBASE_URL() + "v1/" + "bins/" + binNumber,
+                null));
     }
 }

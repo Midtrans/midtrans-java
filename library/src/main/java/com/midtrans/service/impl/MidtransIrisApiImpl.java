@@ -2,73 +2,32 @@ package com.midtrans.service.impl;
 
 import com.midtrans.Config;
 import com.midtrans.httpclient.APIHttpClient;
-import com.midtrans.httpclient.IrisApi;
 import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.service.MidtransIrisApi;
-import okhttp3.ResponseBody;
+import com.midtrans.v2.gateway.http.HttpClient;
+import okhttp3.HttpUrl;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import retrofit2.Call;
-import retrofit2.Response;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public class MidtransIrisApiImpl implements MidtransIrisApi {
-    private IrisApi irisApi;
-    private Config config;
+    private final Config config;
+    private final APIHttpClient httpClient;
+    private final String API_VERSION = "api/v1/";
 
+
+    /**
+     * IrisAPI constructor
+     *
+     * @param config Api Config class
+     */
     public MidtransIrisApiImpl(Config config) {
         this.config = config;
-        APIHttpClient httpClient = new APIHttpClient(config);
-        this.irisApi = httpClient.getClient().create(IrisApi.class);
-    }
-
-    private JSONObject httpHandle(Call<ResponseBody> call) throws MidtransError {
-        JSONObject object = new JSONObject();
-        try {
-            Response<ResponseBody> response = call.execute();
-            if (response.isSuccessful() && response.body() != null) {
-                return new JSONObject(response.body().string());
-            }
-            if (response.errorBody() != null) {
-                if (response.code() == 401) {
-                    return new JSONObject("{"+response.errorBody().string()+"}");
-                }
-                object = new JSONObject(response.errorBody().string());
-            }
-        } catch (Exception e) {
-            throw new MidtransError(e);
-        }
-        return object;
-    }
-
-    private JSONArray jsonArrayHttpHandle(Call<ResponseBody> call) throws MidtransError {
-        JSONArray result = new JSONArray();
-        try {
-            Response<ResponseBody> response = call.execute();
-            if (response.isSuccessful()) {
-                try {
-                    if (response.body() != null) {
-                        result = new JSONArray(response.body().string());
-                    }
-                } catch (JSONException je) {
-                    throw new MidtransError(je);
-                }
-            }
-            if (response.errorBody() != null) {
-                if (response.code() == 401) {
-                    return new JSONArray("["+"{"+response.errorBody().string()+"}"+"]");
-                }
-                return new JSONArray("["+"{"+response.errorBody().string()+"}"+"]");
-            }
-        } catch (Exception e) {
-            throw new MidtransError(e);
-        }
-        return result;
+        this.httpClient = new APIHttpClient(config);
     }
 
     @Override
@@ -77,121 +36,111 @@ public class MidtransIrisApiImpl implements MidtransIrisApi {
     }
 
     @Override
-    public String ping() {
-        Call<ResponseBody> call = irisApi.ping();
-        try {
-            Response<ResponseBody> response = call.execute();
-            if (response.body() != null) {
-                return response.body().string();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String ping() throws MidtransError {
+        return httpClient.request(APIHttpClient.GET, apiConfig().getBASE_URL() + API_VERSION + "ping", null);
     }
 
     @Override
     public JSONObject getBalance() throws MidtransError {
-        Call<ResponseBody> call = irisApi.getBalance();
-        return httpHandle(call);
+        return new JSONObject((String) httpClient.request(APIHttpClient.GET, apiConfig().getBASE_URL() + API_VERSION + "balance", null));
     }
 
     @Override
     public JSONObject createBeneficiaries(Map<String, String> params) throws MidtransError {
-        Call<ResponseBody> call = irisApi.createBeneficiaries(
-                Optional.ofNullable(params)
-                        .orElse(new HashMap<>())
-        );
-        return httpHandle(call);
+        return new JSONObject((String) httpClient.request(HttpClient.POST, apiConfig().getBASE_URL() + API_VERSION + "beneficiaries", params));
     }
 
     @Override
     public JSONObject updateBeneficiaries(String aliasName, Map<String, String> params) throws MidtransError {
-        Call<ResponseBody> call = irisApi.updateBeneficiaries(
-                Optional.ofNullable(aliasName)
-                        .orElse("null"),
-                Optional.ofNullable(params)
-                        .orElse(new HashMap<>())
-        );
-        return httpHandle(call);
+        return new JSONObject((String) httpClient.request(APIHttpClient.PATCH,
+                apiConfig().getBASE_URL() + API_VERSION + "beneficiaries/" + aliasName,
+                params));
     }
 
     @Override
     public JSONArray getBeneficiaries() throws MidtransError {
-        Call<ResponseBody> call = irisApi.getBeneficiaries();
-        return jsonArrayHttpHandle(call);
+        return new JSONArray((String) httpClient.request(
+                APIHttpClient.GET, apiConfig().getBASE_URL() + API_VERSION + "beneficiaries", null));
     }
 
     @Override
     public JSONObject createPayouts(Map<String, Object> params) throws MidtransError {
-        Call<ResponseBody> call = irisApi.createPayouts(
-                Optional.ofNullable(params)
-                        .orElse(new HashMap<>())
-        );
-        return httpHandle(call);
+        return new JSONObject((String) httpClient.request(APIHttpClient.POST,
+                apiConfig().getBASE_URL() + API_VERSION + "payouts",
+                Optional.ofNullable(params).orElse(new HashMap<>())));
     }
 
     @Override
-    public JSONObject approvePayouts(Map<String, Object> params) throws MidtransError {
-        Call<ResponseBody> call = irisApi.approvePayouts(
-                Optional.ofNullable(params)
-                        .orElse(new HashMap<>())
-        );
-        return httpHandle(call);
+    public JSONObject approvePayouts(Map<String, Object> requestBody) throws MidtransError {
+        return new JSONObject((String) httpClient.request(APIHttpClient.POST,
+                apiConfig().getBASE_URL() + API_VERSION + "payouts/approve",
+                Optional.ofNullable(requestBody).orElse(new HashMap<>())));
     }
 
     @Override
-    public JSONObject rejectPayouts(Map<String, Object> params) throws MidtransError {
-        Call<ResponseBody> call = irisApi.rejectPayouts(Optional.ofNullable(params)
-                .orElse(new HashMap<>())
-        );
-        return httpHandle(call);
+    public JSONObject rejectPayouts(Map<String, Object> requestBody) throws MidtransError {
+        return new JSONObject((String) httpClient.request(APIHttpClient.POST,
+                apiConfig().getBASE_URL() + API_VERSION + "payouts/reject",
+                Optional.ofNullable(requestBody).orElse(new HashMap<>())));
     }
 
     @Override
     public JSONObject getPayoutDetails(String referenceNo) throws MidtransError {
-        Call<ResponseBody> call = irisApi.getPayoutDetails(Optional.ofNullable(referenceNo)
-                        .orElse("null")
-        );
-        return httpHandle(call);
+        return new JSONObject((String) httpClient.request(APIHttpClient.GET,
+                apiConfig().getBASE_URL() + API_VERSION + "payouts/" + Optional.ofNullable(referenceNo).orElse("null"),
+                null));
     }
 
     @Override
     public JSONArray getTransactionHistory(String fromDate, String toDate) throws MidtransError {
-        Call<ResponseBody> call = irisApi.getTransactionHistory(fromDate, toDate);
-        return jsonArrayHttpHandle(call);
+        HttpUrl url = Objects.requireNonNull(HttpUrl.parse(apiConfig().getBASE_URL() + API_VERSION + "statements")).newBuilder()
+                .addQueryParameter("from_date", fromDate)
+                .addQueryParameter("to_date", toDate)
+                .build();
+
+        return new JSONArray((String) httpClient.request(APIHttpClient.GET,
+                url.toString(),
+                null));
     }
 
     @Override
     public JSONArray getTopUpChannels() throws MidtransError {
-        Call<ResponseBody> call = irisApi.getTopUpChannels();
-        return jsonArrayHttpHandle(call);
+        return new JSONArray((String) httpClient.request(APIHttpClient.GET,
+                apiConfig().getBASE_URL() + API_VERSION + "channels",
+                null));
     }
 
     @Override
     public JSONArray getBankAccounts() throws MidtransError {
-        Call<ResponseBody> call = irisApi.getBankAccount();
-        return jsonArrayHttpHandle(call);
+        return new JSONArray((String) httpClient.request(APIHttpClient.GET,
+                apiConfig().getBASE_URL() + API_VERSION + "bank_accounts",
+                null));
     }
 
     @Override
     public JSONObject getFacilitatorBalance(String bankAccountId) throws MidtransError {
-        Call<ResponseBody> call = irisApi.getFacilitatorBalance(bankAccountId);
-        return httpHandle(call);
+        return new JSONObject((String) httpClient.request(APIHttpClient.GET,
+                apiConfig().getBASE_URL() + API_VERSION + "bank_account/" + Optional.ofNullable(bankAccountId).orElse("null") + "/balance" + Optional.ofNullable(bankAccountId).orElse("null"),
+                null));
     }
 
     @Override
     public JSONObject getBeneficiaryBanks() throws MidtransError {
-        Call<ResponseBody> call = irisApi.getBeneficiaryBanks();
-        return httpHandle(call);    }
+        return new JSONObject((String) httpClient.request(APIHttpClient.GET,
+                apiConfig().getBASE_URL() + API_VERSION + "beneficiary_banks",
+                null));
+    }
 
     @Override
     public JSONObject validateBankAccount(String bank, String account) throws MidtransError {
-        Call<ResponseBody> call = irisApi.validateBankAccount(Optional.ofNullable(bank)
-                        .orElse("null"),
-                Optional.ofNullable(account)
-                        .orElse("null")
-        );
-        return httpHandle(call);    }
+        HttpUrl url = Objects.requireNonNull(HttpUrl.parse(apiConfig().getBASE_URL() + API_VERSION + "account_validation")).newBuilder()
+                .addQueryParameter("bank", bank)
+                .addQueryParameter("account", account)
+                .build();
+
+        return new JSONObject((String) httpClient.request(APIHttpClient.GET,
+                url.toString(),
+                null));
+    }
 
 }
