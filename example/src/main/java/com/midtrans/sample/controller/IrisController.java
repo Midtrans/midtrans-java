@@ -22,11 +22,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static com.midtrans.sample.data.Constant.*;
+
 @Controller
 public class IrisController {
-
-    private String sandboxCreatorKey = "IRIS-330198f0-e49d-493f-baae-585cfded355d";
-    private String sandboxApproverKey = "IRIS-1595c12b-6814-4e5a-bbbb-9bc18193f47b";
 
     MidtransIrisApi irisApi = new ConfigFactory(
             new Config(sandboxCreatorKey,
@@ -35,7 +34,6 @@ public class IrisController {
             .getIrisApi();
 
     public IrisController() {
-        String irisSandboxMerchantKey = "IRIS-merchant-c8709d85-09d6-49c4-8ff5-9eaf81ec31cd";
         irisApi.apiConfig().setIRIS_MERCHANT_KEY(irisSandboxMerchantKey);
     }
 

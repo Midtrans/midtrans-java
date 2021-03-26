@@ -3,9 +3,8 @@ package com.midtrans.sample.controller;
 import com.midtrans.Config;
 import com.midtrans.ConfigFactory;
 import com.midtrans.httpclient.error.MidtransError;
-import com.midtrans.service.MidtransCoreApi;
 import com.midtrans.sample.data.DataMockup;
-import com.midtrans.service.MidtransSnapApi;
+import com.midtrans.service.MidtransCoreApi;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,21 +17,25 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.midtrans.sample.data.Constant.sandboxClientKey;
+import static com.midtrans.sample.data.Constant.sandboxServerKey;
+
 @RestController
 public class CoreApiController {
 
-    // ProxyConfig object
-    //private ProxyConfig proxyConfig = new ProxyConfigBuilder().setHost("36.92.108.150").setPort(3128).setUsername("").setPassword("").build();
 
-    // Midtrans CoreApi Class library with proxy config
-    //private MidtransCoreApi coreApi = new ConfigFactory(new Config("SB-Mid-server-zPtluafD-kgcvOMVtsNYhXVD", "SB-Mid-client-I4ekVNAD4Cr4KJ1V", false, 10, 10,10,proxyConfig)).getCoreApi();
-
-    // Midtrans CoreApi Class library without proxy config
+    /**
+     * Midtrans java sample use `com.midtrans`: Using Midtrans Config class {@link Config}.
+     * The config will use method from Object MidtransCoreAPI class
+     * {@link MidtransCoreApi}
+     * Sample use on Charge Controller @line 59
+     */
     private MidtransCoreApi coreApi = new ConfigFactory(
-            new Config("SB-Mid-server-TOq1a2AVuiyhhOjvfs3U_KeO",
-                    "SB-Mid-client-nKsqvar5cn60u2Lv",
+            new Config(sandboxServerKey,
+                    sandboxClientKey,
                     false))
             .getCoreApi();
+
 
     @Autowired
     private DataMockup dataMockup;
@@ -46,6 +49,10 @@ public class CoreApiController {
         dataMockup.creditCard(creditCard);
         Map<String, Object> body = new HashMap<>(dataMockup.initDataMock());
 
+        /**
+         * Request Charge to Midtrans API using charge method from MidtransCoreApi object
+         * you can put others config from method apiConfig()
+         */
         coreApi.apiConfig().paymentAppendNotification("http://midtrans-java.herokuapp.com/notif/append1,http://midtrans-java.herokuapp.com/notif/append2");
         JSONObject object = coreApi.chargeTransaction(body);
 
@@ -60,8 +67,11 @@ public class CoreApiController {
 
         Map<String, Object> body = new HashMap<>(dataMockup.initDataMock());
 
-        coreApi.apiConfig().paymentOverrideNotification("http://midtrans-java.herokuapp.com/notif/override1,http://midtrans-java.herokuapp.com/notif/override2");
+        /**
+         * Request Charge to Midtrans API using MidtransCoreApi object
+         */
         JSONObject object = coreApi.chargeTransaction(body);
+
         String result = object.toString();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

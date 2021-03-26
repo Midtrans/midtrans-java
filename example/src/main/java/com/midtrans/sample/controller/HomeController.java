@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 
+import static com.midtrans.sample.data.Constant.sandboxClientKey;
 
 @Controller
 public class HomeController {
-
-    String clientKey = "SB-Mid-client-nKsqvar5cn60u2Lv";
 
     @Autowired
     private DataMockup dataMockup;
@@ -46,7 +45,7 @@ public class HomeController {
                            Model model) {
         Map<String, Object> result = dataMockup.initDataMock();
         model.addAttribute("result", result);
-        model.addAttribute("clientKey", clientKey);
+        model.addAttribute("clientKey", sandboxClientKey);
         if (typePayment.equals("cc")) {
             return "coreapi/credit-card";
         } else if (typePayment.equals("gopay")) {
