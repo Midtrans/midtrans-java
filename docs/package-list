@@ -4,3 +4,6 @@ com.midtrans.httpclient.error
 com.midtrans.proxy
 com.midtrans.service
 com.midtrans.service.impl
+com.midtrans.v2
+com.midtrans.v2.gateway
+com.midtrans.v2.gateway.http
