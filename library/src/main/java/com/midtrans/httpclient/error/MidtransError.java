@@ -1,22 +1,23 @@
 package com.midtrans.httpclient.error;
 
+import lombok.Getter;
+import okhttp3.Response;
+
 import java.util.ArrayList;
 
 /**
  * MidtransError class to catch error messages
  */
+@Getter
 public class MidtransError extends Exception {
 
+    @Deprecated
     private ArrayList errorMessages;
 
-    /**
-     * get error messages
-     *
-     * @return errorMessage ArrayList
-     */
-    public ArrayList getErrorMessages() {
-        return errorMessages;
-    }
+    private String message;
+    private Integer statusCode;
+    private String responseBody;
+    private Response response;
 
     public MidtransError(String message) {
         super(message);
@@ -30,13 +31,54 @@ public class MidtransError extends Exception {
         super(message, cause);
     }
 
+    /**
+     * Constructs a new Midtrans exception with the specified details.
+     *
+     * @param message
+     * @param statusCode
+     * @param data
+     * @param response
+     */
+    public MidtransError(String message, Integer statusCode, String data, Response response) {
+        this(message, statusCode, data, response, null);
+    }
+
+    /**
+     * Constructs a new Midtrans exception with the specified details.
+     *
+     * @param message
+     * @param statusCode
+     * @param responseBody
+     * @param response
+     * @param e
+     */
+    public MidtransError(String message, Integer statusCode, String responseBody, Response response, Throwable e) {
+        super(message, e);
+        this.message = message;
+        this.statusCode = statusCode;
+        this.responseBody = responseBody;
+        this.response = response;
+    }
+
+    @Deprecated
     private MidtransError(final Builder builder) {
         errorMessages = builder.errorMessages;
     }
 
     /**
+     * get error messages
+     *
+     * @return errorMessage ArrayList
+     */
+    @Deprecated
+    public ArrayList getErrorMessages() {
+        return errorMessages;
+    }
+
+    /**
      * MidtransError Builder
      */
+    @Deprecated
     public static class Builder {
         private ArrayList errorMessages;
 
