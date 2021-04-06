@@ -2,6 +2,8 @@ package com.midtrans.sample.controller;
 
 import com.midtrans.Config;
 import com.midtrans.ConfigFactory;
+import com.midtrans.Midtrans;
+import com.midtrans.httpclient.SnapApi;
 import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.service.MidtransSnapApi;
 import com.midtrans.sample.data.DataMockup;
@@ -12,7 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import static com.midtrans.sample.data.Constant.sandboxClientKey;
+import static com.midtrans.sample.data.Constant.sandboxServerKey;
 
 @Controller
 public class SnapController {
@@ -20,8 +29,6 @@ public class SnapController {
     //Data transaction Mockup
     @Autowired
     private DataMockup dataMockup;
-
-    private MidtransSnapApi snapApi = new ConfigFactory(new Config("SB-Mid-server-TOq1a2AVuiyhhOjvfs3U_KeO", "SB-Mid-client-nKsqvar5cn60u2Lv", false)).getSnapApi();
 
     @RequestMapping(value = "/snap", method = RequestMethod.GET)
     public String snap(Model model) {
@@ -34,8 +41,11 @@ public class SnapController {
     public String checkout(@RequestParam(value = "enablePay", required = false) List<String> listPay,
                            @RequestParam(value = "snapType") String snapType,
                            Model model) throws MidtransError {
+
+        Midtrans.clientKey = sandboxClientKey;
+        Midtrans.serverKey = sandboxServerKey;
         // Get ClientKey from Midtrans Configuration class
-        String clientKey = snapApi.apiConfig().getCLIENT_KEY();
+        String clientKey = Midtrans.getClientKey();
 
         // New Map Object for JSON raw request body
         Map<String, Object> requestBody = new HashMap<>();
@@ -54,24 +64,19 @@ public class SnapController {
         // PutAll data mockUp to requestBody
         requestBody.putAll(dataMockup.initDataMock());
 
-        /*
-        If you want snap method return json raw object, you can use method
-        createTransaction() on MidtransSnapApi class.
-         */
-
         // send data to frontEnd snapPopUp
         if (snapType.equals("snap")) {
             model.addAttribute("result", requestBody);
             model.addAttribute("clientKey", clientKey);
             // token object getData token to API with createTransactionToken() method return String token
-            model.addAttribute("transactionToken", snapApi.createTransactionToken(requestBody));
+            model.addAttribute("transactionToken", SnapApi.createTransactionToken(requestBody));
             return "snap/check-out";
 
             // send data to frontEnd redirect-url
         } else {
             model.addAttribute("result", requestBody);
             // redirectURL get url redirect to API with createTransactionRedirectUrl() method, with return String url redirect
-            model.addAttribute("redirectURL", snapApi.createTransactionRedirectUrl(requestBody));
+            model.addAttribute("redirectURL", SnapApi.createTransactionRedirectUrl(requestBody));
             return "snap/check-out";
         }
     }
