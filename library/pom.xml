@@ -5,7 +5,7 @@
 
     <groupId>com.midtrans</groupId>
     <artifactId>java-library</artifactId>
-    <version>2.1.1</version>
+    <version>3.1.1</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -25,14 +25,20 @@
             <version>3.14.6</version>
         </dependency>
         <dependency>
-            <groupId>com.squareup.retrofit2</groupId>
-            <artifactId>converter-jackson</artifactId>
-            <version>2.6.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20190722</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>converter-jackson</artifactId>
+            <version>2.6.1</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
