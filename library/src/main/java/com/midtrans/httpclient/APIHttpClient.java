@@ -1,29 +1,28 @@
 package com.midtrans.httpclient;
 
 import com.midtrans.Config;
+import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.proxy.ProxyConfig;
+import com.midtrans.utils.Utility;
 import okhttp3.*;
-import okhttp3.Authenticator;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
+import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.*;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Retrofit HttpClient configuration
+ *  HttpClient class
  */
 public class APIHttpClient {
-    private static final Logger LOGGER = Logger.getLogger(APIHttpClient.class.getName());
+    public Config config;
 
-    private Config config;
-    private OkHttpClient defaultHttpClient;
+    public final static String POST = "POST";
+    public final static String GET = "GET";
+    public final static String PATCH = "PATCH";
 
     /**
      * APIHttpClient constructor
@@ -32,7 +31,58 @@ public class APIHttpClient {
      */
     public APIHttpClient(Config config) {
         this.config = config;
-        defaultHttpClient = configHttpClient();
+    }
+
+    /**
+     * HTTP request method for API Request
+     */
+    public static <T> T request(String method, String url, Config config, Map<String, ?> requestBody) throws MidtransError {
+        OkHttpClient client = buildHttpClient(config);
+        JSONObject jsonParam = new JSONObject(requestBody);
+
+        RequestBody body = null;
+        if (!method.equals(GET)) {
+            MediaType mediaType = MediaType.parse("application/json");
+            body = RequestBody.create(mediaType, jsonParam.toString());
+        }
+
+        Request request = new Request.Builder()
+                .url(url)
+                .method(method, body)
+                .build();
+        Response response;
+        try {
+            response = client.newCall(request).execute();
+
+            assert response.body() != null;
+            String responseBody = response.body().string();
+
+            if (response.code() >= 400 && response.code() != 407) {
+                throw new MidtransError(
+                        "Midtrans API is returning API error. HTTP status code: " + response.code() + " API response: " + responseBody,
+                        response.code(),
+                        responseBody,
+                        response
+                );
+            } else if (response.code() >= 400) {
+                throw new MidtransError(
+                        "Midtrans API is returning API error. HTTP status code: " + response.code() + " API response: " + responseBody,
+                        response.code(),
+                        responseBody,
+                        response
+                );
+            } else {
+                return (T) responseBody;
+            }
+        } catch (IOException e) {
+            throw new MidtransError(
+                    "IOException during API request to Midtrans: " + url + " with message: " + e.getMessage() + ". Likely connection failure, please check your internet connection and try again.",
+                    0,
+                    null,
+                    null,
+                    e
+            );
+        }
     }
 
     /**
@@ -40,25 +90,42 @@ public class APIHttpClient {
      *
      * @return  OkHttpClient {@link OkHttpClient}
      */
-    private OkHttpClient configHttpClient() {
+    private static OkHttpClient buildHttpClient(Config config) {
         OkHttpClient httpClient = new OkHttpClient();
 
+        Headers headers = null;
+        try {
+            headers = headers(config);
+        } catch (MidtransError e) {
+            e.printStackTrace();
+        }
+
+        // initialize http headers
+        Headers finalHeaders = headers;
+        Interceptor headersInterceptor = chain -> {
+            Request request = chain.request().newBuilder().headers(finalHeaders).build();
+            return chain.proceed(request);
+        };
+
+        // setup connection pool
         ConnectionPool connectionPool = new ConnectionPool(
                 config.getMaxConnectionPool(),
                 config.getKeepAliveDuration(),
-                TimeUnit.SECONDS);
+                config.getHttpClientTimeUnit());
 
+        // setup default http client
         if (config.getProxyConfig() == null) {
             return httpClient.newBuilder()
-                    .addInterceptor(loggingInterceptor())
-                    .connectTimeout(config.getConnectionTimeout(), TimeUnit.SECONDS)
-                    .readTimeout(config.getReadTimeout(), TimeUnit.SECONDS)
-                    .writeTimeout(config.getWriteTimeout(), TimeUnit.SECONDS)
+                    .addInterceptor(loggingInterceptor(config))
+                    .connectTimeout(config.getConnectionTimeout(), config.getHttpClientTimeUnit())
+                    .readTimeout(config.getReadTimeout(), config.getHttpClientTimeUnit())
+                    .writeTimeout(config.getWriteTimeout(), config.getHttpClientTimeUnit())
                     .connectionPool(connectionPool)
-                    .addInterceptor(headers())
+                    .addInterceptor(headersInterceptor)
                     .build();
         }
 
+        // setup http client with proxy
         final ProxyConfig proxyConfig = config.getProxyConfig();
         Authenticator proxyAuthenticator = (route, response) -> {
             String credential = Credentials.basic(proxyConfig.getUsername(), proxyConfig.getPassword());
@@ -66,13 +133,13 @@ public class APIHttpClient {
         };
 
         return httpClient.newBuilder()
-                .connectTimeout(config.getConnectionTimeout(), TimeUnit.SECONDS)
-                .readTimeout(config.getReadTimeout(), TimeUnit.SECONDS)
-                .writeTimeout(config.getWriteTimeout(), TimeUnit.SECONDS)
+                .connectTimeout(config.getConnectionTimeout(), config.getHttpClientTimeUnit())
+                .readTimeout(config.getReadTimeout(), config.getHttpClientTimeUnit())
+                .writeTimeout(config.getWriteTimeout(), config.getHttpClientTimeUnit())
                 .connectionPool(connectionPool)
                 .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyConfig.getHost(), proxyConfig.getPort())))
                 .proxyAuthenticator(proxyAuthenticator)
-                .addInterceptor(headers())
+                .addInterceptor(headersInterceptor)
                 .build();
     }
 
@@ -81,50 +148,56 @@ public class APIHttpClient {
      *
      * @return  Interceptor {@link Interceptor}
      */
-    private Interceptor headers() {
-        return chain -> {
-            if (config.getSERVER_KEY().isEmpty() || config.getSERVER_KEY() == null) {
-                if (config.isEnabledLog()) {
-                    LOGGER.info("Server key is empty....");
-                }
-                return chain.proceed(chain.request());
-            }
-            Map<String, String> headersMap = new HashMap<>();
-            headersMap.put("Accept", "application/json");
-            headersMap.put("Content-Type", "application/json");
-            headersMap.put("Authorization", encodeServerKey());
-            headersMap.put("User-Agent", "Midtrans-Java-Library-"+getLibraryVersion());
-            if (!config.getIrisIdempotencyKey().isEmpty()) {
-                headersMap.put("X-Idempotency-Key", config.getIrisIdempotencyKey());
-            }
-            if (!config.getPaymentIdempotencyKey().isEmpty()) {
-                headersMap.put("Idempotency-Key", config.getPaymentIdempotencyKey());
-            }
-            if (!config.getPaymentAppendNotification().isEmpty()) {
-                headersMap.put("X-Append-Notification", config.getPaymentAppendNotification());
-            }
-            if (!config.getPaymentOverrideNotification().isEmpty()) {
-                headersMap.put("X-Override-Notification", config.getPaymentOverrideNotification());
-            }
+    private static Headers headers(Config config) throws MidtransError {
 
-            Headers headers = Headers.of(headersMap);
-            Request request = chain.request().newBuilder().headers(headers).build();
+        Map<String, String> headersMap = new HashMap<>();
+        if (config.getCustomHeaders() != null) {
+            for (Map.Entry<String, String> headerMap : config.getCustomHeaders().entrySet()) {
+                headersMap.put(headerMap.getKey(), headerMap.getValue());
+            }
+        }
 
-            return chain.proceed(request);
-        };
-    }
+        String serverKey = config.getSERVER_KEY();
+        if (serverKey == null) {
+            throw new MidtransError(
+                    "No ServerKey provided. Please set your serverKey key. "
+                            + "You can retrieve the ServerKey from the Midtrans Dashboard. "
+                            + "See https://docs.midtrans.com/en/midtrans-account/overview?id=retrieving-api-access-keys for the details "
+                            + "or contact support at support@midtrans.com if you have any questions.");
+        } else if (serverKey.isEmpty()) {
+            throw new MidtransError(
+                    "The ServerKey is invalid, as it is an empty string. Please double-check your API key. "
+                            + "You can check the ServerKey from the Midtrans Dashboard. "
+                            + "See https://docs.midtrans.com/en/midtrans-account/overview?id=retrieving-api-access-keys for the details "
+                            + "or contact support at support@midtrans.com if you have any questions."
+            );
+        } else if (serverKey.contains(" ")) {
+            throw new MidtransError(
+                    "The ServerKey is contains white-space. Please double-check your API key. "
+                            + "You can check the ServerKey from the Midtrans Dashboard. "
+                            + "See https://docs.midtrans.com/en/midtrans-account/overview?id=retrieving-api-access-keys for the details "
+                            + "or contact support at support@midtrans.com if you have any questions."
+            );
+        }
 
-    /**
-     * get client Retrofit configuration
-     *
-     * @return Retrofit
-     */
-    public Retrofit getClient() {
-        return new Retrofit.Builder()
-                .baseUrl(config.getBASE_URL())
-                .addConverterFactory(JacksonConverterFactory.create())
-                .client(defaultHttpClient)
-                .build();
+        headersMap.put("Accept", "application/json");
+        headersMap.put("Content-Type", "application/json");
+        headersMap.put("Authorization", Utility.base64(serverKey));
+        headersMap.put("User-Agent", "Midtrans-Java-Library-" + Utility.getLibraryVersion());
+        if (config.getIrisIdempotencyKey() != null) {
+            headersMap.put("X-Idempotency-Key", config.getIrisIdempotencyKey());
+        }
+        if (config.getPaymentIdempotencyKey() != null) {
+            headersMap.put("Idempotency-Key", config.getPaymentIdempotencyKey());
+        }
+        if (config.getPaymentAppendNotification() != null) {
+            headersMap.put("X-Append-Notification", config.getPaymentAppendNotification());
+        }
+        if (config.getPaymentOverrideNotification() != null) {
+            headersMap.put("X-Override-Notification", config.getPaymentOverrideNotification());
+        }
+
+        return Headers.of(headersMap);
     }
 
     /**
@@ -132,7 +205,7 @@ public class APIHttpClient {
      *
      * @return HttpLoggingInterceptor
      */
-    private HttpLoggingInterceptor loggingInterceptor() {
+    private static HttpLoggingInterceptor loggingInterceptor(Config config) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         if (config.isEnabledLog()) {
             return logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -141,14 +214,4 @@ public class APIHttpClient {
         }
     }
 
-    private String encodeServerKey(){
-        return "Basic " + Base64.getEncoder().encodeToString((config.getSERVER_KEY() + ":").getBytes(StandardCharsets.UTF_8));
-    }
-
-    private String getLibraryVersion() throws IOException {
-        InputStream resourceAsStream = this.getClass().getResourceAsStream("/version.properties");
-        Properties properties = new Properties();
-        properties.load(resourceAsStream);
-        return (properties.getProperty("version") == null) ? "unable to reach" : properties.getProperty("version");
-    }
 }
