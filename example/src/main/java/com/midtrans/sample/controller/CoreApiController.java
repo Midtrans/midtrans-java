@@ -5,7 +5,6 @@ import com.midtrans.ConfigFactory;
 import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.service.MidtransCoreApi;
 import com.midtrans.sample.data.DataMockup;
-import com.midtrans.service.MidtransSnapApi;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,21 +17,27 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.midtrans.sample.data.Constant.*;
+
 @RestController
 public class CoreApiController {
 
-    // ProxyConfig object
-    //private ProxyConfig proxyConfig = new ProxyConfigBuilder().setHost("36.92.108.150").setPort(3128).setUsername("").setPassword("").build();
+    Config configOptions = Config.builder()
+            .enableLog(true)
+            .setIsProduction(isProduction)
+            .setCLIENT_KEY(sandboxServerKey)
+            .setSERVER_KEY(sandboxClientKey)
+            .build();
 
-    // Midtrans CoreApi Class library with proxy config
-    //private MidtransCoreApi coreApi = new ConfigFactory(new Config("SB-Mid-server-zPtluafD-kgcvOMVtsNYhXVD", "SB-Mid-client-I4ekVNAD4Cr4KJ1V", false, 10, 10,10,proxyConfig)).getCoreApi();
 
-    // Midtrans CoreApi Class library without proxy config
-    private MidtransCoreApi coreApi = new ConfigFactory(
-            new Config("SB-Mid-server-TOq1a2AVuiyhhOjvfs3U_KeO",
-                    "SB-Mid-client-nKsqvar5cn60u2Lv",
-                    false))
-            .getCoreApi();
+    /**
+     * Midtrans java sample use `com.midtrans`: Using Midtrans Config class {@link Config}.
+     * The config will use method from Object MidtransCoreAPI class
+     * {@link MidtransCoreApi}
+     * Sample use on Charge Controller @line 59
+     */
+    private MidtransCoreApi coreApi = new ConfigFactory(configOptions).getCoreApi();
+
 
     @Autowired
     private DataMockup dataMockup;
