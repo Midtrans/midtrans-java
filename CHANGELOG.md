@@ -1,5 +1,19 @@
 ## CHANGELOG MIDTRANS JAVA LIBRARY
 
+## v3.1.1 (April 6, 2021)
+
+Feature:
+- new static method CoreApi, SnapApi, IrisApi, TransactionApi
+- can change, TimeUnit for http connection settings
+- can set global config via Midtrans class
+- can add custom headers with config class
+- validation for server-key empty, contain whitespace
+
+Improvement:
+- handle okhttp raw error/exception via MidtransError exception class
+- No longer use retrofit, but still using okhttp as http client
+
+
 ## v2.1.1 (April 27, 2020)
 
 Feature:
