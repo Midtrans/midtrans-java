@@ -1,10 +1,10 @@
 package com.midtrans.java;
 
-import com.midtrans.ConfigBuilder;
+import com.midtrans.Config;
 import com.midtrans.ConfigFactory;
 import com.midtrans.httpclient.error.MidtransError;
-import com.midtrans.service.MidtransCoreApi;
 import com.midtrans.java.mockupdata.DataMockup;
+import com.midtrans.service.MidtransCoreApi;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,25 +13,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.midtrans.java.mockupdata.Constant.clientKey;
-import static com.midtrans.java.mockupdata.Constant.serverKey;
+import static com.midtrans.java.mockupdata.Constant.*;
+
 
 public class CoreApiTest {
 
-    private ConfigFactory configFactory;
     private MidtransCoreApi coreApi;
     private DataMockup dataMockup;
 
-    private final String cardNumberAccept = "4811111111111114";
-
     @Before
     public void setUp() {
-        configFactory = new ConfigFactory(new ConfigBuilder()
-                .setCLIENT_KEY(clientKey)
-                .setSERVER_KEY(serverKey)
-                .setIsProduction(false)
-                .build());
-        coreApi = configFactory.getCoreApi();
+        coreApi = new ConfigFactory(new Config(mainServerKey, mainClientKey, false)).getCoreApi();
         dataMockup = new DataMockup();
     }
 
@@ -77,7 +69,7 @@ public class CoreApiTest {
 
     @Test
     public void cardPointInquiry() throws MidtransError {
-        JSONObject result = coreApi.cardPointInquiry(genCardToken(cardNumberAccept));
+        JSONObject result = coreApi.cardPointInquiry(genCardToken(bniCardNumber));
         assert result.getString("status_code").equals("200");
         assert result.getString("status_message").equals("Success, Credit Card Point inquiry is successful");
     }
@@ -99,6 +91,14 @@ public class CoreApiTest {
     public void approveTransaction() throws MidtransError {
         JSONObject result = coreApi.approveTransaction(makeTransaction());
         assert result.getString("status_code").equals("412");
+        assert result.getString("status_message").equals("Transaction status cannot be updated.");
+    }
+
+    @Test
+    public void denyTransaction() throws MidtransError {
+        JSONObject result = coreApi.denyTransaction(makeTransaction());
+        assert result.getString("status_code").equals("412");
+        assert result.getString("status_message").equals("Transaction status cannot be updated.");
     }
 
     @Test
@@ -157,8 +157,8 @@ public class CoreApiTest {
     }
 
     @Test
-    public void failChargeTransactionNoServerKey() throws MidtransError {
-        coreApi.apiConfig().setSERVER_KEY("");
+    public void failChargeTransactionWrongServerKey() throws MidtransError {
+        coreApi.apiConfig().setSERVER_KEY("dummy");
         dataMockup = new DataMockup();
         dataMockup.setPaymentType("gopay");
         JSONObject result = coreApi.chargeTransaction(dataMockup.initDataMock());
@@ -169,7 +169,7 @@ public class CoreApiTest {
     @Test
     public void getBinCard() throws MidtransError {
 
-        coreApi.apiConfig().setSERVER_KEY(clientKey);
+        coreApi.apiConfig().setSERVER_KEY(mainClientKey);
         JSONObject result = coreApi.getBIN("420191");
         assert result.getJSONObject("data").getString("country_name").equals("INDONESIA");
         assert result.getJSONObject("data").getString("brand").equals("VISA");
@@ -203,7 +203,7 @@ public class CoreApiTest {
         cardParams.put("card_exp_month", "12");
         cardParams.put("card_exp_year", "2022");
         cardParams.put("card_cvv", "123");
-        cardParams.put("client_key", configFactory.getConfig().getCLIENT_KEY());
+        cardParams.put("client_key", coreApi.apiConfig().getCLIENT_KEY());
         return cardParams;
     }
 
@@ -211,5 +211,7 @@ public class CoreApiTest {
     private String genCardToken(String cardNumber) throws MidtransError {
         JSONObject result = coreApi.cardToken(creditCard(cardNumber));
         return result.getString("token_id");
+
     }
+
 }

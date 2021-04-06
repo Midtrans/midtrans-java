@@ -1,12 +1,16 @@
 package com.midtrans.java;
 
 import com.midtrans.Config;
+import com.midtrans.Midtrans;
 import com.midtrans.proxy.ProxyConfig;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.midtrans.java.mockupdata.Constant.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ConfigTest {
 
@@ -14,78 +18,158 @@ public class ConfigTest {
 
     @Before
     public void setUp() {
-        config = new Config(serverKey, clientKey, isProduction);
+        config = new Config(mainServerKey, mainClientKey, isProduction);
     }
+
 
     @Test
     public void setSERVER_KEY() {
-        config.setSERVER_KEY("TEST SET SERVER KEY");
-        assertEquals("TEST SET SERVER KEY", config.getSERVER_KEY());
+        config.setSERVER_KEY(secondServerKey);
+        assertEquals(secondServerKey, config.getSERVER_KEY());
     }
 
     @Test
     public void setCLIENT_KEY() {
-        config.setCLIENT_KEY("TEST SET CLIENT KEY");
-        assertEquals("TEST SET CLIENT KEY", config.getCLIENT_KEY());
+        config.setCLIENT_KEY(secondClientKey);
+        assertEquals(secondClientKey, config.getCLIENT_KEY());
     }
 
     @Test
     public void setProduction() {
         config.setProduction(true);
-        assertEquals(true, config.isProduction());
-    }
-
-    @Test
-    public void setConnetionTimeout() {
-        config.setConnectionTimeout(20);
-        assertEquals(20, config.getConnectionTimeout());
+        assertTrue(config.isProduction());
     }
 
     @Test
     public void setEnabledLog() {
         config.setEnabledLog(true);
-        assertEquals(true, config.isEnabledLog());
+        assertTrue(config.isEnabledLog());
+    }
+
+    @Test
+    public void setConnectTimeout() {
+        /*
+          Set connect timeout with minus value
+          */
+        config.setConnectionTimeout(-200);
+        assertEquals(DEFAULT_CONNECT_TIMEOUT, config.getConnectionTimeout());
+        assertEquals(TimeUnit.SECONDS, config.getHttpClientTimeUnit());
+
+        /*
+          Set connect timeout with default TimeUnit SECONDS
+          */
+        config.setConnectionTimeout(CONNECT_TIMEOUT);
+        assertEquals(CONNECT_TIMEOUT, config.getConnectionTimeout());
+        assertEquals(TimeUnit.SECONDS, config.getHttpClientTimeUnit());
+
+
+        /*
+          Set connect timeout with options TimeUnit MILLISECONDS
+          */
+        config.setConnectionTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS);
+        assertEquals(CONNECT_TIMEOUT, config.getConnectionTimeout());
+        assertEquals(TimeUnit.MILLISECONDS, config.getHttpClientTimeUnit());
     }
 
     @Test
     public void setReadTimeOut() {
-        config.setReadTimeout(200);
-        assertEquals(200, config.getReadTimeout());
+        /*
+          Set read timeout with minus value
+          */
+        config.setReadTimeout(-200);
+        assertEquals(DEFAULT_READ_TIMEOUT, config.getReadTimeout());
+        assertEquals(TimeUnit.SECONDS, config.getHttpClientTimeUnit());
+
+        /*
+          Set read timeout with default TimeUnit SECONDS
+          */
+        config.setReadTimeout(READ_TIMEOUT);
+        assertEquals(READ_TIMEOUT, config.getReadTimeout());
+        assertEquals(TimeUnit.SECONDS, config.getHttpClientTimeUnit());
+
+        /*
+          Set read timeout with options TimeUnit MILLISECONDS
+          */
+        config.setReadTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
+        assertEquals(TimeUnit.MILLISECONDS, config.getHttpClientTimeUnit());
+        assertEquals(READ_TIMEOUT, config.getReadTimeout());
     }
 
     @Test
     public void setWriteTimeOut() {
-        config.setWriteTimeout(200);
-        assertEquals(200, config.getWriteTimeout());
+        /*
+          Set write timeout with minus value
+        */
         config.setWriteTimeout(-200);
-        assertEquals(10, config.getWriteTimeout());
-    }
+        assertEquals(DEFAULT_WRITE_TIMEOUT, config.getWriteTimeout());
+        assertEquals(TimeUnit.SECONDS, config.getHttpClientTimeUnit());
 
-    @Test
-    public void setProxyConfig() {
-        ProxyConfig proxyConfig = new ProxyConfig("localhost", 8080, "username", "password" );
-        config.setProxyConfig(proxyConfig);
-        assertEquals("localhost", config.getProxyConfig().getHost());
-        assertEquals(8080, config.getProxyConfig().getPort());
-        assertEquals("username", config.getProxyConfig().getUsername());
-        assertEquals("password", config.getProxyConfig().getPassword());
-    }
+        /*
+         Set write timeout with default TimeUnit SECONDS
+        */
+        config.setWriteTimeout(WRITE_TIMEOUT);
+        assertEquals(WRITE_TIMEOUT, config.getWriteTimeout());
+        assertEquals(TimeUnit.SECONDS, config.getHttpClientTimeUnit());
 
-    @Test
-    public void setConnectionPool() {
-        config.setMaxConnectionPool(20);
-        assertEquals(20, config.getMaxConnectionPool());
-        config.setMaxConnectionPool(-10);
-        assertEquals(16, config.getMaxConnectionPool());
+        /*
+         Set write timeout with options TimeUnit MILLISECONDS
+        */
+        config.setWriteTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS);
+        assertEquals(WRITE_TIMEOUT, config.getWriteTimeout());
+        assertEquals(TimeUnit.MILLISECONDS, config.getHttpClientTimeUnit());
     }
 
     @Test
     public void setKeepAliveDuration() {
-        config.setKeepAliveDuration(100);
-        assertEquals(100, config.getKeepAliveDuration());
+        /*
+         Set keep alive duration with minus value
+        */
         config.setKeepAliveDuration(-200);
-        assertEquals(300, config.getKeepAliveDuration());
+        assertEquals(DEFAULT_KEEP_ALIVE_DURATION, config.getKeepAliveDuration());
+        assertEquals(TimeUnit.SECONDS, config.getHttpClientTimeUnit());
+
+        /*
+         Set keep alive duration with default TimeUnit SECONDS
+        */
+        config.setKeepAliveDuration(KEEP_ALIVE_DURATION);
+        assertEquals(KEEP_ALIVE_DURATION, config.getKeepAliveDuration());
+        assertEquals(TimeUnit.SECONDS, config.getHttpClientTimeUnit());
+
+        /*
+         Set keep alive duration with options TimeUnit MILLISECONDS
+        */
+        config.setKeepAliveDuration(KEEP_ALIVE_DURATION, TimeUnit.MILLISECONDS);
+        assertEquals(KEEP_ALIVE_DURATION, config.getKeepAliveDuration());
+        assertEquals(TimeUnit.MILLISECONDS, config.getHttpClientTimeUnit());
+
     }
+
+
+    @Test
+    public void setMaxConnectionPool() {
+        /*
+         Set max connection pool with minus value
+        */
+        config.setMaxConnectionPool(-10);
+        assertEquals(DEFAULT_MAX_CONNECTION_POOL_SIZE, config.getMaxConnectionPool());
+
+        /*
+         Set max connection pool
+        */
+        config.setMaxConnectionPool(CONNECTION_POOL_SIZE);
+        assertEquals(CONNECTION_POOL_SIZE, config.getMaxConnectionPool());
+    }
+
+    @Test
+    public void setProxyConfig() {
+        ProxyConfig proxyConfig = new ProxyConfig(PROXY_HOTS, PROXY_PORT, PROXY_USERNAME, PROXY_PASSWORD);
+        config.setProxyConfig(proxyConfig);
+        assertEquals(PROXY_HOTS, config.getProxyConfig().getHost());
+        assertEquals(PROXY_PORT, config.getProxyConfig().getPort());
+        assertEquals(PROXY_USERNAME, config.getProxyConfig().getUsername());
+        assertEquals(PROXY_PASSWORD, config.getProxyConfig().getPassword());
+    }
+
 
     @Test
     public void setIrisIdempotencyKey() {
@@ -101,14 +185,14 @@ public class ConfigTest {
 
     @Test
     public void paymentAppendNotification() {
-        config.paymentAppendNotification("http://example.com/");
-        assertEquals("http://example.com/", config.getPaymentAppendNotification());
+        config.paymentAppendNotification(APPEND_NOTIFICATION);
+        assertEquals(APPEND_NOTIFICATION, config.getPaymentAppendNotification());
     }
 
     @Test
     public void paymentOverrideNotification() {
-        config.paymentOverrideNotification("http://example.com/");
-        assertEquals("http://example.com/", config.getPaymentOverrideNotification());
+        config.paymentOverrideNotification(OVERRIDE_NOTIFICATION);
+        assertEquals(OVERRIDE_NOTIFICATION, config.getPaymentOverrideNotification());
     }
 
     @Test
@@ -119,41 +203,38 @@ public class ConfigTest {
 
     @Test
     public void getSERVER_KEY() {
-        assertEquals(serverKey, config.getSERVER_KEY());
+        assertEquals(mainServerKey, config.getSERVER_KEY());
     }
 
     @Test
     public void getCLIENT_KEY() {
-        assertEquals(clientKey, config.getCLIENT_KEY());
+        assertEquals(mainClientKey, config.getCLIENT_KEY());
     }
 
     @Test
     public void getCoreApiURL() {
-        config.getCoreApiURL();
         if (isProduction) {
-            assertEquals(COREAPI_PRODUCTION_BASE_URL, config.getBASE_URL());
+            assertEquals(COREAPI_PRODUCTION_BASE_URL, config.getCoreApiURL());
         } else {
-            assertEquals(COREAPI_SANDBOX_BASE_URL, config.getBASE_URL());
+            assertEquals(COREAPI_SANDBOX_BASE_URL, config.getCoreApiURL());
         }
     }
 
     @Test
     public void getSnapApiURL() {
-        config.getSnapApiURL();
         if (isProduction) {
-            assertEquals(SNAP_PRODUCTION_BASE_URL, config.getBASE_URL());
+            assertEquals(SNAP_PRODUCTION_BASE_URL, config.getSnapApiURL());
         } else {
-            assertEquals(SNAP_SANDBOX_BASE_URL, config.getBASE_URL());
+            assertEquals(SNAP_SANDBOX_BASE_URL, config.getSnapApiURL());
         }
     }
 
     @Test
     public void getIrisApiURL() {
-        config.getIrisApiURL();
         if (isProduction) {
-            assertEquals(IRIS_PRODUCTION_BASE_URL, config.getBASE_URL());
+            assertEquals(IRIS_PRODUCTION_BASE_URL, config.getIrisApiURL());
         } else {
-            assertEquals(IRIS_SANDBOX_BASE_URL, config.getBASE_URL());
+            assertEquals(IRIS_SANDBOX_BASE_URL, config.getIrisApiURL());
         }
     }
 }
