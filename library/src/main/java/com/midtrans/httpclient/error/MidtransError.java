@@ -1,77 +1,76 @@
 package com.midtrans.httpclient.error;
 
-import java.util.ArrayList;
+import lombok.Getter;
+import okhttp3.Response;
 
 /**
  * MidtransError class to catch error messages
  */
+@Getter
 public class MidtransError extends Exception {
 
-    private ArrayList errorMessages;
+    private String message;
+    private Integer statusCode;
+    private String responseBody;
+    private Response response;
 
     /**
-     * get error messages
+     * Constructs a Midtrans exception with the message
      *
-     * @return errorMessage ArrayList
+     * @param message
      */
-    public ArrayList getErrorMessages() {
-        return errorMessages;
-    }
-
     public MidtransError(String message) {
         super(message);
+        this.message = message;
     }
 
+    /**
+     *  Constructs a Midtrans exception with the specified cause
+     *
+     * @param cause
+     */
     public MidtransError(Throwable cause) {
         super(cause);
     }
 
+    /**
+     * Constructs a Midtrans exception with message and specified cause
+     *
+     * @param message
+     * @param cause
+     */
     public MidtransError(String message, Throwable cause) {
         super(message, cause);
-    }
-
-    private MidtransError(final Builder builder) {
-        errorMessages = builder.errorMessages;
+        this.message = message;
     }
 
     /**
-     * MidtransError Builder
+     * Constructs a Midtrans exception with the specified details.
+     *
+     * @param message
+     * @param statusCode
+     * @param data
+     * @param response
      */
-    public static class Builder {
-        private ArrayList errorMessages;
-
-        public Builder() {
-        }
-
-        /**
-         * Set error message
-         *
-         * @param errorMessages error message from Midtrans error response
-         * @return {@link MidtransError.Builder ErrorMesage.Builder}
-         */
-        public Builder errorMessage(final ArrayList errorMessages) {
-            this.errorMessages = errorMessages;
-            return this;
-        }
-
-        /**
-         * Set default error
-         *
-         * @return {@link MidtransError.Builder ErrorMesage.Builder}
-         */
-        public Builder defaultError() {
-            this.errorMessages.add("Unknown ERROR");
-            return this;
-        }
-
-        /**
-         * Build MidtransError object from builder
-         *
-         * @return {@link MidtransError MidtransError}
-         */
-        public MidtransError build() {
-            return new MidtransError(this);
-        }
-
+    public MidtransError(String message, Integer statusCode, String data, Response response) {
+        this(message, statusCode, data, response, null);
     }
+
+    /**
+     * Constructs a Midtrans exception with the specified details.
+     *
+     * @param message
+     * @param statusCode
+     * @param responseBody
+     * @param response
+     * @param e
+     */
+    public MidtransError(String message, Integer statusCode, String responseBody, Response response, Throwable e) {
+        super(message, e);
+        this.message = message;
+        this.statusCode = statusCode;
+        this.responseBody = responseBody;
+        this.response = response;
+    }
+
 }
