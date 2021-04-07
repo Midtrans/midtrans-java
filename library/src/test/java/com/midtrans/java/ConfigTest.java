@@ -1,7 +1,6 @@
 package com.midtrans.java;
 
 import com.midtrans.Config;
-import com.midtrans.Midtrans;
 import com.midtrans.proxy.ProxyConfig;
 import org.junit.Before;
 import org.junit.Test;

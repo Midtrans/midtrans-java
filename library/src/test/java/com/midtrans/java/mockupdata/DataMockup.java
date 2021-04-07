@@ -107,7 +107,7 @@ public class DataMockup {
 
     public Map<String, String> initDataBeneficiaries() {
         int prefix = random();
-        String ptName = "PT Java Unit Test " +prefix;
+        String ptName = "JavaUnitTest " +prefix;
         String email = "midjava"+prefix+"@mail.com";
 
         Map<String, String> beneficiarie = new HashMap<>();
