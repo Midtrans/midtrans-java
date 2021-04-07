@@ -158,7 +158,7 @@ coreApi.apiConfig().setSERVER_KEY("YOUR_SERVER_KEY");
 // i.e. set serverKey only
 coreApi.apiConfig().setSERVER_KEY("YOUR_SERVER_KEY");
 
-// For Iris Disbursement can set creator & approver credentials with configOptions()
+// For Iris Disbursement can set creator & approver credentials with apiConfig()
 irisApi.apiConfig().setSERVER_KEY("IRIS-CREDENTIALS");
 
 irisApi.apiConfig().setIrisIdempotencyKey("IRIS-IDEMPOTENCY-KEY");
