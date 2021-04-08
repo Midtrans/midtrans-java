@@ -1,6 +1,6 @@
 ## CHANGELOG MIDTRANS JAVA LIBRARY
 
-## v3.1.1 (April 6, 2021)
+## v3.0.0 (April 6, 2021)
 
 Feature:
 - new static method CoreApi, SnapApi, IrisApi, TransactionApi
@@ -11,8 +11,9 @@ Feature:
 
 Improvement:
 - handle okhttp raw error/exception via MidtransError exception class
-- No longer use retrofit, but still using okhttp as http client
 
+Notable changes:
+- Migrate from retrofit to okhttp as http client
 
 ## v2.1.1 (April 27, 2020)
 
