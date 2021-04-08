@@ -21,7 +21,7 @@ Maven:
   <dependency>
 	  <groupId>com.midtrans</groupId>
 	  <artifactId>java-library</artifactId>
-	  <version>3.1.1</version>
+	  <version>3.0.0</version>
 </dependency>
 </dependencies>
 ```
@@ -35,13 +35,13 @@ repositories {
 }
 
 dependencies {
-    compile 'com.midtrans:java-library:3.1.1'
+    compile 'com.midtrans:java-library:3.0.0'
 }
 ```
 
 ### 1.b Using JAR File
 
-If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://dl.bintray.com/midtrans/midtrans-java/com/midtrans/java-library/3.1.1/java-library-3.1.1.jar)
+If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://dl.bintray.com/midtrans/midtrans-java/com/midtrans/java-library/3.0.0/java-library-3.0.0.jar)
 
 ## 2. Usage
 
@@ -59,7 +59,7 @@ Choose one that you think best for your unique needs.
 
 Get your client key and server key from [Midtrans Dashboard](https://dashboard.midtrans.com)
 
-Create API client object, may you can see the [project's functional tests](library/src/test/java/com/midtrans/java) for more examples.
+Create API client object, You can also check the [project's functional tests](library/src/test/java/com/midtrans/java) for more examples.
 
 Set a config with globally, except iris api
 ```java
@@ -90,8 +90,8 @@ import com.midtrans.httpclient.error.MidtransError;
 import org.json.JSONObject;
 
 Config configOptions = Config.builder()
-        .setSERVER_KEY("YOUR_SERVER_KEY")
-        .setCLIENT_KEY("YOUR_CLIENT_KEY")
+        .setServerKey("YOUR_SERVER_KEY")
+        .setClientKey("YOUR_CLIENT_KEY")
         .setIrisIdempotencyKey("UNIQUE_ID")
         .setPaymentIdempotencyKey("UNIQUE_ID")
         .setProxyConfig(PROXY_CONFIG)
@@ -104,8 +104,7 @@ JSONObject result = CoreApi.chargeTransaction(param, configOptions);
 // SnapApi request with config options
 JSONObject result = SnapApi.createTransaction(param, configOptions);
 ```
-
-others alternative
+#### Alternative way to initialize
 ```java
 import com.midtrans.Config;
 import com.midtrans.ConfigFactory;
@@ -151,15 +150,15 @@ example:
 ```java
 // Create Snap API instance, empty config
 coreApi.apiConfig().setProduction(false);
-coreApi.apiConfig().setCLIENT_KEY("YOUR_CLIENT_KEY");
-coreApi.apiConfig().setSERVER_KEY("YOUR_SERVER_KEY");
+coreApi.apiConfig().setClientKey("YOUR_CLIENT_KEY");
+coreApi.apiConfig().setServerKey("YOUR_SERVER_KEY");
 
 // You don't have to re-set using all the options, 
 // i.e. set serverKey only
-coreApi.apiConfig().setSERVER_KEY("YOUR_SERVER_KEY");
+coreApi.apiConfig().setServerKey("YOUR_SERVER_KEY");
 
 // For Iris Disbursement can set creator & approver credentials with apiConfig()
-irisApi.apiConfig().setSERVER_KEY("IRIS-CREDENTIALS");
+irisApi.apiConfig().setServerKey("IRIS-CREDENTIALS");
 
 irisApi.apiConfig().setIrisIdempotencyKey("IRIS-IDEMPOTENCY-KEY");
 
@@ -208,8 +207,6 @@ and also you can set value for connectionTimeout or etc with configuration class
 
 example: 
 ```java
-//TimeUnit for integer value is SECONDS
-
 // set as globally
 Midtrans.setConnectTimeout(10000);
 Midtrans.setReadTimeout(10000);
@@ -224,7 +221,6 @@ coreApi.apiConfig().setReadTimeout(10000, TimeUnit.MILLISECONDS);
 coreApi.apiConfig().setWriteTimeout(10000, TimeUnit.MILLISECONDS);
 coreApi.apiConfig().setKeepAliveDuration(300000, TimeUnit.MILLISECONDS);
 coreApi.apiConfig().setMaxConnectionPool(16);
-
 
 // set connection timeout with Config class
 config.setConnectionTimeout(10000, TimeUnit.MILLISECONDS);
@@ -269,9 +265,6 @@ try {
 ```
 #### CoreAPI Simple Sample Usage
 ```java
-
-import com.midtrans.Config;
-import com.midtrans.ConfigFactory;
 import com.midtrans.httpclient.CoreApi;
 import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.Midtrans;
