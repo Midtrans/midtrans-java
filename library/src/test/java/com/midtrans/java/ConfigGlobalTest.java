@@ -46,7 +46,7 @@ public class ConfigGlobalTest {
 
     @Test
     public void clientKey() {
-        assertEquals(config.getCLIENT_KEY(), mainClientKey);
+        assertEquals(config.getClientKey(), mainClientKey);
     }
 
 
@@ -74,7 +74,7 @@ public class ConfigGlobalTest {
 
     @Test
     public void serverKey() {
-        assertEquals(config.getSERVER_KEY(), mainServerKey);
+        assertEquals(config.getServerKey(), mainServerKey);
 
 
         assertNull(config.getCustomHeaders());

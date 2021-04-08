@@ -27,8 +27,8 @@ public class SnapApiTest {
         Midtrans.clientKey = mainClientKey;
 
         configOptions = Config.builder()
-                .setSERVER_KEY(secondServerKey)
-                .setCLIENT_KEY(secondClientKey)
+                .setServerKey(secondServerKey)
+                .setClientKey(secondClientKey)
                 .build();
     }
 
@@ -103,7 +103,7 @@ public class SnapApiTest {
     @Test
     public void errorServerKey() {
         Midtrans.serverKey = "DUMMY";
-        Config configOptions1 = Config.builder().setSERVER_KEY("DUMMY").build();
+        Config configOptions1 = Config.builder().setServerKey("DUMMY").build();
 
         //Method 1
         try {

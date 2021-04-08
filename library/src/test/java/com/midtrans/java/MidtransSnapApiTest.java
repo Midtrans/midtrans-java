@@ -23,8 +23,8 @@ public class MidtransSnapApiTest {
     public void setUp() {
         dataMockup = new DataMockup();
         ConfigFactory configFactory = new ConfigFactory(new ConfigBuilder()
-                .setSERVER_KEY(mainServerKey)
-                .setCLIENT_KEY(mainClientKey)
+                .setServerKey(mainServerKey)
+                .setClientKey(mainClientKey)
                 .setIsProduction(isProduction)
                 .build());
         snapApi = configFactory.getSnapApi();
@@ -68,17 +68,17 @@ public class MidtransSnapApiTest {
         try {
             snapApi.createTransaction(dataMockup.badDataMockUp());
         } catch (MidtransError e) {
-            assert e.getMessage().equals("Midtrans API is returning API error. HTTP status code: 400 API response: {\"error_messages\":[\"transaction_details.gross_amount is required\",\"transaction_details.gross_amount is not a number\",\"transaction_details.order_id is required\"]}");
+            assert e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 400 API response");
         }
     }
 
     @Test
     public void errorServerKey() {
-        snapApi.apiConfig().setSERVER_KEY("dummy");
+        snapApi.apiConfig().setServerKey("dummy");
         try {
             snapApi.createTransaction(dataMockup.miniDataMockUp());
         } catch (MidtransError e) {
-            assert e.getMessage().equals("Midtrans API is returning API error. HTTP status code: 401 API response: {\"error_messages\":[\"Access denied due to unauthorized transaction, please check client or server key\",\"Visit https://snap-docs.midtrans.com/#request-headers for more details\"]}");
+            assert e.getMessage().contains("unauthorized");
         }
 
     }

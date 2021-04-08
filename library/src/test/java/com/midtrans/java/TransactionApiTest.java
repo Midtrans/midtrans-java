@@ -29,8 +29,8 @@ public class TransactionApiTest {
         Midtrans.clientKey = mainClientKey;
 
         configOptions = Config.builder()
-                .setSERVER_KEY(secondServerKey)
-                .setCLIENT_KEY(secondClientKey)
+                .setServerKey(secondServerKey)
+                .setClientKey(secondClientKey)
                 .build();
     }
 
@@ -57,7 +57,7 @@ public class TransactionApiTest {
 
     @Test
     public void approveTransaction() throws MidtransError {
-        Config config = Config.builder().setSERVER_KEY(mainServerKey).setCLIENT_KEY(mainClientKey).build();
+        Config config = Config.builder().setServerKey(mainServerKey).setClientKey(mainClientKey).build();
         JSONObject result1 = TransactionApi.approveTransaction(makeFDSTransaction(config));
         assert result1.getString("status_code").equals("412");
         assert result1.getString("status_message").equals("Transaction status cannot be updated.");
@@ -69,7 +69,7 @@ public class TransactionApiTest {
 
     @Test
     public void denyTransaction() throws MidtransError {
-        Config config = Config.builder().setSERVER_KEY(mainServerKey).setCLIENT_KEY(mainClientKey).build();
+        Config config = Config.builder().setServerKey(mainServerKey).setClientKey(mainClientKey).build();
         JSONObject result1 = TransactionApi.denyTransaction(makeFDSTransaction(config));
         assert result1.getString("status_code").equals("412");
         assert result1.getString("status_message").equals("Transaction status cannot be updated.");
@@ -178,7 +178,7 @@ public class TransactionApiTest {
         dataMockup = new DataMockup();
         dataMockup.setPaymentType("credit_card");
         Map<String, String> cc = new HashMap<>();
-        cc.put("token_id", genCardToken(cardNumberFDS, config.getCLIENT_KEY()));
+        cc.put("token_id", genCardToken(cardNumberFDS, config.getClientKey()));
         dataMockup.creditCard(cc);
 
         JSONObject result = CoreApi.chargeTransaction(dataMockup.initDataMock(), config);

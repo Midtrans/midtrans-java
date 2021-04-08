@@ -33,7 +33,7 @@ public class IrisApiTest {
         dataMockup = new DataMockup();
 
         configOptions = Config.builder()
-                .setSERVER_KEY(creatorKey)
+                .setServerKey(creatorKey)
                 .enableLog(false)
                 .build();
     }
@@ -92,7 +92,7 @@ public class IrisApiTest {
         approvePayout.put("reference_nos", getPayoutsFromResult(response));
         approvePayout.put("otp", "335163");
 
-        configOptions.setSERVER_KEY(approverKey);
+        configOptions.setServerKey(approverKey);
         JSONObject result = IrisApi.approvePayouts(approvePayout, configOptions);
         assert result.getString("status").equals("ok");
     }
@@ -134,7 +134,7 @@ public class IrisApiTest {
     }
 
     private void rejectPayouts(Map<String, Object> params) throws MidtransError {
-        configOptions.setSERVER_KEY(approverKey);
+        configOptions.setServerKey(approverKey);
         JSONObject result = IrisApi.rejectPayouts(params, configOptions);
         assert result.getString("status").equals("ok");
     }
@@ -184,7 +184,7 @@ public class IrisApiTest {
 
         // Request create beneficiary to Iris API
         Config configOptions = Config.builder()
-                .setSERVER_KEY(creatorKey)
+                .setServerKey(creatorKey)
                 .setIrisIdempotencyKey(String.valueOf(UUID.randomUUID()))
                 .build();
         JSONObject result1 = IrisApi.createBeneficiaries(beneficiary, configOptions);
@@ -196,12 +196,12 @@ public class IrisApiTest {
 
     @Test
     public void failureCredentials() {
-        configOptions.setSERVER_KEY("dummy");
+        configOptions.setServerKey("dummy");
         try {
             IrisApi.getBalance(configOptions);
         } catch (MidtransError e) {
             e.printStackTrace();
-            assert e.getResponseBody().equals("HTTP Basic: Access denied.\n");
+            assert e.getResponseBody().contains("Access denied");
         }
     }
 

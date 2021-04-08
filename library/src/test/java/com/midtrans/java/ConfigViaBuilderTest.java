@@ -20,8 +20,8 @@ public class ConfigViaBuilderTest {
 
         Config config = Config.getGlobalConfig();
 
-        assertEquals(config.getSERVER_KEY(), mainServerKey);
-        assertEquals(config.getCLIENT_KEY(), mainClientKey);
+        assertEquals(config.getServerKey(), mainServerKey);
+        assertEquals(config.getClientKey(), mainClientKey);
         assertEquals(config.isProduction(), Midtrans.isProduction());
         assertEquals(config.isEnabledLog(), Midtrans.enableLog());
         assertNull(config.getPaymentIdempotencyKey());

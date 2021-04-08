@@ -22,15 +22,15 @@ public class ConfigTest {
 
 
     @Test
-    public void setSERVER_KEY() {
-        config.setSERVER_KEY(secondServerKey);
-        assertEquals(secondServerKey, config.getSERVER_KEY());
+    public void setServerKey() {
+        config.setServerKey(secondServerKey);
+        assertEquals(secondServerKey, config.getServerKey());
     }
 
     @Test
-    public void setCLIENT_KEY() {
-        config.setCLIENT_KEY(secondClientKey);
-        assertEquals(secondClientKey, config.getCLIENT_KEY());
+    public void setClientKey() {
+        config.setClientKey(secondClientKey);
+        assertEquals(secondClientKey, config.getClientKey());
     }
 
     @Test
@@ -202,12 +202,12 @@ public class ConfigTest {
 
     @Test
     public void getSERVER_KEY() {
-        assertEquals(mainServerKey, config.getSERVER_KEY());
+        assertEquals(mainServerKey, config.getServerKey());
     }
 
     @Test
-    public void getCLIENT_KEY() {
-        assertEquals(mainClientKey, config.getCLIENT_KEY());
+    public void getClientKey() {
+        assertEquals(mainClientKey, config.getClientKey());
     }
 
     @Test

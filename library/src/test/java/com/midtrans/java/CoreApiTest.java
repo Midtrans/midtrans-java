@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static com.midtrans.java.mockupdata.Constant.*;
+import static org.junit.Assert.assertNotNull;
 
 public class CoreApiTest {
 
@@ -32,8 +33,8 @@ public class CoreApiTest {
 
         /* Using config option on each request */
         configOptions = Config.builder()
-                .setSERVER_KEY(secondServerKey)
-                .setCLIENT_KEY(secondClientKey)
+                .setServerKey(secondServerKey)
+                .setClientKey(secondClientKey)
                 .build();
     }
 
@@ -55,13 +56,13 @@ public class CoreApiTest {
         /* Using method with Global Config */
         JSONObject result1 = CoreApi.cardToken(creditCard(cardNumberAccept, mainClientKey));
         assert result1.has("token_id");
-        assert result1.getString("token_id").matches("[0-9]{6}-[0-9]{4}-[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}");
+        assertNotNull(result1.getString("token_id"));
         assert result1.getString("status_code").equals("200");
 
         /* Using method with config option on request */
         JSONObject result2 = CoreApi.cardToken(creditCard(cardNumberAccept, secondClientKey), configOptions);
         assert result2.has("token_id");
-        assert result2.getString("token_id").matches("[0-9]{6}-[0-9]{4}-[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}");
+        assertNotNull(result2.getString("token_id"));
         assert result2.getString("status_code").equals("200");
     }
 
@@ -93,7 +94,7 @@ public class CoreApiTest {
             CoreApi.chargeTransaction(null);
         } catch (MidtransError e) {
             e.printStackTrace();
-            assert e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 500 API response: {\"message\":\"An unexpected error occurred\"}");
+            assert e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 500");
         }
 
         /* Using method with config option on request */
@@ -101,7 +102,7 @@ public class CoreApiTest {
             CoreApi.chargeTransaction(null, configOptions);
         } catch (MidtransError e) {
             e.printStackTrace();
-            assert e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 500 API response: {\"message\":\"An unexpected error occurred\"}");
+            assert e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 500");
         }
     }
 
@@ -125,7 +126,7 @@ public class CoreApiTest {
         dataMockup.setPaymentType("gopay");
 
         Config configOptions = Config.builder()
-                .setSERVER_KEY(mainServerKey)
+                .setServerKey(mainServerKey)
                 .setPaymentIdempotencyKey(String.valueOf(UUID.randomUUID()))
                 .build();
 
@@ -162,7 +163,7 @@ public class CoreApiTest {
         assert result.getString("status_code").equals("401");
 
         /* Using method with config option on request */
-        Config configOptions = Config.builder().setSERVER_KEY("dummy").build();
+        Config configOptions = Config.builder().setServerKey("dummy").build();
         JSONObject result2 = CoreApi.chargeTransaction(dataMockup.initDataMock(), configOptions);
         assert result2.getString("status_code").equals("401");
     }

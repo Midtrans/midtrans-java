@@ -157,7 +157,7 @@ public class APIHttpClient {
             }
         }
 
-        String serverKey = config.getSERVER_KEY();
+        String serverKey = config.getServerKey();
         if (serverKey == null) {
             throw new MidtransError(
                     "No ServerKey provided. Please set your serverKey key. "
@@ -182,7 +182,7 @@ public class APIHttpClient {
 
         headersMap.put("Accept", "application/json");
         headersMap.put("Content-Type", "application/json");
-        headersMap.put("Authorization", Utility.base64(serverKey));
+        headersMap.put("Authorization", Utility.encodeBase64(serverKey));
         headersMap.put("User-Agent", "Midtrans-Java-Library-" + Utility.getLibraryVersion());
         if (config.getIrisIdempotencyKey() != null) {
             headersMap.put("X-Idempotency-Key", config.getIrisIdempotencyKey());

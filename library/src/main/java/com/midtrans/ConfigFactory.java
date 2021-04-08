@@ -50,7 +50,7 @@ public class ConfigFactory {
     /**
      * Get midtrans config.
      *
-     * @return {@link Config configuration} when request to midtrans API
+     * @return {@link Config configuration} that will be used by the HTTP Client when sending request to Midtrans API
      */
     public Config getConfig() {
         return config;

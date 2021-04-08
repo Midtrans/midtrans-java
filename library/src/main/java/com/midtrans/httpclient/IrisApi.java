@@ -13,7 +13,7 @@ import java.util.Optional;
 public class IrisApi {
 
     public static String ping() throws MidtransError {
-        Config config = Config.builder().setSERVER_KEY("NoNeedKey").build();
+        Config config = Config.builder().setServerKey("NoNeedKey").build();
         return APIHttpClient.request(APIHttpClient.GET, Config.getGlobalConfig().getIrisApiURL() + "ping", config, null);
     }
 

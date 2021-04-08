@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit;
 @EqualsAndHashCode(callSuper = false)
 public class ConfigBuilder {
 
-    private String SERVER_KEY;
-    private String CLIENT_KEY;
+    private String serverKey;
+    private String clientKey;
     private Boolean isProduction;
     private boolean enableLog;
 
@@ -46,8 +46,8 @@ public class ConfigBuilder {
      * Default constructor ConfigBuilder
      */
     public ConfigBuilder() {
-        this.SERVER_KEY = Midtrans.getServerKey();
-        this.CLIENT_KEY = Midtrans.getClientKey();
+        this.serverKey = Midtrans.getServerKey();
+        this.clientKey = Midtrans.getClientKey();
         this.isProduction = Midtrans.isProduction();
         this.enableLog = Midtrans.enableLog();
         this.paymentIdempotencyKey = null;
@@ -65,24 +65,53 @@ public class ConfigBuilder {
     }
 
     /**
-     * Set merchant client key configuration
+     * set merchant server key with config builder
+     *
+     * @deprecated
+     * This method will delete soon on the next major release.
+     * <p> Please use {@link ConfigBuilder#setServerKey(String)} instead.
      *
      * @param SERVER_KEY merchant server key
      * @return {@link ConfigBuilder ConfigBuilder}
      */
     public ConfigBuilder setSERVER_KEY(String SERVER_KEY) {
-        this.SERVER_KEY = SERVER_KEY;
-        return this;
+        return setServerKey(SERVER_KEY);
     }
 
     /**
+     * Set merchant server key with config builder
+     *
+     * @param serverKey merchant server key
+     * @return {@link ConfigBuilder ConfigBuilder}
+     */
+    public ConfigBuilder setServerKey(String serverKey) {
+        this.serverKey = serverKey;
+        return this;
+    }
+
+
+    /**
      * Set merchant client key configuration
+     *
+     * @deprecated
+     * This method will delete soon on the next major release.
+     * <p> Please use {@link ConfigBuilder#setClientKey(String)} instead.
      *
      * @param CLIENT_KEY merchant client key
      * @return {@link ConfigBuilder ConfigBuilder}
      */
     public ConfigBuilder setCLIENT_KEY(String CLIENT_KEY) {
-        this.CLIENT_KEY = CLIENT_KEY;
+        return setClientKey(CLIENT_KEY);
+    }
+
+    /**
+     * Set merchant client key configuration
+     *
+     * @param clientKey merchant client key
+     * @return {@link ConfigBuilder ConfigBuilder}
+     */
+    public ConfigBuilder setClientKey(String clientKey) {
+        this.clientKey = clientKey;
         return this;
     }
 
@@ -275,8 +304,8 @@ public class ConfigBuilder {
      */
     public Config build() {
         return new Config(
-                SERVER_KEY,
-                CLIENT_KEY,
+                serverKey,
+                clientKey,
                 isProduction,
                 enableLog,
                 connectionTimeout,

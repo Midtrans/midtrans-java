@@ -37,7 +37,7 @@ public class Constant {
     public static final int KEEP_ALIVE_DURATION = 400;
 
     public static final String APPEND_NOTIFICATION = "https://example.com/";
-    public static final String OVERRIDE_NOTIFICATION = "https://google.com/";
+    public static final String OVERRIDE_NOTIFICATION = "https://example.com/";
 
     public static final String PROXY_HOTS = "localhost";
     public static final int PROXY_PORT = 8080;

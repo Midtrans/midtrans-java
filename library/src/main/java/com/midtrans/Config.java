@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit;
 @EqualsAndHashCode(callSuper = false)
 public class Config {
 
-    private String SERVER_KEY;
-    private String CLIENT_KEY;
-    private String IRIS_MERCHANT_KEY;
+    private String serverKey;
+    private String clientKey;
+    private String irisMerchantKey;
     private boolean isProduction;
     private boolean enabledLog;
 
@@ -38,13 +38,13 @@ public class Config {
     /**
      * Midtrans configuration constructor
      *
-     * @param SERVER_KEY   Merchant server-key
-     * @param CLIENT_KEY   Merchant client-key
+     * @param serverKey   Merchant server-key
+     * @param clientKey   Merchant client-key
      * @param isProduction Merchant Environment Sandbox or Production
      */
-    public Config(String SERVER_KEY, String CLIENT_KEY, boolean isProduction) {
-        this.SERVER_KEY = SERVER_KEY;
-        this.CLIENT_KEY = CLIENT_KEY;
+    public Config(String serverKey, String clientKey, boolean isProduction) {
+        this.serverKey = serverKey;
+        this.clientKey = clientKey;
         this.isProduction = isProduction;
         this.readTimeout = ConfigBuilder.DEFAULT_READ_TIMEOUT;
         this.writeTimeout = ConfigBuilder.DEFAULT_WRITE_TIMEOUT;
@@ -56,8 +56,8 @@ public class Config {
     /**
      * Midtrans configuration constructor
      *
-     * @param SERVER_KEY        Merchant server-key
-     * @param CLIENT_KEY        Merchant client-key
+     * @param serverKey        Merchant server-key
+     * @param clientKey        Merchant client-key
      * @param isProduction      Merchant Environment Sandbox or Production
      * @param connectionTimeout Config for connection timeout
      * @param readTimeout       Config for read timeout
@@ -65,9 +65,9 @@ public class Config {
      * @param maxConnectionPool value max for connection pool
      * @param keepAliveDuration Durations for Keep alive connection
      */
-    public Config(String SERVER_KEY, String CLIENT_KEY, boolean isProduction, int connectionTimeout, int readTimeout, int writeTimeout, int maxConnectionPool, int keepAliveDuration) {
-        this.SERVER_KEY = SERVER_KEY;
-        this.CLIENT_KEY = CLIENT_KEY;
+    public Config(String serverKey, String clientKey, boolean isProduction, int connectionTimeout, int readTimeout, int writeTimeout, int maxConnectionPool, int keepAliveDuration) {
+        this.serverKey = serverKey;
+        this.clientKey = clientKey;
         this.isProduction = isProduction;
         this.connectionTimeout = connectionTimeout;
         this.readTimeout = readTimeout;
@@ -79,8 +79,8 @@ public class Config {
     /**
      * Midtrans configuration constructor
      *
-     * @param SERVER_KEY        Merchant server-key
-     * @param CLIENT_KEY        Merchant client-key
+     * @param serverKey        Merchant server-key
+     * @param clientKey        Merchant client-key
      * @param isProduction      Merchant Environment Sandbox or Production
      * @param connectionTimeout Config for connection timeout
      * @param readTimeout       Config for read timeout
@@ -89,9 +89,9 @@ public class Config {
      * @param keepAliveDuration Durations for Keep alive connection
      * @param proxyConfig       Config for use http proxy
      */
-    public Config(String SERVER_KEY, String CLIENT_KEY, boolean isProduction, int connectionTimeout, int readTimeout, int writeTimeout, int maxConnectionPool, int keepAliveDuration, ProxyConfig proxyConfig) {
-        this.SERVER_KEY = SERVER_KEY;
-        this.CLIENT_KEY = CLIENT_KEY;
+    public Config(String serverKey, String clientKey, boolean isProduction, int connectionTimeout, int readTimeout, int writeTimeout, int maxConnectionPool, int keepAliveDuration, ProxyConfig proxyConfig) {
+        this.serverKey = serverKey;
+        this.clientKey = clientKey;
         this.isProduction = isProduction;
         this.connectionTimeout = connectionTimeout;
         this.readTimeout = readTimeout;
@@ -103,8 +103,8 @@ public class Config {
 
 
     public Config(
-            String SERVER_KEY,
-            String CLIENT_KEY,
+            String serverKey,
+            String clientKey,
             boolean isProduction,
             boolean enabledLog,
             int connectionTimeout,
@@ -120,8 +120,8 @@ public class Config {
             ProxyConfig proxyConfig,
             Map<String, String> customHeaders
     ) {
-        this.SERVER_KEY = SERVER_KEY;
-        this.CLIENT_KEY = CLIENT_KEY;
+        this.serverKey = serverKey;
+        this.clientKey = clientKey;
         this.isProduction = isProduction;
         this.enabledLog = enabledLog;
         this.connectionTimeout = connectionTimeout;
@@ -171,10 +171,36 @@ public class Config {
     /**
      * Get merchant server key
      *
-     * @return Merchant server key
+     * @deprecated
+     * This method will delete soon on the next major release.
+     * <p> Please use {@link Config#getServerKey()} instead.
+     *
+     * @return {@link Config#getServerKey()}
      */
     public String getSERVER_KEY() {
-        return SERVER_KEY;
+        return getServerKey();
+    }
+
+    /**
+     * Get merchant server key
+     *
+     * @return Merchant server key
+     */
+    public String getServerKey() {
+        return serverKey;
+    }
+
+    /**
+     * Get merchant client key
+     * 
+     * @deprecated
+     * This method will delete soon on the next major release.
+     * <p> Please use {@link Config#getClientKey()} instead.    
+     *
+     * @return Merchant client key
+     */
+    public String getCLIENT_KEY() {
+        return getClientKey();
     }
 
     /**
@@ -182,8 +208,8 @@ public class Config {
      *
      * @return Merchant client key
      */
-    public String getCLIENT_KEY() {
-        return CLIENT_KEY;
+    public String getClientKey() {
+        return clientKey;
     }
 
     /**
@@ -347,32 +373,66 @@ public class Config {
         return xOverrideNotification;
     }
 
-
     /**
      * Get Iris merchant key
      *
      * @return String iris merchant key
      */
     public String getIRIS_MERCHANT_KEY() {
-        return IRIS_MERCHANT_KEY;
+        return getIrisMerchantKey();
+    }
+
+    /**
+     * Get Iris merchant key
+     *
+     * @return String iris merchant key
+     */
+    public String getIrisMerchantKey() {
+        return irisMerchantKey;
     }
 
     /**
      * set server-key for Basic Authentication while calling Midtrans API from backend.
      *
+     * @deprecated
+     * This method will delete soon on the next major release.
+     * <p> Please use {@link Config#setServerKey(String)} instead.
+     *
      * @param SERVER_KEY merchant server key
      */
     public void setSERVER_KEY(final String SERVER_KEY) {
-        this.SERVER_KEY = SERVER_KEY;
+        setServerKey(SERVER_KEY);
+    }
+
+    /**
+     * set server-key for Basic Authentication while calling Midtrans API from backend.
+     *
+     * @param serverKey merchant server key
+     */
+    public void setServerKey(final String serverKey) {
+        this.serverKey = serverKey;
     }
 
     /**
      * set client-key used for authorization on frontend API request/configuration.
      *
+     * @deprecated
+     * This method will delete soon on the next major release.
+     * <p> Please use {@link Config#setClientKey(String)} instead.
+     *
      * @param CLIENT_KEY merchant client key
      */
     public void setCLIENT_KEY(final String CLIENT_KEY) {
-        this.CLIENT_KEY = CLIENT_KEY;
+        setClientKey(CLIENT_KEY);
+    }
+
+    /**
+     * set client-key used for authorization on frontend API request/configuration.
+     *
+     * @param clientKey merchant client key
+     */
+    public void setClientKey(final String clientKey) {
+        this.clientKey = clientKey;
     }
 
     /**
@@ -530,10 +590,24 @@ public class Config {
     /**
      * Set Iris Merchant key
      *
+     * @deprecated
+     * This method will delete soon on the next major release.
+     * <p> Please use {@link Config#setIrisMerchantKey(String)} instead.
+     *
      * @param IRIS_MERCHANT_KEY String iris merchant key
      */
+    @Deprecated
     public void setIRIS_MERCHANT_KEY(String IRIS_MERCHANT_KEY) {
-        this.IRIS_MERCHANT_KEY = IRIS_MERCHANT_KEY;
+        setIrisMerchantKey(IRIS_MERCHANT_KEY);
+    }
+
+    /**
+     * Set Iris Merchant key
+     *
+     * @param irisMerchantKey
+     */
+    public void setIrisMerchantKey(String irisMerchantKey) {
+        this.irisMerchantKey = irisMerchantKey;
     }
 
     /**

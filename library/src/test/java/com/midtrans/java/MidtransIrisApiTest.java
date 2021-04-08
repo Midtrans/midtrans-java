@@ -96,7 +96,7 @@ public class MidtransIrisApiTest {
     }
 
     private void approvePayouts(Map<String, Object> params) throws MidtransError {
-        irisApi.apiConfig().setSERVER_KEY(approverKey);
+        irisApi.apiConfig().setServerKey(approverKey);
         JSONObject result = irisApi.approvePayouts(params);
         assert result.getString("status").equals("ok");
     }
@@ -127,7 +127,7 @@ public class MidtransIrisApiTest {
     }
 
     private void rejectPayouts(Map<String, Object> params) throws MidtransError {
-        irisApi.apiConfig().setSERVER_KEY(approverKey);
+        irisApi.apiConfig().setServerKey(approverKey);
         JSONObject result = irisApi.rejectPayouts(params);
         assert result.getString("status").equals("ok");
     }
@@ -185,22 +185,25 @@ public class MidtransIrisApiTest {
     }
 
     @Test
-    public void failureCredentials() throws MidtransError {
-        irisApi.apiConfig().setSERVER_KEY(".");
-        JSONObject result = irisApi.getBalance();
-        assert result.getString("HTTP Basic").equals("Access denied.");
+    public void failureCredentials()  {
+        irisApi.apiConfig().setServerKey("dummy");
+        try {
+            JSONObject result = irisApi.getBalance();
+        } catch (MidtransError e) {
+            e.printStackTrace();
+            assert e.getResponseBody().contains("Access denied");
+        }
     }
 
     @Test
     public void failureGetPayoutsDetails() {
-        irisApi.apiConfig().setSERVER_KEY(approverKey);
-        JSONObject result = null;
+        irisApi.apiConfig().setServerKey(approverKey);
         try {
-            result = irisApi.getPayoutDetails(refNumber);
-        } catch (MidtransError midtransError) {
-            midtransError.printStackTrace();
+            irisApi.getPayoutDetails(refNumber);
+        } catch (MidtransError e) {
+            e.printStackTrace();
+            assert e.getMessage().contains("404");
         }
-        assert result.getString("error_message").equals("Specified payout not found");
     }
 
     private JSONObject getRandomBeneficiaries() throws MidtransError {
