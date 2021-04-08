@@ -56,14 +56,15 @@ public class SampleCoreApi {
           Initiate Config Object
           */
         Config configOptions = Config.builder()
-                .setSERVER_KEY(sandboxServerKey)
-                .setCLIENT_KEY(sandboxClientKey)
+                .setServerKey(sandboxServerKey)
+                .setClientKey(sandboxClientKey)
                 .setIsProduction(false)
                 .build();
 
          /*
           Api request with static method using Config Options
           */
+
         JSONObject result = CoreApi.chargeTransaction(request, configOptions);
         System.out.println(result);
     }

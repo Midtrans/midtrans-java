@@ -2,82 +2,55 @@ package com.midtrans.sample;
 
 import com.midtrans.Config;
 import com.midtrans.ConfigFactory;
-import com.midtrans.Midtrans;
-import com.midtrans.httpclient.SnapApi;
+import com.midtrans.httpclient.IrisApi;
 import com.midtrans.httpclient.error.MidtransError;
-import com.midtrans.sample.data.DataMockup;
-import com.midtrans.service.MidtransSnapApi;
+import com.midtrans.service.MidtransIrisApi;
 import org.json.JSONObject;
 
-import java.util.Map;
-
-import static com.midtrans.sample.data.Constant.sandboxClientKey;
-import static com.midtrans.sample.data.Constant.sandboxServerKey;
+import static com.midtrans.sample.data.Constant.*;
 
 public class SampleIrisApi {
 
     public static void main(String[] args) throws MidtransError {
-        DataMockup dataMockup = new DataMockup();
-        dataMockup.setPaymentType("gopay");
+        /*
+          Iris Api Request with options config
+          */
+        RequestWithIrisApiAndConfigOptions();
 
         /*
-          Snap Api Request with global config
+          Api Request via MidtransIrisApi object with minimal config
           */
-        RequestWithSnapApiAndGlobalConfig(dataMockup.initDataMock());
-
-        /*
-          Snap Api Request with options config
-          */
-        RequestWithSnapApiAndConfigOptions(dataMockup.initDataMock());
-
-        /*
-          Api Request with MidtransSnapApi object and specific config
-          */
-        RequestWithMidtransSnapApiObject(dataMockup.initDataMock());
+        RequestWithMidtransIrisApiObject();
     }
 
 
-    private static void RequestWithSnapApiAndGlobalConfig(Map<String, Object> request) throws MidtransError {
-        /*
-          Set configuration globally
-          */
-        Midtrans.serverKey = sandboxServerKey;
-        Midtrans.clientKey = sandboxClientKey;
-
-        /*
-          Api Request with static method using Global Config
-          */
-        JSONObject result = SnapApi.createTransaction(request);
-        System.out.println(result);
-    }
-
-    private static void RequestWithSnapApiAndConfigOptions(Map<String, Object> request) throws MidtransError {
-        /*
+    private static void RequestWithIrisApiAndConfigOptions() throws MidtransError {
+          /*
           Initiate Config Object
           */
         Config configOptions = Config.builder()
-                .setSERVER_KEY(sandboxServerKey)
-                .setCLIENT_KEY(sandboxClientKey)
+                .setServerKey(sandboxCreatorKey)
                 .setIsProduction(false)
                 .build();
 
          /*
           Api request with static method using Config Options
           */
-        JSONObject result = SnapApi.createTransaction(request, configOptions);
+        JSONObject result = IrisApi.getBalance(configOptions);
         System.out.println(result);
     }
 
-    private static void RequestWithMidtransSnapApiObject(Map<String, Object> request) throws MidtransError {
+
+    private static void RequestWithMidtransIrisApiObject() throws MidtransError {
         /*
-          Initiate MidtransSnapApi Object with minimal config, also you can initiate config, with config builder.
+          Initiate MidtransSnapApi Object with minimal config, also you can initiate config with config builder.
           */
-        MidtransSnapApi snapApi = new ConfigFactory(new Config(sandboxServerKey, sandboxClientKey, false)).getSnapApi();
+        MidtransIrisApi irisApi = new ConfigFactory(new Config(sandboxCreatorKey, null, false)).getIrisApi();
 
         /*
           Api request to Midtrans API
           */
-        JSONObject result = snapApi.createTransaction(request);
+        JSONObject result = irisApi.getBalance();
         System.out.println(result);
     }
 }

@@ -56,8 +56,8 @@ public class SampleSnapApi {
           Initiate Config Object
           */
         Config configOptions = Config.builder()
-                .setSERVER_KEY(sandboxServerKey)
-                .setCLIENT_KEY(sandboxClientKey)
+                .setServerKey(sandboxServerKey)
+                .setClientKey(sandboxClientKey)
                 .setIsProduction(false)
                 .build();
 

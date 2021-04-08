@@ -22,11 +22,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static com.midtrans.sample.data.Constant.sandboxApproverKey;
+import static com.midtrans.sample.data.Constant.sandboxCreatorKey;
+
 @Controller
 public class IrisController {
-
-    private String sandboxCreatorKey = "IRIS-330198f0-e49d-493f-baae-585cfded355d";
-    private String sandboxApproverKey = "IRIS-1595c12b-6814-4e5a-bbbb-9bc18193f47b";
 
     MidtransIrisApi irisApi = new ConfigFactory(
             new Config(sandboxCreatorKey,
@@ -117,14 +117,14 @@ public class IrisController {
 
         Map<String, Object> payouts = new HashMap<>();
         payouts.put("payouts", payoutBeneficiaries);
-        irisApi.apiConfig().setSERVER_KEY(sandboxCreatorKey);
+        irisApi.apiConfig().setServerKey(sandboxCreatorKey);
         JSONObject result = irisApi.createPayouts(payouts);
 
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
     private Map<String, String> getBeneficiaries(Map<String, String> params) throws MidtransError {
-        irisApi.apiConfig().setSERVER_KEY(sandboxCreatorKey);
+        irisApi.apiConfig().setServerKey(sandboxCreatorKey);
         JSONArray result = irisApi.getBeneficiaries();
         Map<String, String> beneficiary = new HashMap<>();
         if (result != null) {
@@ -147,14 +147,14 @@ public class IrisController {
 
     @PostMapping(value = "/iris/payouts/approve", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> approve(@RequestBody Map<String, Object> params) throws MidtransError {
-        irisApi.apiConfig().setSERVER_KEY(sandboxApproverKey);
+        irisApi.apiConfig().setServerKey(sandboxApproverKey);
         JSONObject result = irisApi.approvePayouts(params);
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
     @PostMapping(value = "/iris/payouts/reject", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> reject(@RequestBody Map<String, Object> params) throws MidtransError {
-        irisApi.apiConfig().setSERVER_KEY(sandboxApproverKey);
+        irisApi.apiConfig().setServerKey(sandboxApproverKey);
         JSONObject result = irisApi.rejectPayouts(params);
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
@@ -162,7 +162,7 @@ public class IrisController {
     @PostMapping(value = "/iris/payouts/details", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> payoutDetails(@RequestBody Map<String, String> params) throws MidtransError {
         String referenceNo = params.get("reference_no");
-        irisApi.apiConfig().setSERVER_KEY(sandboxCreatorKey);
+        irisApi.apiConfig().setServerKey(sandboxCreatorKey);
         JSONObject result = irisApi.getPayoutDetails(referenceNo);
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }

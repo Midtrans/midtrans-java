@@ -16,21 +16,27 @@ import java.util.Map;
 
 import static com.midtrans.sample.data.Constant.sandboxServerKey;
 
+/**
+ * This is sample springboot controller for implement Midtrans mobile SDK.
+ * You need to setup Frontend (Midtrans SDK Config) into your mobile app that using Midtrans mobile SDK.
+ *
+ * more details: https://mobile-docs.midtrans.com/#getting-started
+ */
 @RestController
-public class MobileSdkController {
+public class MobileSdkBackendController {
 
     /**
      * Midtrans java sample use, Using static method and Midtrans Config {@link Config}.
      * This is a new static method, the config will use for request Snap token on Midtrans API static (SnapApi class).
      * {@link SnapApi}
-     * Sample use on mobile sdk Controller @line 52
+     * Sample use on mobile sdk backend Controller @line 47
      *
      * also you can put others config, like enableLog, timeConnect, proxy, idempotent-key, etc.
      */
     private Config configOptions = Config.builder()
-            .setSERVER_KEY(sandboxServerKey)
+            .setServerKey(sandboxServerKey)
             .setIsProduction(false)
-            .setPaymentOverrideNotification("https://midtrans-java.herokuapp.com/mobile-notification")
+            .setPaymentOverrideNotification("https://midtrans-java.herokuapp.com/payment-status-notification-handler")
             .build();
 
 
@@ -46,7 +52,7 @@ public class MobileSdkController {
         }
     }
 
-    @PostMapping(value = "/mobile-notification", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/payment-status-notification-handler", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> mobileHandleNotification(@RequestBody Map<String, Object> body) {
         String notifResponse = null;
         if (!(body.isEmpty())) {
