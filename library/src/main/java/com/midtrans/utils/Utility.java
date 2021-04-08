@@ -8,7 +8,7 @@ import java.util.Properties;
 
 public final class Utility {
 
-    public static String base64(String serverKey) {
+    public static String encodeBase64(String serverKey) {
         return "Basic " + Base64.getEncoder().encodeToString((serverKey + ":").getBytes(StandardCharsets.UTF_8));
     }
 
