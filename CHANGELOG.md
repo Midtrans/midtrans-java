@@ -1,6 +1,6 @@
 ## CHANGELOG MIDTRANS JAVA LIBRARY
 
-## v3.0.0 (April 6, 2021)
+## v3.0.0 (April 13, 2021)
 
 Feature:
 - new static method CoreApi, SnapApi, IrisApi, TransactionApi
@@ -14,6 +14,7 @@ Improvement:
 
 Notable changes:
 - Migrate from retrofit to okhttp as http client
+- Migrate repo host from jcenter/bintray to maven central
 
 ## v2.1.1 (April 27, 2020)
 
