@@ -1,5 +1,5 @@
 # Midtrans Client - Java
-[ ![Download](https://maven-badges.herokuapp.com/maven-central/com.midtrans/java-library/badge.svg) ](https://search.maven.org/artifact/com.midtrans/java-library/)
+[![Download](https://maven-badges.herokuapp.com/maven-central/com.midtrans/java-library/badge.svg)](https://search.maven.org/artifact/com.midtrans/java-library/)
 [![Build Status](https://travis-ci.org/Xaxxis/midtrans-java.svg?branch=master)](https://travis-ci.org/Xaxxis/midtrans-java)
 [![Demo apps](https://img.shields.io/badge/Go%20to-Demo%20Apps-green)](https://midtrans-java.herokuapp.com/)
 
