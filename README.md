@@ -1,47 +1,34 @@
 # Midtrans Client - Java
-[ ![Download](https://api.bintray.com/packages/midtrans/midtrans-java/com.midtrans/images/download.svg) ](https://bintray.com/midtrans/midtrans-java/com.midtrans/_latestVersion) [![Build Status](https://travis-ci.org/Xaxxis/midtrans-java.svg?branch=master)](https://travis-ci.org/Xaxxis/midtrans-java) [![Demo apps](https://img.shields.io/badge/Go%20to-Demo%20Apps-green)](https://midtrans-java.herokuapp.com/)
+[ ![Download](https://maven-badges.herokuapp.com/maven-central/com.midtrans/java-library/badge.svg) ](https://search.maven.org/artifact/com.midtrans/java-library/)
+[![Build Status](https://travis-ci.org/Xaxxis/midtrans-java.svg?branch=master)](https://travis-ci.org/Xaxxis/midtrans-java)
+[![Demo apps](https://img.shields.io/badge/Go%20to-Demo%20Apps-green)](https://midtrans-java.herokuapp.com/)
 
 Midtrans :heart: Java, This is the Official Java API client/library for Midtrans Payment API. Visit [https://midtrans.com](https://midtrans.com). More information about the product and see documentation at [http://docs.midtrans.com](https://beta-docs.midtrans.com/) for more technical details. This library used java version 1.8
 
 ## 1. Installation
 
 ### 1.a Using Maven or Gradle
-If you're using Maven as the build tools for your project, please add jcenter repository to your build definition, then add the following dependency to your project's build definition (pom.xml):
+If you're using Maven as the build tools for your project, please add the following dependency to your project's build definition (pom.xml):
 Maven:
 ```xml
-<repositories>
-    <repository>
-        <id>jcenter</id>
-        <name>bintray</name>
-        <url>https://jcenter.bintray.com</url>
-    </repository>
-</repositories>
-
-<dependencies>
-  <dependency>
-	  <groupId>com.midtrans</groupId>
-	  <artifactId>java-library</artifactId>
-	  <version>3.0.0</version>
+<dependency>
+    <groupId>com.midtrans</groupId>
+    <artifactId>java-library</artifactId>
+    <version>3.0.0</version>
 </dependency>
-</dependencies>
 ```
 Gradle:
 If you're using Gradle as the build tools for your project, please add jcenter repository to your build script then add the following dependency to your project's build definition (build.gradle):
 ```Gradle
-repositories {
-    maven {
-        url  "https://jcenter.bintray.com" 
-    }
-}
-
 dependencies {
-    compile 'com.midtrans:java-library:3.0.0'
+	implementation 'com.midtrans:java-library:3.0.0'
 }
 ```
+> **IMPORTANT NOTE**: Since April 13, 2021 We already migrate the repository from jcenter/bintray repository to [Maven central](https://search.maven.org/artifact/com.midtrans/java-library).
 
 ### 1.b Using JAR File
 
-If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://dl.bintray.com/midtrans/midtrans-java/com/midtrans/java-library/3.0.0/java-library-3.0.0.jar)
+If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](http://bit.ly/mid-java)
 
 ## 2. Usage
 
