@@ -1,17 +1,37 @@
 package com.midtrans.httpclient;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.POST;
+import com.midtrans.Config;
+import com.midtrans.httpclient.error.MidtransError;
+import com.midtrans.utils.Utility;
+import org.json.JSONObject;
 
 import java.util.Map;
 
-/**
- * HttpClient for midtrans SnapAPI
- */
-public interface SnapApi {
+public class SnapApi {
+    protected static final String API_SOURCE = "MID_JAVA_SNAP_API_" + Utility.getLibraryVersion();
 
-    @POST("snap/v1/transactions")
-    Call<ResponseBody> createTransactions(@Body Map<String, Object> objectMap);
+    public static JSONObject createTransaction(Map<String, Object> requestBody, Config configOptions) throws MidtransError {
+        return new JSONObject((String) APIHttpClient.request(APIHttpClient.POST, configOptions.getSnapApiURL(), configOptions, requestBody));
+    }
+
+    public static JSONObject createTransaction(Map<String, Object> requestBody) throws MidtransError {
+        return new JSONObject((String) APIHttpClient.request(APIHttpClient.POST, Config.getGlobalConfig().getSnapApiURL(), Config.getGlobalConfig(), requestBody));
+    }
+
+    public static String createTransactionToken(Map<String, Object> requestBody) throws MidtransError {
+        return createTransaction(requestBody).getString("token");
+    }
+
+    public static String createTransactionToken(Map<String, Object> requestBody, Config configOptions) throws MidtransError {
+        return createTransaction(requestBody, configOptions).getString("token");
+    }
+
+    public static String createTransactionRedirectUrl(Map<String, Object> requestBody) throws MidtransError {
+        return createTransaction(requestBody).getString("redirect_url");
+    }
+
+    public static String createTransactionRedirectUrl(Map<String, Object> requestBody, Config configOptions) throws MidtransError {
+        return createTransaction(requestBody, configOptions).getString("redirect_url");
+    }
+
 }

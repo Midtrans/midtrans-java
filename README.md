@@ -1,7 +1,6 @@
 # Midtrans Client - Java
-[ ![Download](https://api.bintray.com/packages/midtrans/midtrans-java/com.midtrans/images/download.svg) ](https://bintray.com/midtrans/midtrans-java/com.midtrans/_latestVersion) 
-[![Total downloads](https://img.shields.io/bintray/dt/midtrans/midtrans-java/com.midtrans.svg)
-[![Build Status](https://travis-ci.org/Xaxxis/midtrans-java.svg?branch=master)](https://travis-ci.org/Xaxxis/midtrans-java) 
+[![Download](https://maven-badges.herokuapp.com/maven-central/com.midtrans/java-library/badge.svg)](https://search.maven.org/artifact/com.midtrans/java-library/)
+[![Build Status](https://travis-ci.org/Xaxxis/midtrans-java.svg?branch=master)](https://travis-ci.org/Xaxxis/midtrans-java)
 [![Demo apps](https://img.shields.io/badge/Go%20to-Demo%20Apps-green)](https://midtrans-java.herokuapp.com/)
 
 Midtrans :heart: Java, This is the Official Java API client/library for Midtrans Payment API. Visit [https://midtrans.com](https://midtrans.com). More information about the product and see documentation at [http://docs.midtrans.com](https://beta-docs.midtrans.com/) for more technical details. This library used java version 1.8
@@ -9,42 +8,27 @@ Midtrans :heart: Java, This is the Official Java API client/library for Midtrans
 ## 1. Installation
 
 ### 1.a Using Maven or Gradle
-If you're using Maven as the build tools for your project, please add jcenter repository to your build definition, then add the following dependency to your project's build definition (pom.xml):
+If you're using Maven as the build tools for your project, please add the following dependency to your project's build definition (pom.xml):
 Maven:
 ```xml
-<repositories>
-    <repository>
-        <id>jcenter</id>
-        <name>bintray</name>
-        <url>https://jcenter.bintray.com</url>
-    </repository>
-</repositories>
-
-<dependencies>
-  <dependency>
-	  <groupId>com.midtrans</groupId>
-	  <artifactId>java-library</artifactId>
-	  <version>2.1.1</version>
+<dependency>
+    <groupId>com.midtrans</groupId>
+    <artifactId>java-library</artifactId>
+    <version>3.0.0</version>
 </dependency>
-</dependencies>
 ```
 Gradle:
 If you're using Gradle as the build tools for your project, please add jcenter repository to your build script then add the following dependency to your project's build definition (build.gradle):
 ```Gradle
-repositories {
-    maven {
-        url  "https://jcenter.bintray.com" 
-    }
-}
-
 dependencies {
-    compile 'com.midtrans:java-library:2.1.1'
+	implementation 'com.midtrans:java-library:3.0.0'
 }
 ```
+> **IMPORTANT NOTE**: Since April 13, 2021 We already migrate the repository from jcenter/bintray repository to [Maven central](https://search.maven.org/artifact/com.midtrans/java-library).
 
 ### 1.b Using JAR File
 
-If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://dl.bintray.com/midtrans/midtrans-java/com/midtrans/java-library/2.1.1/java-library-2.1.1.jar)
+If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](http://bit.ly/mid-java)
 
 ## 2. Usage
 
@@ -62,8 +46,52 @@ Choose one that you think best for your unique needs.
 
 Get your client key and server key from [Midtrans Dashboard](https://dashboard.midtrans.com)
 
-Create API client object
+Create API client object, You can also check the [project's functional tests](library/src/test/java/com/midtrans/java) for more examples.
 
+Set a config with globally, except iris api
+```java
+import com.midtrans.Midtrans;
+import com.midtrans.httpclient.CoreApi;
+import com.midtrans.httpclient.SnapApi;
+import com.midtrans.httpclient.error.MidtransError;
+import org.json.JSONObject;
+
+Midtrans.serverKey = "YOUR_SERVER_KEY";
+Midtrans.clientKey = "YOUR_CLIENT_KEY";
+Midtrans.isProduction = false;
+
+// CoreApi Request with global config
+JSONObject result = CoreApi.chargeTransaction(param);
+
+// SnapApi request with global config
+JSONObject result = SnapApi.createTransaction(param);
+```
+
+All the request can accept an optional Config object. This is used if you want to set an others' config like idempotency key, proxy,
+or if you want to pass the server-key on each method, or use multiple account on each method.
+```java
+import com.midtrans.Config;
+import com.midtrans.Midtrans;
+import com.midtrans.httpclient.CoreApi;
+import com.midtrans.httpclient.error.MidtransError;
+import org.json.JSONObject;
+
+Config configOptions = Config.builder()
+        .setServerKey("YOUR_SERVER_KEY")
+        .setClientKey("YOUR_CLIENT_KEY")
+        .setIrisIdempotencyKey("UNIQUE_ID")
+        .setPaymentIdempotencyKey("UNIQUE_ID")
+        .setProxyConfig(PROXY_CONFIG)
+        .setIsProduction(false)
+        .build();
+
+// CoreApi request with config options
+JSONObject result = CoreApi.chargeTransaction(param, configOptions);
+
+// SnapApi request with config options
+JSONObject result = SnapApi.createTransaction(param, configOptions);
+```
+#### Alternative way to initialize
 ```java
 import com.midtrans.Config;
 import com.midtrans.ConfigFactory;
@@ -76,7 +104,6 @@ MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CL
 `YOUR_CLIENT_KEY`
 `isProduction`
 ```
-
 
 ```java
 import com.midtrans.Config;
@@ -104,21 +131,21 @@ MidtransIrisApi irisApi = new ConfigFactory(new Config("IRIS-CREDENTIALS",null ,
 `isProduction`
 ```
 
-You can also re-set config using `apiConfig()` method on MidtransCoreApi.Class, MidtransSnapApi.Class or MidtransIrisApi.class like `coreApi.apiConfig.set( ... )`
+You can also re-set config using `apiConfig()` method on MidtransCoreApi.Class, MidtransSnapApi.Class or MidtransIrisApi.class like `coreApi.apiConfig().set( ... )`
 example:
 
 ```java
 // Create Snap API instance, empty config
 coreApi.apiConfig().setProduction(false);
-coreApi.apiConfig().setCLIENT_KEY("YOUR_CLIENT_KEY");
-coreApi.apiConfig().setSERVER_KEY("YOUR_SERVER_KEY");
+coreApi.apiConfig().setClientKey("YOUR_CLIENT_KEY");
+coreApi.apiConfig().setServerKey("YOUR_SERVER_KEY");
 
 // You don't have to re-set using all the options, 
 // i.e. set serverKey only
-coreApi.apiConfig().setSERVER_KEY("YOUR_SERVER_KEY");
+coreApi.apiConfig().setServerKey("YOUR_SERVER_KEY");
 
 // For Iris Disbursement can set creator & approver credentials with apiConfig()
-irisApi.apiConfig().setSERVER_KEY("IRIS-CREDENTIALS");
+irisApi.apiConfig().setServerKey("IRIS-CREDENTIALS");
 
 irisApi.apiConfig().setIrisIdempotencyKey("IRIS-IDEMPOTENCY-KEY");
 
@@ -128,6 +155,10 @@ In production environment, LOG is by default turned off, you can enable by `setE
 
 ```java
 coreApi.apiConfig().setEnabledLog(true);
+
+//or using
+        
+config.setEnabledLog(true);
 ```
 
 Using internal proxy, you can set ProxyConfig object with ProxyConfigBuilder to set hostname, port, username, and password. and also connectionTimeout, readTimeout, and writeTimeout. But if you not define network configuration like
@@ -136,13 +167,20 @@ ProxyConfig, connectionTimeout, readTimeout and writeTimeout, default value is 1
 example:
 ```java
 import com.midtrans.proxy.ProxyConfig;
-import com.midtrans.proxy.ProxyConfigBuilder;
 import com.midtrans.service.MidtransCoreApi;
 
-private ProxyConfig proxyConfig = new ProxyConfigBuilder().setHost("36.92.108.150").setPort(3128).setUsername("").setPassword("").build();
+ProxyConfig proxyConfig = ProxyConfig.builder()
+        .setHost(PROXY_HOTS)
+        .setPort(PROXY_PORT)
+        .setUsername(PROXY_USERNAME)
+        .setPassword(PROXY_PASSWORD)
+        .build();
 
-//Intitialize MidtransCoreApi config with proxy and network configuration
+//Initialize MidtransCoreApi config with proxy and network configuration
 private MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false, 10, 10, 10, proxyConfig)).getCoreApi();
+
+// Alternative, initialize proxy in Global Config
+Midtrans.setProxyConfig(proxyConfig);
 ```
 add new 4 params to use http proxy and network config,
 - connectionTimeout - default value 10s
@@ -152,16 +190,31 @@ add new 4 params to use http proxy and network config,
 - maxConnectionPool - default value 16
 - keepAliveDuration - default value 300s
 
-and also you can set value for connectionTimeout or etc with configuration class,
+and also you can set value for connectionTimeout or etc with configuration class, default value for TimeUnit is SECONDS, you can change the TimeUnit with config class.
+
 example: 
 ```java
-//TimeUnit for integer value is SECONDS
+// set as globally
+Midtrans.setConnectTimeout(10000);
+Midtrans.setReadTimeout(10000);
+Midtrans.setWriteTimeout(10000);
+Midtrans.setMaxConnectionPool(16);
+Midtrans.setKeepAliveDuration(300000);
+Midtrans.setHttpClientTimeUnit(TimeUnit.MILLISECONDS);
 
-coreApi.apiConfig().setConnectionTimeout(5);
-coreApi.apiConfig().setReadTimeout(5);
-coreApi.apiConfig().setWriteTimeout(5);
+// Set connection timeout from initiate api object
+coreApi.apiConfig().setConnectionTimeout(10000, TimeUnit.MILLISECONDS);
+coreApi.apiConfig().setReadTimeout(10000, TimeUnit.MILLISECONDS);
+coreApi.apiConfig().setWriteTimeout(10000, TimeUnit.MILLISECONDS);
+coreApi.apiConfig().setKeepAliveDuration(300000, TimeUnit.MILLISECONDS);
 coreApi.apiConfig().setMaxConnectionPool(16);
-coreApi.apiConfig().setKeepAliveDuration(300);
+
+// set connection timeout with Config class
+config.setConnectionTimeout(10000, TimeUnit.MILLISECONDS);
+config.setReadTimeout(10000, TimeUnit.MILLISECONDS);
+config.setWriteTimeout(10000, TimeUnit.MILLISECONDS);
+config.setKeepAliveDuration(300000, TimeUnit.MILLISECONDS);
+config.setMaxConnectionPool(16);
 ```
 
 #### Override Notification Url
@@ -184,13 +237,24 @@ coreApi.apiConfig().paymentOverrideNotification("https://example.com/test1,https
 ```
 When both `X-Append-Notification` and `X-Override-Notification` are used together then only override will be used.
 
+### Handling Error / Exception
+When using function that result in Midtrans API call e.g: CoreApi.chargeTransaction(...) or SnapApi.createTransaction(...) there's a chance it may throw error (MidtransError object), the error object will contains below properties that can be used as information to your error handling logic:
+```java
+try {
+    JSONObject result = CoreApi.chargeTransaction(param);
+} catch (MidtransError e) {
+    e.printStackTrace();
+    e.getStatusCode(); // basic error message string
+    e.getMessage(); // HTTP status code e.g: 400, 401, etc.
+    e.getResponseBody(); // API response body
+    e.getResponse(); // raw OkHttp response object
+}
+```
 #### CoreAPI Simple Sample Usage
 ```java
-
-import com.midtrans.Config;
-import com.midtrans.ConfigFactory;
-import com.midtrans.service.MidtransCoreApi;
+import com.midtrans.httpclient.CoreApi;
 import com.midtrans.httpclient.error.MidtransError;
+import com.midtrans.Midtrans;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -201,7 +265,8 @@ import org.json.JSONObject;
 public class MidtransExample {
 
     public static void main(String[] args) throws MidtransError {
-        MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getCoreApi();
+        Midtrans.serverKey = "YOUR_SERVER_KEY";
+        Midtrans.isProduction = false;
 
         UUID idRand = UUID.randomUUID();
         Map<String, Object> chargeParams = new HashMap<>();
@@ -213,7 +278,7 @@ public class MidtransExample {
         chargeParams.put("transaction_details", transactionDetails);
         chargeParams.put("payment_type", "gopay");
         
-            JSONObject result = coreApi.chargeTransaction(chargeParams);
+            JSONObject result = CoreApi.chargeTransaction(chargeParams);
             System.out.println(result);
     }
 }
@@ -755,6 +820,7 @@ There are:
 - [Snap examples](example/src/main/java/com/midtrans/sample/controller/SnapController.java)
 - [Mobile SDK examples](example/src/main/java/com/midtrans/sample/controller/MobileSdkController.java)
 - [Iris examples](example/src/main/java/com/midtrans/sample/controller/IrisController.java)
+- [Sample Functional Test](library/src/test/java/com/midtrans/java)
 - [Live Demo App](https://midtrans-java.herokuapp.com/)
 
 ## Get help

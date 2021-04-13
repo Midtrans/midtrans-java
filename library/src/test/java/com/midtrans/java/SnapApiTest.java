@@ -1,227 +1,125 @@
 package com.midtrans.java;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.midtrans.ConfigBuilder;
-import com.midtrans.ConfigFactory;
+import com.midtrans.Config;
+import com.midtrans.Midtrans;
+import com.midtrans.httpclient.SnapApi;
 import com.midtrans.httpclient.error.MidtransError;
-import com.midtrans.service.MidtransSnapApi;
-import okhttp3.*;
+import com.midtrans.java.mockupdata.DataMockup;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import java.io.IOException;
-import java.util.*;
 
-import static org.junit.Assert.*;
 import static com.midtrans.java.mockupdata.Constant.*;
+import static org.junit.Assert.assertEquals;
 
 public class SnapApiTest {
 
-    private MidtransSnapApi snapApi;
+    private Config configOptions;
+    private DataMockup dataMockup;
 
     @Before
     public void setUp() {
-        ConfigFactory configFactory = new ConfigFactory(new ConfigBuilder()
-                .setSERVER_KEY(serverKey)
-                .setCLIENT_KEY(clientKey)
-                .setIsProduction(isProduction)
-                .build());
-        snapApi = configFactory.getSnapApi();
+        dataMockup = new DataMockup();
+
+        Midtrans.serverKey = mainServerKey;
+        Midtrans.clientKey = mainClientKey;
+
+        configOptions = Config.builder()
+                .setServerKey(secondServerKey)
+                .setClientKey(secondClientKey)
+                .build();
     }
 
     @Test
-    public void createTransactionSimpleParam() {
-        JSONObject result = null;
-        try {
-            result = snapApi.createTransaction(miniDataMockUp());
-        } catch (MidtransError midtransError) {
-            midtransError.printStackTrace();
-        }
-        assert result.has("token");
-        assert result.has("redirect_url");
+    public void createTransactionSimpleParam() throws MidtransError {
+        JSONObject resultMethod1 = SnapApi.createTransaction(dataMockup.miniDataMockUp());
+        assert resultMethod1.has("token");
+        assert resultMethod1.has("redirect_url");
+
+        JSONObject resultMethod2 = SnapApi.createTransaction(dataMockup.miniDataMockUp(), configOptions);
+        assert resultMethod2.has("token");
+        assert resultMethod2.has("redirect_url");
     }
 
     @Test
-    public void createTransactionMaxParam() throws IOException, MidtransError {
-        JSONObject result = snapApi.createTransaction(maxDataMockUp());
-
+    public void createTransactionMaxParam() throws MidtransError, IOException {
+        JSONObject result = SnapApi.createTransaction(dataMockup.maxDataMockUp());
         assert result.has("token");
         assert result.has("redirect_url");
+
+        JSONObject result2 = SnapApi.createTransaction(dataMockup.maxDataMockUp(), configOptions);
+        assert result2.has("token");
+        assert result2.has("redirect_url");
     }
 
     @Test
     public void createTransactionToken() throws MidtransError {
-        String token = snapApi.createTransactionToken(miniDataMockUp());
+        String token = SnapApi.createTransactionToken(dataMockup.miniDataMockUp());
         assert token.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}");
+
+        String token2 = SnapApi.createTransactionToken(dataMockup.miniDataMockUp(), configOptions);
+        assert token2.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}");
     }
 
     @Test
     public void createTransactionRedirectUrl() throws MidtransError {
-        String redirectURL = snapApi.createTransactionRedirectUrl(miniDataMockUp());
+        // Method 1
+        String redirectURL = SnapApi.createTransactionRedirectUrl(dataMockup.miniDataMockUp());
         String expected = "https://app.sandbox.midtrans.com/snap/v2/vtweb/";
         assertEquals(expected, redirectURL.substring(0, 47));
+
+        // Method 2
+        String redirectURL2 = SnapApi.createTransactionRedirectUrl(dataMockup.miniDataMockUp(), configOptions);
+        String expected2 = "https://app.sandbox.midtrans.com/snap/v2/vtweb/";
+        assertEquals(expected2, redirectURL2.substring(0, 47));
     }
 
     @Test
-    public void badRequestBodyOnSnapTrans() throws MidtransError {
-        JSONObject result = snapApi.createTransaction(badDataMockUp());
-        assert result.getJSONArray("error_messages").get(0).toString()
-                .equals("transaction_details.gross_amount is required");
-        assert result.getJSONArray("error_messages").get(1).toString()
-                .equals("transaction_details.gross_amount is not a number");
+    public void badRequestBodyOnSnapTrans() {
+
+        //Method 1 with global config
+        try {
+            JSONObject result1 = SnapApi.createTransaction(dataMockup.badDataMockUp());
+            assert result1.getJSONArray("error_messages").get(0).toString().equals("transaction_details.gross_amount is required");
+            assert result1.getJSONArray("error_messages").get(1).toString().equals("transaction_details.gross_amount is not a number");
+        } catch (MidtransError e) {
+            e.printStackTrace();
+            assert e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 400 API response:");
+        }
+
+        // Method 2 with apiConfigOptions
+        try {
+            JSONObject result2 = SnapApi.createTransaction(dataMockup.badDataMockUp(), configOptions);
+            assert result2.getJSONArray("error_messages").get(0).toString().equals("transaction_details.gross_amount is required");
+            assert result2.getJSONArray("error_messages").get(1).toString().equals("transaction_details.gross_amount is not a number");
+        } catch (MidtransError e) {
+            e.printStackTrace();
+            assert e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 400 API response:");
+        }
     }
 
     @Test
-    public void errorServerKey() throws MidtransError {
-        snapApi.apiConfig().setSERVER_KEY("");
-        JSONObject result = snapApi.createTransaction(miniDataMockUp());
-        assert result.getJSONArray("error_messages").get(0).toString()
-                .equals("Access denied due to unauthorized transaction, please check client or server key");
+    public void errorServerKey() {
+        Midtrans.serverKey = "DUMMY";
+        Config configOptions1 = Config.builder().setServerKey("DUMMY").build();
+
+        //Method 1
+        try {
+            SnapApi.createTransaction(dataMockup.miniDataMockUp());
+        } catch (MidtransError e) {
+            assert e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 401");
+            assert e.getResponseBody().equals("{\"error_messages\":[\"Access denied due to unauthorized transaction, please check client or server key\",\"Visit https://snap-docs.midtrans.com/#request-headers for more details\"]}");
+        }
+
+        // Method 2
+        try {
+            SnapApi.createTransaction(dataMockup.miniDataMockUp(), configOptions1);
+        } catch (MidtransError e) {
+            assert e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 401");
+            assert e.getResponseBody().equals("{\"error_messages\":[\"Access denied due to unauthorized transaction, please check client or server key\",\"Visit https://snap-docs.midtrans.com/#request-headers for more details\"]}");
+        }
     }
 
-    //Minimal data mockUp
-    private Map<String, Object> miniDataMockUp() {
-        UUID idRand = UUID.randomUUID();
-
-        Map<String, String> transDetail = new HashMap<>();
-        transDetail.put("order_id", idRand.toString());
-        transDetail.put("gross_amount", "265000");
-
-        Map<String, String> creditCard = new HashMap<>();
-        creditCard.put("secure", "true");
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("credit_card", creditCard);
-        body.put("transaction_details", transDetail);
-
-        return body;
-    }
-
-    //BAD Data Request
-    private Map<String, Object> badDataMockUp() {
-        UUID idRand = UUID.randomUUID();
-
-        Map<String, String> transDetail = new HashMap<>();
-        transDetail.put("order_id", idRand.toString());
-        transDetail.put("gross_amount", "265000");
-
-        Map<String, String> creditCard = new HashMap<>();
-        creditCard.put("secure", "true");
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("credit_card", creditCard);
-        body.put("items_detail", transDetail);
-
-        return body;
-    }
-
-    //Max data MockUp
-    private Map<String, Object> maxDataMockUp() throws IOException {
-        UUID idRand = UUID.randomUUID();
-        String json = "{\n" +
-                "  \"transaction_details\": {\n" +
-                "    \"order_id\": \"java-" + idRand + "\",\n" +
-                "    \"gross_amount\": 100000\n" +
-                "  },\n" +
-                "  \"item_details\": [{\n" +
-                "      \"id\": \"a1\",\n" +
-                "      \"price\": 50000,\n" +
-                "      \"quantity\": 2,\n" +
-                "      \"name\": \"Apel\",\n" +
-                "      \"brand\": \"Fuji Apple\",\n" +
-                "      \"category\": \"Fruit\",\n" +
-                "      \"merchant_name\": \"Fruit-store\"\n" +
-                "    }],\n" +
-                "    \"customer_details\": {\n" +
-                "      \"first_name\": \"BUDI\",\n" +
-                "      \"last_name\": \"UTOMO\",\n" +
-                "      \"email\": \"noreply@example.com\",\n" +
-                "      \"phone\": \"+628123456\",\n" +
-                "      \"billing_address\": {\n" +
-                "        \"first_name\": \"BUDI\",\n" +
-                "        \"last_name\": \"UTOMO\",\n" +
-                "        \"email\": \"noreply@example.com\",\n" +
-                "        \"phone\": \"081 2233 44-55\",\n" +
-                "        \"address\": \"Sudirman\",\n" +
-                "        \"city\": \"Jakarta\",\n" +
-                "        \"postal_code\": \"12190\",\n" +
-                "        \"country_code\": \"IDN\"\n" +
-                "      },\n" +
-                "      \"shipping_address\": {\n" +
-                "        \"first_name\": \"BUDI\",\n" +
-                "        \"last_name\": \"UTOMO\",\n" +
-                "        \"email\": \"noreply@example.com\",\n" +
-                "        \"phone\": \"0 8128-75 7-9338\",\n" +
-                "        \"address\": \"Sudirman\",\n" +
-                "        \"city\": \"Jakarta\",\n" +
-                "        \"postal_code\": \"12190\",\n" +
-                "        \"country_code\": \"IDN\"\n" +
-                "      }\n" +
-                "    },\n" +
-                "   \"credit_card\": {\n" +
-                "       \"secure\": true,\n" +
-                "       \"channel\": \"migs\",\n" +
-                "       \"bank\": \"bca\",\n" +
-                "       \"installment\": {\n" +
-                "           \"required\": false,\n" +
-                "           \"terms\": {\n" +
-                "               \"bni\": [3, 6, 12],\n" +
-                "               \"mandiri\": [3, 6, 12],\n" +
-                "               \"cimb\": [3],\n" +
-                "               \"bca\": [3, 6, 12],\n" +
-                "               \"offline\": [6, 12]\n" +
-                "           }\n" +
-                "      },\n" +
-                "       \"whitelist_bins\": [\n" +
-                "        \"48111111\",\n" +
-                "        \"41111111\"\n" +
-                "      ]\n" +
-                "    },\n" +
-                "  \"bca_va\": {\n" +
-                "      \"va_number\": \"12345678911\",\n" +
-                "      \"free_text\": {\n" +
-                "        \"inquiry\": [\n" +
-                "          {\n" +
-                "            \"en\": \"text in English\",\n" +
-                "            \"id\": \"text in Bahasa Indonesia\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        \"payment\": [\n" +
-                "          {\n" +
-                "            \"en\": \"text in English\",\n" +
-                "            \"id\": \"text in Bahasa Indonesia\"\n" +
-                "          }\n" +
-                "        ]\n" +
-                "      }\n" +
-                "    },\n" +
-                "    \"bni_va\": {\n" +
-                "      \"va_number\": \"12345678\"\n" +
-                "    },\n" +
-                "    \"permata_va\": {\n" +
-                "      \"va_number\": \"1234567890\",\n" +
-                "      \"recipient_name\": \"SUDARSONO\"\n" +
-                "    },\n" +
-                "    \"callbacks\": {\n" +
-                "      \"finish\": \"https://demo.midtrans.com\"\n" +
-                "    },\n" +
-                "    \"expiry\": {\n" +
-                "      \"start_time\": \"2025-12-20 18:11:08 +0700\",\n" +
-                "      \"unit\": \"minutes\",\n" +
-                "      \"duration\": 1\n" +
-                "    },\n" +
-                "    \"custom_field1\": \"custom field 1 content\",\n" +
-                "    \"custom_field2\": \"custom field 2 content\",\n" +
-                "    \"custom_field3\": \"custom field 3 content\",\n" +
-                "    \"enabled_payments\": [\"credit_card\", \"mandiri_clickpay\", \"cimb_clicks\",\"bca_klikbca\", \"bca_klikpay\", \"bri_epay\", \"echannel\", \"indosat_dompetku\",\"mandiri_ecash\", \"permata_va\", \"bca_va\", \"bni_va\", \"other_va\", \"gopay\",\"kioson\", \"indomaret\", \"gci\", \"danamon_online\"]\n" +
-                "}";
-
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> body = mapper.readValue(json, new TypeReference<Map<String, Object>>() {
-        });
-        return body;
-    }
 }

@@ -2,7 +2,11 @@ package com.midtrans.sample.data;
 
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class DataMockup {
@@ -25,16 +29,16 @@ public class DataMockup {
         creditCard.putAll(params);
     }
 
-    public Map<String, Object> initDataMock(){
-        UUID idRand = UUID.randomUUID();
+    public Map<String, Object> initDataMock() {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         Map<String, String> transDetail = new HashMap<>();
-        transDetail.put("order_id", idRand.toString());
+        transDetail.put("order_id", "MID_JAVA_DEMO_" + timestamp.getTime());
         transDetail.put("gross_amount", "265000");
 
         List<Map<String, String>> items = new ArrayList<>();
-        Map<String,String> item1 = new HashMap<>();
-        item1.put("id","ID001");
+        Map<String, String> item1 = new HashMap<>();
+        item1.put("id", "ID001");
         item1.put("price", "15000");
         item1.put("quantity", "1");
         item1.put("name", "Sendal Karet Rumahan");
@@ -43,7 +47,7 @@ public class DataMockup {
         item1.put("merchant_name", "SnowlID");
 
         Map<String, String> item2 = new HashMap<>();
-        item2.put("id","ID002");
+        item2.put("id", "ID002");
         item2.put("price", "200000");
         item2.put("quantity", "1");
         item2.put("name", "Mantel Hujan");
@@ -52,7 +56,7 @@ public class DataMockup {
         item2.put("merchant_name", "SnowlID");
 
         Map<String, String> item3 = new HashMap<>();
-        item3.put("id","ID003");
+        item3.put("id", "ID003");
         item3.put("price", "50000");
         item3.put("quantity", "1");
         item3.put("name", "Sarung Tangan Karet");

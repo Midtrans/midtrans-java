@@ -60,4 +60,13 @@ public class ProxyConfig {
     public String getPassword() {
         return password;
     }
+
+    /**
+     * Initialize proxy with builder
+     *
+     * @return ProxyConfigBuilder
+     */
+    public static ProxyConfigBuilder builder() {
+        return new ProxyConfigBuilder();
+    }
 }

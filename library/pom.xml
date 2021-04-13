@@ -5,8 +5,34 @@
 
     <groupId>com.midtrans</groupId>
     <artifactId>java-library</artifactId>
-    <version>2.1.1</version>
+    <version>3.0.0</version>
     <packaging>jar</packaging>
+
+    <name>Midtrans Java Official Library</name>
+    <description>This is the Official Java API client/library for Midtrans Payment API. Visit https://midtrans.com. More information about the product and see documentation at http://docs.midtrans.com for more technical details. This library used java version 1.8</description>
+    <url>https://github.com/Midtrans/midtrans-java</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Zaki Ibrahim</name>
+            <email>zaki.ibrahim@midtrans.com</email>
+            <organization>Midtrans</organization>
+            <organizationUrl>https://midtrans.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/Midtrans/midtrans-java.git</connection>
+        <developerConnection>scm:git:ssh://github.com/Midtrans/midtrans-java.git</developerConnection>
+        <url>https://github.com/Midtrans/midtrans-java/tree/master</url>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,14 +51,20 @@
             <version>3.14.6</version>
         </dependency>
         <dependency>
-            <groupId>com.squareup.retrofit2</groupId>
-            <artifactId>converter-jackson</artifactId>
-            <version>2.6.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20190722</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>converter-jackson</artifactId>
+            <version>2.6.1</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -45,6 +77,17 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.8</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>3.1.0</version>
@@ -52,20 +95,34 @@
                     <execution>
                         <id>attach-sources</id>
                         <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
                             <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
-            <!-- deploy test jar -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.2</version>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
                 <executions>
                     <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
                         <goals>
-                            <goal>test-jar</goal>
+                            <goal>sign</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -92,10 +149,18 @@
     </build>
 
     <distributionManagement>
+        <!--        <repository>-->
+        <!--            <id>bintray-midtrans-midtrans-java</id>-->
+        <!--            <name>midtrans-midtrans-java</name>-->
+        <!--            <url>https://api.bintray.com/maven/midtrans/midtrans-java/com.midtrans/;publish=1</url>-->
+        <!--        </repository>-->
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
         <repository>
-            <id>bintray-midtrans-midtrans-java</id>
-            <name>midtrans-midtrans-java</name>
-            <url>https://api.bintray.com/maven/midtrans/midtrans-java/com.midtrans/;publish=1</url>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 

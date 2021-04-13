@@ -1,46 +1,50 @@
 package com.midtrans;
 
 import com.midtrans.proxy.ProxyConfig;
+import lombok.EqualsAndHashCode;
+
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Midtrans configuration
  */
+@EqualsAndHashCode(callSuper = false)
 public class Config {
 
-    private String SERVER_KEY;
-    private String CLIENT_KEY;
-    private String IRIS_MERCHANT_KEY;
+    private String serverKey;
+    private String clientKey;
+    private String irisMerchantKey;
     private boolean isProduction;
-
-    private String BASE_URL;
+    private boolean enabledLog;
 
     private int connectionTimeout;
     private int readTimeout;
     private int writeTimeout;
-
     private int maxConnectionPool;
     private int keepAliveDuration;
+    private TimeUnit httpClientTimeUnit;
 
-    private String irisIdempotencyKey = "";
-    private String paymentIdempotencyKey = "";
+    private String irisIdempotencyKey;
+    private String paymentIdempotencyKey;
 
-    private String xAppendNotification = "";
-    private String xOverrideNotification = "";
+    private String xAppendNotification;
+    private String xOverrideNotification;
 
     private ProxyConfig proxyConfig;
+    private Map<String, String> customHeaders;
 
-    private boolean enabledLog;
 
     /**
      * Midtrans configuration constructor
      *
-     * @param SERVER_KEY   Merchant server-key
-     * @param CLIENT_KEY   Merchant client-key
+     * @param serverKey   Merchant server-key
+     * @param clientKey   Merchant client-key
      * @param isProduction Merchant Environment Sandbox or Production
      */
-    public Config(String SERVER_KEY, String CLIENT_KEY, boolean isProduction) {
-        this.SERVER_KEY = SERVER_KEY;
-        this.CLIENT_KEY = CLIENT_KEY;
+    public Config(String serverKey, String clientKey, boolean isProduction) {
+        this.serverKey = serverKey;
+        this.clientKey = clientKey;
         this.isProduction = isProduction;
         this.readTimeout = ConfigBuilder.DEFAULT_READ_TIMEOUT;
         this.writeTimeout = ConfigBuilder.DEFAULT_WRITE_TIMEOUT;
@@ -52,18 +56,18 @@ public class Config {
     /**
      * Midtrans configuration constructor
      *
-     * @param SERVER_KEY   Merchant server-key
-     * @param CLIENT_KEY   Merchant client-key
-     * @param isProduction Merchant Environment Sandbox or Production
+     * @param serverKey        Merchant server-key
+     * @param clientKey        Merchant client-key
+     * @param isProduction      Merchant Environment Sandbox or Production
      * @param connectionTimeout Config for connection timeout
-     * @param readTimeout Config for read timeout
-     * @param writeTimeout Config for write timeout
+     * @param readTimeout       Config for read timeout
+     * @param writeTimeout      Config for write timeout
      * @param maxConnectionPool value max for connection pool
      * @param keepAliveDuration Durations for Keep alive connection
      */
-    public Config(String SERVER_KEY, String CLIENT_KEY, boolean isProduction, int connectionTimeout, int readTimeout, int writeTimeout, int maxConnectionPool, int keepAliveDuration) {
-        this.SERVER_KEY = SERVER_KEY;
-        this.CLIENT_KEY = CLIENT_KEY;
+    public Config(String serverKey, String clientKey, boolean isProduction, int connectionTimeout, int readTimeout, int writeTimeout, int maxConnectionPool, int keepAliveDuration) {
+        this.serverKey = serverKey;
+        this.clientKey = clientKey;
         this.isProduction = isProduction;
         this.connectionTimeout = connectionTimeout;
         this.readTimeout = readTimeout;
@@ -75,19 +79,19 @@ public class Config {
     /**
      * Midtrans configuration constructor
      *
-     * @param SERVER_KEY   Merchant server-key
-     * @param CLIENT_KEY   Merchant client-key
-     * @param isProduction Merchant Environment Sandbox or Production
+     * @param serverKey        Merchant server-key
+     * @param clientKey        Merchant client-key
+     * @param isProduction      Merchant Environment Sandbox or Production
      * @param connectionTimeout Config for connection timeout
-     * @param readTimeout Config for read timeout
-     * @param writeTimeout Config for write timeout
+     * @param readTimeout       Config for read timeout
+     * @param writeTimeout      Config for write timeout
      * @param maxConnectionPool value max for connection pool
      * @param keepAliveDuration Durations for Keep alive connection
-     * @param proxyConfig Config for use http proxy
+     * @param proxyConfig       Config for use http proxy
      */
-    public Config(String SERVER_KEY, String CLIENT_KEY, boolean isProduction, int connectionTimeout, int readTimeout, int writeTimeout, int maxConnectionPool, int keepAliveDuration, ProxyConfig proxyConfig) {
-        this.SERVER_KEY = SERVER_KEY;
-        this.CLIENT_KEY = CLIENT_KEY;
+    public Config(String serverKey, String clientKey, boolean isProduction, int connectionTimeout, int readTimeout, int writeTimeout, int maxConnectionPool, int keepAliveDuration, ProxyConfig proxyConfig) {
+        this.serverKey = serverKey;
+        this.clientKey = clientKey;
         this.isProduction = isProduction;
         this.connectionTimeout = connectionTimeout;
         this.readTimeout = readTimeout;
@@ -95,6 +99,64 @@ public class Config {
         this.maxConnectionPool = maxConnectionPool;
         this.keepAliveDuration = keepAliveDuration;
         this.proxyConfig = proxyConfig;
+    }
+
+
+    public Config(
+            String serverKey,
+            String clientKey,
+            boolean isProduction,
+            boolean enabledLog,
+            int connectionTimeout,
+            int readTimeout,
+            int writeTimeout,
+            int maxConnectionPool,
+            int keepAliveDuration,
+            TimeUnit httpClientTimeUnit,
+            String irisIdempotencyKey,
+            String paymentIdempotencyKey,
+            String xAppendNotification,
+            String xOverrideNotification,
+            ProxyConfig proxyConfig,
+            Map<String, String> customHeaders
+    ) {
+        this.serverKey = serverKey;
+        this.clientKey = clientKey;
+        this.isProduction = isProduction;
+        this.enabledLog = enabledLog;
+        this.connectionTimeout = connectionTimeout;
+        this.readTimeout = readTimeout;
+        this.writeTimeout = writeTimeout;
+        this.maxConnectionPool = maxConnectionPool;
+        this.keepAliveDuration = keepAliveDuration;
+        this.httpClientTimeUnit = httpClientTimeUnit;
+        this.irisIdempotencyKey = irisIdempotencyKey;
+        this.paymentIdempotencyKey = paymentIdempotencyKey;
+        this.xAppendNotification = xAppendNotification;
+        this.xOverrideNotification = xOverrideNotification;
+        this.proxyConfig = proxyConfig;
+        this.customHeaders = customHeaders;
+    }
+
+    public static Config getGlobalConfig() {
+        return new Config(
+                Midtrans.getServerKey(),
+                Midtrans.getClientKey(),
+                Midtrans.isProduction(),
+                Midtrans.enableLog(),
+                Midtrans.getConnectTimeout(),
+                Midtrans.getReadTimeout(),
+                Midtrans.getWriteTimeout(),
+                Midtrans.getMaxConnectionPool(),
+                Midtrans.getKeepAliveDuration(),
+                Midtrans.getHttpClientTimeUnit(),
+                null,
+                null,
+                Midtrans.getPaymentAppendNotification(),
+                Midtrans.getPaymentOverrideNotification(),
+                Midtrans.getProxyConfig(),
+                null
+        );
     }
 
     /**
@@ -106,36 +168,53 @@ public class Config {
         return isProduction;
     }
 
-    private void setBASE_URL(String BASE_URL) {
-        this.BASE_URL = BASE_URL;
-    }
-
     /**
-     * Get BASE_URL
-     * @return BASE_URL
+     * Get merchant server key
+     *
+     * @deprecated
+     * This method will delete soon on the next major release.
+     * <p> Please use {@link Config#getServerKey()} instead.
+     *
+     * @return {@link Config#getServerKey()}
      */
-    public String getBASE_URL() {
-        return BASE_URL;
+    public String getSERVER_KEY() {
+        return getServerKey();
     }
 
     /**
      * Get merchant server key
+     *
      * @return Merchant server key
      */
-    public String getSERVER_KEY() {
-        return SERVER_KEY;
+    public String getServerKey() {
+        return serverKey;
     }
 
     /**
      * Get merchant client key
+     * 
+     * @deprecated
+     * This method will delete soon on the next major release.
+     * <p> Please use {@link Config#getClientKey()} instead.    
+     *
      * @return Merchant client key
      */
     public String getCLIENT_KEY() {
-        return CLIENT_KEY;
+        return getClientKey();
+    }
+
+    /**
+     * Get merchant client key
+     *
+     * @return Merchant client key
+     */
+    public String getClientKey() {
+        return clientKey;
     }
 
     /**
      * Get http client connection timeout
+     *
      * @return connection timeout
      */
     public int getConnectionTimeout() {
@@ -147,6 +226,7 @@ public class Config {
 
     /**
      * Get http client read timeout
+     *
      * @return read timeout
      */
     public int getReadTimeout() {
@@ -158,6 +238,7 @@ public class Config {
 
     /**
      * Get http client write timeout
+     *
      * @return write timeout
      */
     public int getWriteTimeout() {
@@ -169,6 +250,7 @@ public class Config {
 
     /**
      * Get http client max connection pool
+     *
      * @return max connection pool
      */
     public int getMaxConnectionPool() {
@@ -180,6 +262,7 @@ public class Config {
 
     /**
      * Get http client keep alive durations
+     *
      * @return keep alive durations
      */
     public int getKeepAliveDuration() {
@@ -189,16 +272,26 @@ public class Config {
         return keepAliveDuration;
     }
 
+    public TimeUnit getHttpClientTimeUnit() {
+        return (httpClientTimeUnit != null) ? httpClientTimeUnit : TimeUnit.SECONDS;
+    }
+
     /**
      * Get http client proxy configuration
+     *
      * @return Http client {@link com.midtrans.proxy.ProxyConfig proxy configuration}
      */
     public ProxyConfig getProxyConfig() {
         return proxyConfig;
     }
 
+    public Map<String, String> getCustomHeaders() {
+        return customHeaders;
+    }
+
     /**
      * Get enableLog is enabled
+     *
      * @return Http client enabledLog
      */
     public boolean isEnabledLog() {
@@ -208,45 +301,39 @@ public class Config {
     /**
      * set BASE_URL to CoreAPI_BASE_URL in accordance with the environment type
      */
-    public void getCoreApiURL() {
-        if (isProduction()) {
-            enabledLog = false;
-            String COREAPI_PRODUCTION_BASE_URL = "https://api.midtrans.com/";
-            setBASE_URL(COREAPI_PRODUCTION_BASE_URL);
+    public String getCoreApiURL() {
+        if (isProduction) {
+            setEnabledLog(false);
+            return Midtrans.getProductionBaseUrl();
         } else {
-            enabledLog = true;
-            String COREAPI_SANDBOX_BASE_URL = "https://api.sandbox.midtrans.com/";
-            setBASE_URL(COREAPI_SANDBOX_BASE_URL);
+            setEnabledLog(true);
+            return Midtrans.getSandboxBaseUrl();
         }
     }
 
     /**
      * set BASE_URL to SnapAPI_BASE_URL in accordance with the environment type
      */
-    public void getSnapApiURL() {
-        if (isProduction()) {
-            enabledLog = false;
-            String SNAP_PRODUCTION_BASE_URL = "https://app.midtrans.com/";
-            setBASE_URL(SNAP_PRODUCTION_BASE_URL);
+    public String getSnapApiURL() {
+        if (isProduction) {
+            setEnabledLog(false);
+            return Midtrans.getSnapProductionBaseUrl();
         } else {
-            enabledLog = true;
-            String SNAP_SANDBOX_BASE_URL = "https://app.sandbox.midtrans.com/";
-            setBASE_URL(SNAP_SANDBOX_BASE_URL);
+            setEnabledLog(true);
+            return Midtrans.getSnapSandboxBaseUrl();
         }
     }
 
     /**
      * set BASE_URL to IRIS_API_BASE_URL in accordance with the environment type
      */
-    public void getIrisApiURL() {
-        if (isProduction()) {
-            enabledLog = false;
-            String IRIS_PRODUCTION_BASE_URL = "https://app.midtrans.com/iris/";
-            setBASE_URL(IRIS_PRODUCTION_BASE_URL);
+    public String getIrisApiURL() {
+        if (isProduction) {
+            setEnabledLog(false);
+            return Midtrans.getIrisProductionBaseUrl();
         } else {
-            enabledLog = true;
-            String IRIS_SANDBOX_BASE_URL = "https://app.sandbox.midtrans.com/iris/";
-            setBASE_URL(IRIS_SANDBOX_BASE_URL);
+            setEnabledLog(true);
+            return Midtrans.getIrisSandboxBaseUrl();
         }
     }
 
@@ -286,30 +373,66 @@ public class Config {
         return xOverrideNotification;
     }
 
+    /**
+     * Get Iris merchant key
+     *
+     * @return String iris merchant key
+     */
+    public String getIRIS_MERCHANT_KEY() {
+        return getIrisMerchantKey();
+    }
 
     /**
      * Get Iris merchant key
      *
      * @return String iris merchant key
      */
-    public String getIRIS_MERCHANT_KEY() { return IRIS_MERCHANT_KEY; }
+    public String getIrisMerchantKey() {
+        return irisMerchantKey;
+    }
 
     /**
      * set server-key for Basic Authentication while calling Midtrans API from backend.
      *
+     * @deprecated
+     * This method will delete soon on the next major release.
+     * <p> Please use {@link Config#setServerKey(String)} instead.
+     *
      * @param SERVER_KEY merchant server key
      */
     public void setSERVER_KEY(final String SERVER_KEY) {
-        this.SERVER_KEY = SERVER_KEY;
+        setServerKey(SERVER_KEY);
+    }
+
+    /**
+     * set server-key for Basic Authentication while calling Midtrans API from backend.
+     *
+     * @param serverKey merchant server key
+     */
+    public void setServerKey(final String serverKey) {
+        this.serverKey = serverKey;
     }
 
     /**
      * set client-key used for authorization on frontend API request/configuration.
      *
+     * @deprecated
+     * This method will delete soon on the next major release.
+     * <p> Please use {@link Config#setClientKey(String)} instead.
+     *
      * @param CLIENT_KEY merchant client key
      */
     public void setCLIENT_KEY(final String CLIENT_KEY) {
-        this.CLIENT_KEY = CLIENT_KEY;
+        setClientKey(CLIENT_KEY);
+    }
+
+    /**
+     * set client-key used for authorization on frontend API request/configuration.
+     *
+     * @param clientKey merchant client key
+     */
+    public void setClientKey(final String clientKey) {
+        this.clientKey = clientKey;
     }
 
     /**
@@ -331,30 +454,63 @@ public class Config {
     }
 
     /**
-     * set connection time out HttpClient
+     * set connect timeout with time unit HttpClient
+     *
+     * @param connectionTimeout
+     * @param timeUnit
+     */
+    public void setConnectionTimeout(final int connectionTimeout, TimeUnit timeUnit) {
+        this.connectionTimeout = connectionTimeout;
+        this.httpClientTimeUnit = timeUnit;
+    }
+
+    /**
+     * set connect timeout HttpClient
      *
      * @param connectionTimeout int connection time out unit durations is seconds
      */
     public void setConnectionTimeout(final int connectionTimeout) {
-        this.connectionTimeout = connectionTimeout;
+        this.setConnectionTimeout(connectionTimeout, null);
     }
 
     /**
-     * Set read time out HttpClient
+     * set read timeout with time unit HttpClient
+     *
+     * @param readTimeout
+     * @param timeUnit
+     */
+    public void setReadTimeout(final int readTimeout, TimeUnit timeUnit) {
+        this.readTimeout = readTimeout;
+        this.httpClientTimeUnit = timeUnit;
+    }
+
+    /**
+     * Set read timeout HttpClient
      *
      * @param readTimeout int read time out unit durations is seconds
      */
     public void setReadTimeout(final int readTimeout) {
-        this.readTimeout = readTimeout;
+        this.setReadTimeout(readTimeout, null);
     }
 
     /**
-     * Set write time out HttpClient
+     * set write timeout with time unit HttpClient
+     *
+     * @param writeTimeout
+     * @param timeUnit
+     */
+    public void setWriteTimeout(final int writeTimeout, TimeUnit timeUnit) {
+        this.writeTimeout = writeTimeout;
+        this.httpClientTimeUnit = timeUnit;
+    }
+
+    /**
+     * Set write timeout HttpClient
      *
      * @param writeTimeout int write time out unit durations is seconds
      */
     public void setWriteTimeout(final int writeTimeout) {
-        this.writeTimeout = writeTimeout;
+        this.setWriteTimeout(writeTimeout, null);
     }
 
     /**
@@ -376,12 +532,23 @@ public class Config {
     }
 
     /**
+     * set keep alive duration with time unit HttpClient
+     *
+     * @param keepAliveDuration
+     * @param timeUnit
+     */
+    public void setKeepAliveDuration(final int keepAliveDuration, TimeUnit timeUnit) {
+        this.keepAliveDuration = keepAliveDuration;
+        this.httpClientTimeUnit = timeUnit;
+    }
+
+    /**
      * Set keep alive durations
      *
      * @param keepAliveDuration int keep alive duration, unit is seconds
      */
     public void setKeepAliveDuration(int keepAliveDuration) {
-        this.keepAliveDuration = keepAliveDuration;
+        this.setKeepAliveDuration(keepAliveDuration, null);
     }
 
     /**
@@ -423,9 +590,36 @@ public class Config {
     /**
      * Set Iris Merchant key
      *
+     * @deprecated
+     * This method will delete soon on the next major release.
+     * <p> Please use {@link Config#setIrisMerchantKey(String)} instead.
+     *
      * @param IRIS_MERCHANT_KEY String iris merchant key
      */
+    @Deprecated
     public void setIRIS_MERCHANT_KEY(String IRIS_MERCHANT_KEY) {
-        this.IRIS_MERCHANT_KEY = IRIS_MERCHANT_KEY;
+        setIrisMerchantKey(IRIS_MERCHANT_KEY);
+    }
+
+    /**
+     * Set Iris Merchant key
+     *
+     * @param irisMerchantKey
+     */
+    public void setIrisMerchantKey(String irisMerchantKey) {
+        this.irisMerchantKey = irisMerchantKey;
+    }
+
+    /**
+     * Set Custom headers for API Request
+     *
+     * @param customHeaders Map string for custom headers
+     */
+    public void setCustomHeaders(Map<String, String> customHeaders) {
+        this.customHeaders = customHeaders;
+    }
+
+    public static ConfigBuilder builder() {
+        return new ConfigBuilder();
     }
 }

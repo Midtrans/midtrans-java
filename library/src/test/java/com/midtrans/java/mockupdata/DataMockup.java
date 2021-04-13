@@ -1,8 +1,12 @@
 package com.midtrans.java.mockupdata;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.*;
 
 @Component
@@ -29,10 +33,10 @@ public class DataMockup {
     }
 
     public Map<String, Object> initDataMock() {
-        UUID idRand = UUID.randomUUID();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         Map<String, String> transDetail = new HashMap<>();
-        transDetail.put("order_id", idRand.toString());
+        transDetail.put("order_id", "java-unittest-"+timestamp.getTime());
         transDetail.put("gross_amount", "265000");
 
         List<Map<String, String>> items = new ArrayList<>();
@@ -103,7 +107,7 @@ public class DataMockup {
 
     public Map<String, String> initDataBeneficiaries() {
         int prefix = random();
-        String ptName = "PT Unit Test " +prefix;
+        String ptName = "JavaUnitTest " +prefix;
         String email = "midjava"+prefix+"@mail.com";
 
         Map<String, String> beneficiarie = new HashMap<>();
@@ -139,6 +143,148 @@ public class DataMockup {
         payouts.put("payouts", payoutBeneficiaries);
 
         return payouts;
+    }
+
+    //Minimal data mockUp
+    public Map<String, Object> miniDataMockUp() {
+        UUID idRand = UUID.randomUUID();
+
+        Map<String, String> transDetail = new HashMap<>();
+        transDetail.put("order_id", idRand.toString());
+        transDetail.put("gross_amount", "265000");
+
+        Map<String, String> creditCard = new HashMap<>();
+        creditCard.put("secure", "true");
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("credit_card", creditCard);
+        body.put("transaction_details", transDetail);
+
+        return body;
+    }
+
+    //BAD Data Request
+    public Map<String, Object> badDataMockUp() {
+        UUID idRand = UUID.randomUUID();
+
+        Map<String, String> transDetail = new HashMap<>();
+        transDetail.put("order_id", idRand.toString());
+        transDetail.put("gross_amount", "265000");
+
+        Map<String, String> creditCard = new HashMap<>();
+        creditCard.put("secure", "true");
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("credit_card", creditCard);
+        body.put("items_detail", transDetail);
+
+        return body;
+    }
+
+    //Max data MockUp
+    public Map<String, Object> maxDataMockUp() throws IOException {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String json = "{\n" +
+                "  \"transaction_details\": {\n" +
+                "    \"order_id\": \"java-unittest" + timestamp.getTime() + "\",\n" +
+                "    \"gross_amount\": 100000\n" +
+                "  },\n" +
+                "  \"item_details\": [{\n" +
+                "      \"id\": \"a1\",\n" +
+                "      \"price\": 50000,\n" +
+                "      \"quantity\": 2,\n" +
+                "      \"name\": \"Apel\",\n" +
+                "      \"brand\": \"Fuji Apple\",\n" +
+                "      \"category\": \"Fruit\",\n" +
+                "      \"merchant_name\": \"Fruit-store\"\n" +
+                "    }],\n" +
+                "    \"customer_details\": {\n" +
+                "      \"first_name\": \"BUDI\",\n" +
+                "      \"last_name\": \"UTOMO\",\n" +
+                "      \"email\": \"noreply@example.com\",\n" +
+                "      \"phone\": \"+628123456\",\n" +
+                "      \"billing_address\": {\n" +
+                "        \"first_name\": \"BUDI\",\n" +
+                "        \"last_name\": \"UTOMO\",\n" +
+                "        \"email\": \"noreply@example.com\",\n" +
+                "        \"phone\": \"081 2233 44-55\",\n" +
+                "        \"address\": \"Sudirman\",\n" +
+                "        \"city\": \"Jakarta\",\n" +
+                "        \"postal_code\": \"12190\",\n" +
+                "        \"country_code\": \"IDN\"\n" +
+                "      },\n" +
+                "      \"shipping_address\": {\n" +
+                "        \"first_name\": \"BUDI\",\n" +
+                "        \"last_name\": \"UTOMO\",\n" +
+                "        \"email\": \"noreply@example.com\",\n" +
+                "        \"phone\": \"0 8128-75 7-9338\",\n" +
+                "        \"address\": \"Sudirman\",\n" +
+                "        \"city\": \"Jakarta\",\n" +
+                "        \"postal_code\": \"12190\",\n" +
+                "        \"country_code\": \"IDN\"\n" +
+                "      }\n" +
+                "    },\n" +
+                "   \"credit_card\": {\n" +
+                "       \"secure\": true,\n" +
+                "       \"channel\": \"migs\",\n" +
+                "       \"bank\": \"bca\",\n" +
+                "       \"installment\": {\n" +
+                "           \"required\": false,\n" +
+                "           \"terms\": {\n" +
+                "               \"bni\": [3, 6, 12],\n" +
+                "               \"mandiri\": [3, 6, 12],\n" +
+                "               \"cimb\": [3],\n" +
+                "               \"bca\": [3, 6, 12],\n" +
+                "               \"offline\": [6, 12]\n" +
+                "           }\n" +
+                "      },\n" +
+                "       \"whitelist_bins\": [\n" +
+                "        \"48111111\",\n" +
+                "        \"41111111\"\n" +
+                "      ]\n" +
+                "    },\n" +
+                "  \"bca_va\": {\n" +
+                "      \"va_number\": \"12345678911\",\n" +
+                "      \"free_text\": {\n" +
+                "        \"inquiry\": [\n" +
+                "          {\n" +
+                "            \"en\": \"text in English\",\n" +
+                "            \"id\": \"text in Bahasa Indonesia\"\n" +
+                "          }\n" +
+                "        ],\n" +
+                "        \"payment\": [\n" +
+                "          {\n" +
+                "            \"en\": \"text in English\",\n" +
+                "            \"id\": \"text in Bahasa Indonesia\"\n" +
+                "          }\n" +
+                "        ]\n" +
+                "      }\n" +
+                "    },\n" +
+                "    \"bni_va\": {\n" +
+                "      \"va_number\": \"12345678\"\n" +
+                "    },\n" +
+                "    \"permata_va\": {\n" +
+                "      \"va_number\": \"1234567890\",\n" +
+                "      \"recipient_name\": \"SUDARSONO\"\n" +
+                "    },\n" +
+                "    \"callbacks\": {\n" +
+                "      \"finish\": \"https://demo.midtrans.com\"\n" +
+                "    },\n" +
+                "    \"expiry\": {\n" +
+                "      \"start_time\": \"2025-12-20 18:11:08 +0700\",\n" +
+                "      \"unit\": \"minutes\",\n" +
+                "      \"duration\": 1\n" +
+                "    },\n" +
+                "    \"custom_field1\": \"custom field 1 content\",\n" +
+                "    \"custom_field2\": \"custom field 2 content\",\n" +
+                "    \"custom_field3\": \"custom field 3 content\",\n" +
+                "    \"enabled_payments\": [\"credit_card\", \"mandiri_clickpay\", \"cimb_clicks\",\"bca_klikbca\", \"bca_klikpay\", \"bri_epay\", \"echannel\", \"indosat_dompetku\",\"mandiri_ecash\", \"permata_va\", \"bca_va\", \"bni_va\", \"other_va\", \"gopay\",\"kioson\", \"indomaret\", \"gci\", \"danamon_online\"]\n" +
+                "}";
+
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> body = mapper.readValue(json, new TypeReference<Map<String, Object>>() {
+        });
+        return body;
     }
 
 

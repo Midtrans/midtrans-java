@@ -4,6 +4,7 @@ import com.midtrans.service.MidtransIrisApi;
 import com.midtrans.service.impl.MidtransCoreApiImpl;
 import com.midtrans.service.impl.MidtransIrisApiImpl;
 import com.midtrans.service.impl.MidtransSnapApiImpl;
+import lombok.EqualsAndHashCode;
 
 /**
  * Convenience "factory" class to facilitate setup for connection to Midtrans API using SnapAPI or CoreAPI.
@@ -30,7 +31,6 @@ public class ConfigFactory {
      * @return {@link MidtransCoreApiImpl MidtransCoreApi} to connecting midtrans gateway CoreAPI
      */
     public MidtransCoreApiImpl getCoreApi() {
-        config.getCoreApiURL();
         return new MidtransCoreApiImpl(config);
     }
 
@@ -40,19 +40,17 @@ public class ConfigFactory {
      * @return {@link MidtransSnapApiImpl MidtransSnapApi} to connecting midtrans gateway SnapAPI
      */
     public MidtransSnapApiImpl getSnapApi() {
-        config.getSnapApiURL();
         return new MidtransSnapApiImpl(config);
     }
 
     public MidtransIrisApi getIrisApi() {
-        config.getIrisApiURL();
         return new MidtransIrisApiImpl(config);
     }
 
     /**
      * Get midtrans config.
      *
-     * @return {@link Config configuration} when connectng to midtrans API
+     * @return {@link Config configuration} that will be used by the HTTP Client when sending request to Midtrans API
      */
     public Config getConfig() {
         return config;
