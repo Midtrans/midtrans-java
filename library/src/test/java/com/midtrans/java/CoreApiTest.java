@@ -6,8 +6,7 @@ import com.midtrans.httpclient.CoreApi;
 import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.java.mockupdata.DataMockup;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,13 +15,22 @@ import java.util.UUID;
 import static com.midtrans.java.mockupdata.Constant.*;
 import static org.junit.Assert.assertNotNull;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CoreApiTest {
 
-    private DataMockup dataMockup;
-    private Config configOptions;
+    private static DataMockup dataMockup;
+    private static Config configOptions;
 
-    @Before
-    public void setUp() {
+    private static String subscriptionName1;
+    private static String subscriptionId1;
+    private static String subscriptionName2;
+    private static String subscriptionId2;
+
+    private static String accountId1;
+    private static String accountId2;
+
+    @BeforeAll
+    public static void setUp() {
         dataMockup = new DataMockup();
 
         /* Using Global Config */
@@ -39,6 +47,7 @@ public class CoreApiTest {
     }
 
     @Test
+    @Order(1)
     public void registerCard() throws MidtransError {
         /* Using Global Config */
         JSONObject result1 = CoreApi.registerCard(creditCard(cardNumberAccept, mainClientKey));
@@ -52,6 +61,7 @@ public class CoreApiTest {
     }
 
     @Test
+    @Order(2)
     public void cardToken() throws MidtransError {
         /* Using method with Global Config */
         JSONObject result1 = CoreApi.cardToken(creditCard(cardNumberAccept, mainClientKey));
@@ -67,6 +77,7 @@ public class CoreApiTest {
     }
 
     @Test
+    @Order(3)
     public void chargeCreditCardTransaction() throws MidtransError {
         /* Using method with Global Config */
         dataMockup.setPaymentType("credit_card");
@@ -88,6 +99,7 @@ public class CoreApiTest {
     }
 
     @Test
+    @Order(4)
     public void failChargeWithEmptyBody() {
         /* Using method with Global Config */
         try {
@@ -107,6 +119,7 @@ public class CoreApiTest {
     }
 
     @Test
+    @Order(5)
     public void chargeGoPayTransaction() throws MidtransError {
         dataMockup.setPaymentType("gopay");
 
@@ -122,6 +135,7 @@ public class CoreApiTest {
     }
 
     @Test
+    @Order(6)
     public void chargeTransactionWithIdempotencyKey() throws MidtransError {
         dataMockup.setPaymentType("gopay");
 
@@ -140,6 +154,7 @@ public class CoreApiTest {
     }
 
     @Test
+    @Order(7)
     public void cardPointInquiry() throws MidtransError {
         /* Using method with Global Config */
         JSONObject result = CoreApi.cardPointInquiry(genCardToken(bniCardNumber, mainClientKey));
@@ -153,6 +168,7 @@ public class CoreApiTest {
     }
 
     @Test
+    @Order(8)
     public void failChargeTransactionWrongServerKey() throws MidtransError {
         dataMockup = new DataMockup();
         dataMockup.setPaymentType("gopay");
@@ -169,6 +185,7 @@ public class CoreApiTest {
     }
 
     @Test
+    @Order(9)
     public void getBinCard() throws MidtransError {
         /* Using method with Global Config */
         Midtrans.serverKey = mainServerKey;
@@ -182,6 +199,131 @@ public class CoreApiTest {
         assert result2.getJSONObject("data").getString("brand").equals("VISA");
     }
 
+    @Test
+    @Order(10)
+    public void createSubscription() throws MidtransError {
+        /* Using method with Global Config */
+        Midtrans.serverKey = mainServerKey;
+        subscriptionName1 = "MID-JAVA-SUBS1" + dataMockup.random();
+        Map<String, Object> request1 = dataMockup.subscriptionRequest(subscriptionName1, 1, "month");
+        JSONObject result1 = CoreApi.createSubscription(request1);
+        assert result1.getString("name").equals(subscriptionName1);
+        subscriptionId1 = result1.getString("id");
+
+        /* Using method with config option on request */
+        subscriptionName2 = "MID-JAVA-SUBS2" + dataMockup.random();
+        Map<String, Object> request = dataMockup.subscriptionRequest(subscriptionName2, 2, "month");
+        JSONObject result2 = CoreApi.createSubscription(request, configOptions);
+        assert result2.getString("name").equals(subscriptionName2);
+        subscriptionId2 = result2.getString("id");
+    }
+
+    @Test
+    @Order(11)
+    public void disableSubscription() throws MidtransError {
+        /* Using method with Global Config */
+        Midtrans.serverKey = mainServerKey;
+        JSONObject result1 = CoreApi.disableSubscription(subscriptionId1);
+        assert result1.getString("status_message").equals("Subscription is updated.");
+
+        /* Using method with config option on request */
+        JSONObject result2 = CoreApi.disableSubscription(subscriptionId2, configOptions);
+        assert result2.getString("status_message").equals("Subscription is updated.");
+    }
+
+    @Test
+    @Order(12)
+    public void enableSubscription() throws MidtransError {
+        /* Using method with Global Config */
+        Midtrans.serverKey = mainServerKey;
+        JSONObject result1 = CoreApi.enableSubscription(subscriptionId1);
+        assert result1.getString("status_message").equals("Subscription is updated.");
+
+        /* Using method with config option on request */
+        JSONObject result2 = CoreApi.enableSubscription(subscriptionId2, configOptions);
+        assert result2.getString("status_message").equals("Subscription is updated.");
+    }
+
+    @Test
+    @Order(13)
+    public void updateSubscription() throws MidtransError {
+        /* Using method with Global Config */
+        Midtrans.serverKey = mainServerKey;
+        Map<String, Object> request1 = dataMockup.subscriptionRequest(subscriptionName1, 2, "month");
+        JSONObject result1 = CoreApi.updateSubscription(subscriptionId1, request1);
+        assert result1.getString("status_message").equals("Subscription is updated.");
+
+        /* Using method with config option on request */
+        Map<String, Object> request2 = dataMockup.subscriptionRequest(subscriptionName2, 2, "month");
+        JSONObject result2 = CoreApi.updateSubscription(subscriptionId2, request2, configOptions);
+        assert result2.getString("status_message").equals("Subscription is updated.");
+    }
+
+    @Test
+    @Order(14)
+    public void getSubscription() throws MidtransError {
+        /* Using method with Global Config */
+        Midtrans.serverKey = mainServerKey;
+        JSONObject result1 = CoreApi.getSubscription(subscriptionId1);
+        assert result1.getString("name").equals(subscriptionName1);
+
+        /* Using method with config option on request */
+        JSONObject result2 = CoreApi.getSubscription(subscriptionId2, configOptions);
+        assert result2.getString("name").equals(subscriptionName2);
+    }
+
+    @Test
+    @Order(15)
+    public void linkPaymentAccount() throws MidtransError {
+        String json = "{\n" +
+                "  \"payment_type\": \"gopay\",\n" +
+                "  \"gopay_partner\": {\n" +
+                "    \"phone_number\": \"81212345678\",\n" +
+                "    \"country_code\": \"62\",\n" +
+                "    \"redirect_url\": \"https://www.gojek.com\"\n" +
+                "  }\n" +
+                "}";
+        Map<String, Object> request = dataMockup.jsonToMap(json);
+
+        /* Using method with Global Config */
+        Midtrans.serverKey = mainServerKey;
+        JSONObject result1 = CoreApi.linkPaymentAccount(request);
+        assert result1.getString("status_code").equals("201");
+        accountId1 = result1.getString("account_id");
+
+        /* Using method with config option on request */
+        JSONObject result2 = CoreApi.linkPaymentAccount(request, configOptions);
+        assert result2.getString("status_code").equals("201");
+        accountId2 = result2.getString("account_id");
+    }
+
+    @Test
+    @Order(16)
+    public void getPaymentAccount() throws MidtransError {
+        /* Using method with Global Config */
+        Midtrans.serverKey = mainServerKey;
+        JSONObject result1 = CoreApi.getPaymentAccount(accountId1);
+        assert result1.getString("account_id").equals(accountId1);
+        assert result1.getString("account_status").equals("PENDING");
+
+        /* Using method with config option on request */
+        JSONObject result2 = CoreApi.getPaymentAccount(accountId2, configOptions);
+        assert result2.getString("account_id").equals(accountId2);
+        assert result2.getString("account_status").equals("PENDING");
+    }
+
+    @Test
+    @Order(17)
+    public void unlinkPaymentAccount() throws MidtransError {
+        /* Using method with Global Config */
+        Midtrans.serverKey = mainServerKey;
+        JSONObject result1 = CoreApi.unlinkPaymentAccount(accountId1);
+        assert result1.getString("status_code").equals("412");
+
+        /* Using method with config option on request */
+        JSONObject result2 = CoreApi.unlinkPaymentAccount(accountId2, configOptions);
+        assert result2.getString("status_code").equals("412");
+    }
 
     // Mock CreditCard Data
     private Map<String, String> creditCard(String cardNumber, String clientKey) {

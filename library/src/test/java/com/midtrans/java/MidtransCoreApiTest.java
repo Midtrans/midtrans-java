@@ -6,8 +6,7 @@ import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.java.mockupdata.DataMockup;
 import com.midtrans.service.MidtransCoreApi;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,19 +15,31 @@ import java.util.UUID;
 import static com.midtrans.java.mockupdata.Constant.*;
 import static org.junit.Assert.assertNotNull;
 
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MidtransCoreApiTest {
 
-    private MidtransCoreApi coreApi;
-    private DataMockup dataMockup;
+    private static MidtransCoreApi coreApi;
+    private static DataMockup dataMockup;
 
-    @Before
-    public void setUp() {
-        coreApi = new ConfigFactory(new Config(mainServerKey, mainClientKey, false)).getCoreApi();
+    private static String subscriptionName;
+    private static String subscriptionId;
+
+    private static String accountId;
+
+    @BeforeAll
+    public static void setUp() {
+        Config configOptions = Config.builder()
+                .setIsProduction(false)
+                .setServerKey(mainServerKey)
+                .setClientKey(mainClientKey)
+                .build();
+
+        coreApi = new ConfigFactory(configOptions).getCoreApi();
         dataMockup = new DataMockup();
     }
 
     @Test
+    @Order(1)
     public void registerCard() throws MidtransError {
         JSONObject result = coreApi.registerCard(creditCard(cardNumberAccept));
         assert result.getString("status_code").equals("200");
@@ -36,6 +47,7 @@ public class MidtransCoreApiTest {
     }
 
     @Test
+    @Order(2)
     public void cardToken() throws MidtransError {
         JSONObject result = coreApi.cardToken(creditCard(cardNumberAccept));
         assert result.has("token_id");
@@ -44,6 +56,7 @@ public class MidtransCoreApiTest {
     }
 
     @Test
+    @Order(3)
     public void chargeCreditCardTransaction() throws MidtransError {
         dataMockup.setPaymentType("credit_card");
         Map<String, String> cc = new HashMap<>();
@@ -55,6 +68,7 @@ public class MidtransCoreApiTest {
     }
 
     @Test
+    @Order(4)
     public void failChargeWithEmptyBody() {
         try {
             coreApi.chargeTransaction(null);
@@ -64,6 +78,7 @@ public class MidtransCoreApiTest {
     }
 
     @Test
+    @Order(5)
     public void chargeGoPayTransaction() throws MidtransError {
         dataMockup.setPaymentType("gopay");
         JSONObject result = coreApi.chargeTransaction(dataMockup.initDataMock());
@@ -72,6 +87,7 @@ public class MidtransCoreApiTest {
     }
 
     @Test
+    @Order(6)
     public void cardPointInquiry() throws MidtransError {
         JSONObject result = coreApi.cardPointInquiry(genCardToken(bniCardNumber));
         assert result.getString("status_code").equals("200");
@@ -79,12 +95,14 @@ public class MidtransCoreApiTest {
     }
 
     @Test
+    @Order(7)
     public void orderIdNullCheckTransaction() throws MidtransError {
         JSONObject result = coreApi.checkTransaction("null");
         assert result.getString("status_code").equals("404");
     }
 
     @Test
+    @Order(8)
     public void checkTransaction() throws MidtransError {
         JSONObject result = coreApi.checkTransaction(makeTransaction());
         assert result.getString("status_code").equals("201");
@@ -92,6 +110,7 @@ public class MidtransCoreApiTest {
     }
 
     @Test
+    @Order(9)
     public void approveTransaction() throws MidtransError {
         JSONObject result = coreApi.approveTransaction(makeTransaction());
         assert result.getString("status_code").equals("412");
@@ -99,6 +118,7 @@ public class MidtransCoreApiTest {
     }
 
     @Test
+    @Order(10)
     public void denyTransaction() throws MidtransError {
         JSONObject result = coreApi.denyTransaction(makeTransaction());
         assert result.getString("status_code").equals("412");
@@ -106,6 +126,7 @@ public class MidtransCoreApiTest {
     }
 
     @Test
+    @Order(11)
     public void cancelTransaction() throws MidtransError {
         JSONObject result = coreApi.cancelTransaction(makeTransaction());
         assert result.getString("status_code").equals("200");
@@ -113,6 +134,7 @@ public class MidtransCoreApiTest {
     }
 
     @Test
+    @Order(12)
     public void expireTransaction() throws MidtransError {
         JSONObject result = coreApi.expireTransaction(makeTransaction());
         assert result.getString("status_code").equals("407");
@@ -120,6 +142,7 @@ public class MidtransCoreApiTest {
     }
 
     @Test
+    @Order(13)
     public void refundTransaction() throws MidtransError {
         Map<String, String> refundBody = new HashMap<>();
         refundBody.put("amount", "265000");
@@ -130,6 +153,7 @@ public class MidtransCoreApiTest {
     }
 
     @Test
+    @Order(14)
     public void captureTransaction() throws MidtransError {
         UUID idRandom = UUID.randomUUID();
         Map<String, String> params = new HashMap<>();
@@ -142,12 +166,14 @@ public class MidtransCoreApiTest {
     }
 
     @Test
+    @Order(15)
     public void getStatusB2BTransaction() throws MidtransError {
         JSONObject result = coreApi.getTransactionStatusB2B(makeTransaction());
         assert result.getString("status_code").equals("404");
     }
 
     @Test
+    @Order(16)
     public void directRefund() throws MidtransError {
         UUID stringRand = UUID.randomUUID();
 
@@ -161,6 +187,88 @@ public class MidtransCoreApiTest {
     }
 
     @Test
+    @Order(17)
+    public void createSubscription() throws MidtransError {
+        subscriptionName = "MID-JAVA-SUBS1" + dataMockup.random();
+        Map<String, Object> request1 = dataMockup.subscriptionRequest(subscriptionName, 1, "month");
+        JSONObject result1 = coreApi.createSubscription(request1);
+        assert result1.getString("name").equals(subscriptionName);
+        subscriptionId = result1.getString("id");
+    }
+
+    @Test
+    @Order(18)
+    public void disableSubscription() throws MidtransError {
+        JSONObject result1 = coreApi.disableSubscription(subscriptionId);
+        assert result1.getString("status_message").equals("Subscription is updated.");
+    }
+
+    @Test
+    @Order(19)
+    public void enableSubscription() throws MidtransError {
+        JSONObject result1 = coreApi.enableSubscription(subscriptionId);
+        assert result1.getString("status_message").equals("Subscription is updated.");
+    }
+
+    @Test
+    @Order(20)
+    public void updateSubscription() throws MidtransError {
+        Map<String, Object> request1 = dataMockup.subscriptionRequest(subscriptionName, 2, "month");
+        JSONObject result1 = coreApi.updateSubscription(subscriptionId, request1);
+        assert result1.getString("status_message").equals("Subscription is updated.");
+    }
+
+    @Test
+    @Order(21)
+    public void getSubscription() throws MidtransError {
+        JSONObject result1 = coreApi.getSubscription(subscriptionId);
+        assert result1.getString("name").equals(subscriptionName);
+    }
+
+    @Test
+    @Order(22)
+    public void linkPaymentAccount() throws MidtransError {
+        String json = "{\n" +
+                "  \"payment_type\": \"gopay\",\n" +
+                "  \"gopay_partner\": {\n" +
+                "    \"phone_number\": \"81212345678\",\n" +
+                "    \"country_code\": \"62\",\n" +
+                "    \"redirect_url\": \"https://www.gojek.com\"\n" +
+                "  }\n" +
+                "}";
+        Map<String, Object> request = dataMockup.jsonToMap(json);
+
+        JSONObject result1 = coreApi.linkPaymentAccount(request);
+        assert result1.getString("status_code").equals("201");
+        accountId = result1.getString("account_id");
+    }
+
+    @Test
+    @Order(23)
+    public void getPaymentAccount() throws MidtransError {
+        JSONObject result1 = coreApi.getPaymentAccount(accountId);
+        assert result1.getString("account_id").equals(accountId);
+        assert result1.getString("account_status").equals("PENDING");
+    }
+
+    @Test
+    @Order(24)
+    public void unlinkPaymentAccount() throws MidtransError {
+        JSONObject result1 = coreApi.unlinkPaymentAccount(accountId);
+        assert result1.getString("status_code").equals("412");
+    }
+
+    @Test
+    @Order(25)
+    public void getBinCard() throws MidtransError {
+        coreApi.apiConfig().setServerKey(mainClientKey);
+        JSONObject result = coreApi.getBIN("420191");
+        assert result.getJSONObject("data").getString("country_name").equals("INDONESIA");
+        assert result.getJSONObject("data").getString("brand").equals("VISA");
+    }
+
+    @Test
+    @Order(26)
     public void failChargeTransactionWrongServerKey() throws MidtransError {
         coreApi.apiConfig().setServerKey("dummy");
         dataMockup = new DataMockup();
@@ -168,15 +276,6 @@ public class MidtransCoreApiTest {
         JSONObject result = coreApi.chargeTransaction(dataMockup.initDataMock());
 
         assert result.getString("status_code").equals("401");
-    }
-
-    @Test
-    public void getBinCard() throws MidtransError {
-
-        coreApi.apiConfig().setServerKey(mainClientKey);
-        JSONObject result = coreApi.getBIN("420191");
-        assert result.getJSONObject("data").getString("country_name").equals("INDONESIA");
-        assert result.getJSONObject("data").getString("brand").equals("VISA");
     }
 
     // Make dummy transaction for get orderId
