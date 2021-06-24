@@ -130,4 +130,71 @@ public interface MidtransCoreApi {
      * @throws MidtransError when an exception was occurred during executing the request.
      */
     JSONObject getBIN(String binNumber) throws MidtransError;
+
+    /**
+     * Do `v1/subscriptions` API request to Core API for Create subscription.
+     * (more detail refer to: http://api-docs.midtrans.com/#create-subscription)
+     *
+     * @param subscriptionReq {Map Object} object of Subscription request body
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     * @throws MidtransError when an exception was occurred during executing the request.
+     */
+    JSONObject createSubscription(Map<String, Object> subscriptionReq) throws MidtransError;
+
+    /**
+     * Do `v1/subscriptions/{subscription_id}` Find subscription by id to see the subscription details. (more detail refer to: http://api-docs.midtrans.com/#get-subscription)
+     * @param subscriptionId {String} Subscription ID given by Midtrans
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     * @throws MidtransError when an exception was occurred during executing the request.
+     */
+    JSONObject getSubscription(String subscriptionId) throws MidtransError;
+
+    /**
+     * Do `v1/subscriptions/{subscription_id}/disable` Make the subscription inactive (the subscription will not create transaction anymore)s. (more detail refer to: http://api-docs.midtrans.com/#disable-subscription)
+     * @param subscriptionId {String} Subscription ID given by Midtrans
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     * @throws MidtransError when an exception was occurred during executing the request.
+     */
+    JSONObject disableSubscription(String subscriptionId) throws MidtransError;
+
+    /**
+     * Do `v1/subscriptions/{subscription_id}/enable` Make the subscription active (the subscription will create periodic transaction) (more detail refer to: http://api-docs.midtrans.com/#enable-subscription)
+     * @param subscriptionId {String} Subscription ID given by Midtrans
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     * @throws MidtransError when an exception was occurred during executing the request.
+     */
+    JSONObject enableSubscription(String subscriptionId) throws MidtransError;
+
+    /**
+     * Do `v1/subscriptions/{subscription_id}` Update existing subscription details. (more detail refer to: http://api-docs.midtrans.com/#update-subscription)
+     * @param subscriptionId {String} Subscription ID given by Midtrans
+     * @param subscriptionReq {Map Object} object of Subscription request body
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     * @throws MidtransError when an exception was occurred during executing the request.
+     */
+    JSONObject updateSubscription(String subscriptionId, Map<String, Object> subscriptionReq) throws MidtransError;
+
+    /**
+     * Do `/v2/pay/account` to link customer account to be used for specific payment channels (more detail refer to: http://api-docs.midtrans.com/#create-pay-account)
+     * @param accountRequest {Map Object} object of create payment account request body
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     * @throws MidtransError when an exception was occurred during executing the request.
+     */
+    JSONObject linkPaymentAccount(Map<String, Object> accountRequest) throws MidtransError;
+
+    /**
+     * Do `v2/pay/account/{account_id}` find account by id to see the customer account details (more detail refer to: http://api-docs.midtrans.com/#get-pay-account)
+     * @param accountId {String} Customer account id to be used for payment
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     * @throws MidtransError when an exception was occurred during executing the request.
+     */
+    JSONObject getPaymentAccount(String accountId) throws MidtransError;
+
+    /**
+     * Do `v2/pay/account/{account_id}/unbind` to unbind a linked customer account (more detail refer to: http://api-docs.midtrans.com/#unbind-pay-account)
+     * @param accountId {String} Customer account id to be used for payment
+     * @return {JSONObject} - org.json Promise contains Object from JSON decoded response
+     * @throws MidtransError when an exception was occurred during executing the request.
+     */
+    JSONObject unlinkPaymentAccount(String accountId) throws MidtransError;
 }

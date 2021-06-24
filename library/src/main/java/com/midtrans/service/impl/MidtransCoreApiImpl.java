@@ -99,4 +99,44 @@ public class MidtransCoreApiImpl implements MidtransCoreApi {
     public JSONObject getBIN(String binNumber) throws MidtransError {
         return CoreApi.getBin(binNumber, config);
     }
+
+    @Override
+    public JSONObject createSubscription(Map<String, Object> subscriptionReq) throws MidtransError {
+        return CoreApi.createSubscription(subscriptionReq, config);
+    }
+
+    @Override
+    public JSONObject getSubscription(String subscriptionId) throws MidtransError {
+        return CoreApi.getSubscription(subscriptionId, config);
+    }
+
+    @Override
+    public JSONObject disableSubscription(String subscriptionId) throws MidtransError {
+        return CoreApi.disableSubscription(subscriptionId, config);
+    }
+
+    @Override
+    public JSONObject enableSubscription(String subscriptionId) throws MidtransError {
+        return CoreApi.enableSubscription(subscriptionId, config);
+    }
+
+    @Override
+    public JSONObject updateSubscription(String subscriptionId, Map<String, Object> subscriptionReq) throws MidtransError {
+        return CoreApi.updateSubscription(subscriptionId, subscriptionReq, config);
+    }
+
+    @Override
+    public JSONObject linkPaymentAccount(Map<String, Object> accountRequest) throws MidtransError {
+        return CoreApi.linkPaymentAccount(accountRequest, config);
+    }
+
+    @Override
+    public JSONObject getPaymentAccount(String accountId) throws MidtransError {
+        return CoreApi.getPaymentAccount(accountId, config);
+    }
+
+    @Override
+    public JSONObject unlinkPaymentAccount(String accountId) throws MidtransError {
+        return CoreApi.unlinkPaymentAccount(accountId, config);
+    }
 }
