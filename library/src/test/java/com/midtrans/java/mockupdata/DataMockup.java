@@ -287,5 +287,51 @@ public class DataMockup {
         return body;
     }
 
+    public Map<String, Object> subscriptionRequest(String subscriptionName, int interval, String unit) {
+        HashMap<String, Object> map = new HashMap<>();
+        String json = "{\n" +
+                "    \"name\": \"" + subscriptionName + "\",\n" +
+                "    \"amount\": \"14000\",\n" +
+                "    \"currency\": \"IDR\",\n" +
+                "    \"payment_type\": \"credit_card\",\n" +
+                "    \"token\": \"dummy\",\n" +
+                "    \"schedule\": {\n" +
+                "      \"interval\": " + interval + ",\n" +
+                "      \"interval_unit\": \"" + unit + "\",\n" +
+                "      \"max_interval\": 12\n" +
+                "    },\n" +
+                "    \"metadata\": {\n" +
+                "      \"description\": \"Recurring payment for A\"\n" +
+                "    },\n" +
+                "    \"customer_details\": {\n" +
+                "      \"first_name\": \"John\",\n" +
+                "      \"last_name\": \"Doe\",\n" +
+                "      \"email\": \"midtrans-java@mailnesia.com\",\n" +
+                "      \"phone\": \"+62812345678\"\n" +
+                "    }\n" +
+                "}";
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            //Convert Map to JSON
+            map = mapper.readValue(json, new TypeReference<Map<String, Object>>() {
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    public Map<String, Object> jsonToMap(String json) {
+        HashMap<String, Object> map = new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            map = mapper.readValue(json, new TypeReference<Map<String, Object>>() {});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
 
 }
