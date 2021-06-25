@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  HttpClient class
+ * HttpClient class
  */
 public class APIHttpClient {
     public Config config;
@@ -56,15 +56,20 @@ public class APIHttpClient {
 
             assert response.body() != null;
             String responseBody = response.body().string();
+            if (Utility.hasOwnProperty(responseBody, "status_code")) {
+                JSONObject jsonObject = new JSONObject(responseBody);
+                int statusCode = Integer.parseInt(jsonObject.getString("status_code"));
+                if (statusCode >= 400 && statusCode != 407) {
+                    throw new MidtransError(
+                            "Midtrans API is returning API error. HTTP status code: " + statusCode + " API response: " + responseBody,
+                            statusCode,
+                            responseBody,
+                            response
+                    );
+                }
+            }
 
-            if (response.code() >= 400 && response.code() != 407) {
-                throw new MidtransError(
-                        "Midtrans API is returning API error. HTTP status code: " + response.code() + " API response: " + responseBody,
-                        response.code(),
-                        responseBody,
-                        response
-                );
-            } else if (response.code() >= 400) {
+            if (response.code() >= 400) {
                 throw new MidtransError(
                         "Midtrans API is returning API error. HTTP status code: " + response.code() + " API response: " + responseBody,
                         response.code(),
@@ -88,14 +93,14 @@ public class APIHttpClient {
     /**
      * HttpClient configuration
      *
-     * @return  OkHttpClient {@link OkHttpClient}
+     * @return OkHttpClient {@link OkHttpClient}
      */
     private static OkHttpClient buildHttpClient(Config config) {
         OkHttpClient httpClient = new OkHttpClient();
 
         Headers headers = null;
         try {
-            headers = headers(config);
+            headers = getHeadersConfig(config);
         } catch (MidtransError e) {
             e.printStackTrace();
         }
@@ -116,12 +121,12 @@ public class APIHttpClient {
         // setup default http client
         if (config.getProxyConfig() == null) {
             return httpClient.newBuilder()
-                    .addInterceptor(loggingInterceptor(config))
                     .connectTimeout(config.getConnectionTimeout(), config.getHttpClientTimeUnit())
                     .readTimeout(config.getReadTimeout(), config.getHttpClientTimeUnit())
                     .writeTimeout(config.getWriteTimeout(), config.getHttpClientTimeUnit())
                     .connectionPool(connectionPool)
                     .addInterceptor(headersInterceptor)
+                    .addInterceptor(loggingInterceptor(config))
                     .build();
         }
 
@@ -140,15 +145,16 @@ public class APIHttpClient {
                 .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyConfig.getHost(), proxyConfig.getPort())))
                 .proxyAuthenticator(proxyAuthenticator)
                 .addInterceptor(headersInterceptor)
+                .addInterceptor(loggingInterceptor(config))
                 .build();
     }
 
     /**
      * Headers set configuration
      *
-     * @return  Interceptor {@link Interceptor}
+     * @return Interceptor {@link Interceptor}
      */
-    private static Headers headers(Config config) throws MidtransError {
+    private static Headers getHeadersConfig(Config config) throws MidtransError {
 
         Map<String, String> headersMap = new HashMap<>();
         if (config.getCustomHeaders() != null) {
