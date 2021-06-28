@@ -25,7 +25,7 @@ public class CoreApiController {
     Config configOptions = Config.builder()
             .enableLog(true)
             .setIsProduction(isProduction)
-            .setSERVER_KEY(sandboxServerKey)
+            .setServerKey(sandboxServerKey)
             .setClientKey(sandboxClientKey)
             .build();
 

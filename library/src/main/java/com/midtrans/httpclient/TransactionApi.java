@@ -6,13 +6,17 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
-import static com.midtrans.httpclient.CoreApi.API_VERSION;
+import static com.midtrans.httpclient.CoreApi.API_VERSION2;
 
 
 public class TransactionApi {
 
     public static JSONObject checkTransaction(String param, Config configOptions) throws MidtransError {
-        return new JSONObject((String) APIHttpClient.request(APIHttpClient.GET, configOptions.getCoreApiURL() + API_VERSION + "/" + param + "/status", configOptions, null));
+        return new JSONObject((String) APIHttpClient.request(
+                APIHttpClient.GET, configOptions.getCoreApiURL() + API_VERSION2 + "/" + param + "/status",
+                configOptions,
+                null
+        ));
     }
 
     public static JSONObject checkTransaction(String param) throws MidtransError {
@@ -20,7 +24,11 @@ public class TransactionApi {
     }
 
     public static JSONObject approveTransaction(String param, Config configOptions) throws MidtransError {
-        return new JSONObject((String) APIHttpClient.request(APIHttpClient.POST, configOptions.getCoreApiURL() + API_VERSION + "/" + param + "/approve", configOptions, null));
+        return new JSONObject((String) APIHttpClient.request(
+                APIHttpClient.POST, configOptions.getCoreApiURL() + API_VERSION2 + "/" + param + "/approve",
+                configOptions,
+                null
+        ));
     }
 
     public static JSONObject approveTransaction(String param) throws MidtransError {
@@ -28,7 +36,12 @@ public class TransactionApi {
     }
 
     public static JSONObject denyTransaction(String param, Config configOptions) throws MidtransError {
-        return new JSONObject((String) APIHttpClient.request(APIHttpClient.POST, configOptions.getCoreApiURL() + API_VERSION + "/" + param + "/deny", configOptions, null));
+        return new JSONObject((String) APIHttpClient.request(
+                APIHttpClient.POST,
+                configOptions.getCoreApiURL() + API_VERSION2 + "/" + param + "/deny",
+                configOptions,
+                null
+        ));
     }
 
     public static JSONObject denyTransaction(String param) throws MidtransError {
@@ -40,11 +53,21 @@ public class TransactionApi {
     }
 
     public static JSONObject cancelTransaction(String param, Config configOptions) throws MidtransError {
-        return new JSONObject((String) APIHttpClient.request(APIHttpClient.POST, configOptions.getCoreApiURL() + API_VERSION + "/" + param + "/cancel", configOptions, null));
+        return new JSONObject((String) APIHttpClient.request(
+                APIHttpClient.POST,
+                configOptions.getCoreApiURL() + API_VERSION2 + "/" + param + "/cancel",
+                configOptions,
+                null
+        ));
     }
 
     public static JSONObject expireTransaction(String param, Config configOptions) throws MidtransError {
-        return new JSONObject((String) APIHttpClient.request(APIHttpClient.POST, configOptions.getCoreApiURL() + API_VERSION + "/" + param + "/expire", configOptions, null));
+        return new JSONObject((String) APIHttpClient.request(
+                APIHttpClient.POST,
+                configOptions.getCoreApiURL() + API_VERSION2 + "/" + param + "/expire",
+                configOptions,
+                null
+        ));
     }
 
     public static JSONObject expireTransaction(String param) throws MidtransError {
@@ -52,7 +75,11 @@ public class TransactionApi {
     }
 
     public static JSONObject refundTransaction(String param, Map<String, String> requestBody, Config configOptions) throws MidtransError {
-        return new JSONObject((String) APIHttpClient.request(APIHttpClient.POST, configOptions.getCoreApiURL() + API_VERSION + "/" + param + "/refund", configOptions, requestBody));
+        return new JSONObject((String) APIHttpClient.request(
+                APIHttpClient.POST, configOptions.getCoreApiURL() + API_VERSION2 + "/" + param + "/refund",
+                configOptions,
+                requestBody
+        ));
     }
 
     public static JSONObject refundTransaction(String param, Map<String, String> requestBody) throws MidtransError {
@@ -60,7 +87,12 @@ public class TransactionApi {
     }
 
     public static JSONObject directRefundTransaction(String param, Map<String, String> requestBody, Config configOptions) throws MidtransError {
-        return new JSONObject((String) APIHttpClient.request(APIHttpClient.POST, configOptions.getCoreApiURL() + API_VERSION + "/" + param + "/refund/online/direct", configOptions, requestBody));
+        return new JSONObject((String) APIHttpClient.request(
+                APIHttpClient.POST,
+                configOptions.getCoreApiURL() + API_VERSION2 + "/" + param + "/refund/online/direct",
+                configOptions,
+                requestBody
+        ));
     }
 
     public static JSONObject directRefundTransaction(String param, Map<String, String> requestBody) throws MidtransError {
@@ -68,7 +100,12 @@ public class TransactionApi {
     }
 
     public static JSONObject captureTransaction(Map<String, String> requestBody, Config configOptions) throws MidtransError {
-        return new JSONObject((String) APIHttpClient.request(APIHttpClient.POST, configOptions.getCoreApiURL() + API_VERSION + "/" + "capture", configOptions, requestBody));
+        return new JSONObject((String) APIHttpClient.request(
+                APIHttpClient.POST,
+                configOptions.getCoreApiURL() + API_VERSION2 + "/" + "capture",
+                configOptions,
+                requestBody
+        ));
     }
 
     public static JSONObject captureTransaction(Map<String, String> requestBody) throws MidtransError {
@@ -76,7 +113,12 @@ public class TransactionApi {
     }
 
     public static JSONObject getStatusB2b(String param, Config configOptions) throws MidtransError {
-        return new JSONObject((String) APIHttpClient.request(APIHttpClient.GET, configOptions.getCoreApiURL() + API_VERSION + "/" + param + "/status/b2b", configOptions, null));
+        return new JSONObject((String) APIHttpClient.request(
+                APIHttpClient.GET,
+                configOptions.getCoreApiURL() + API_VERSION2 + "/" + param + "/status/b2b",
+                configOptions,
+                null
+        ));
     }
 
     public static JSONObject getStatusB2b(String param) throws MidtransError {

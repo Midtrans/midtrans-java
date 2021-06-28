@@ -5,7 +5,7 @@
 
     <groupId>com.midtrans</groupId>
     <artifactId>java-library</artifactId>
-    <version>3.0.0</version>
+    <version>3.1.1</version>
     <packaging>jar</packaging>
 
     <name>Midtrans Java Official Library</name>
@@ -37,6 +37,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+        <junit.jupiter.version>5.6.2</junit.jupiter.version>
     </properties>
     <dependencies>
         <dependency>
@@ -66,10 +67,16 @@
             <version>2.6.1</version>
             <scope>test</scope>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-test</artifactId>-->
+<!--            <version>2.1.8.RELEASE</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <version>2.1.8.RELEASE</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.6.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -136,6 +143,15 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <properties>
+                        <includeTags>junit5</includeTags>
+                    </properties>
+                </configuration>
+            </plugin>
         </plugins>
         <resources>
             <resource>
@@ -149,11 +165,6 @@
     </build>
 
     <distributionManagement>
-        <!--        <repository>-->
-        <!--            <id>bintray-midtrans-midtrans-java</id>-->
-        <!--            <name>midtrans-midtrans-java</name>-->
-        <!--            <url>https://api.bintray.com/maven/midtrans/midtrans-java/com.midtrans/;publish=1</url>-->
-        <!--        </repository>-->
         <snapshotRepository>
             <id>ossrh</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>

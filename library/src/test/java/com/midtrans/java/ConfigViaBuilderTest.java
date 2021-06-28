@@ -3,13 +3,14 @@ package com.midtrans.java;
 import com.midtrans.Config;
 import com.midtrans.Midtrans;
 import com.midtrans.proxy.ProxyConfig;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
 import static com.midtrans.java.mockupdata.Constant.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ConfigViaBuilderTest {
 
@@ -137,6 +138,20 @@ public class ConfigViaBuilderTest {
         assertEquals(PROXY_PORT, config2.getProxyConfig().getPort());
         assertEquals(PROXY_USERNAME, config2.getProxyConfig().getUsername());
         assertEquals(PROXY_PASSWORD, config2.getProxyConfig().getPassword());
+    }
+
+    @AfterAll
+    public static void resetConfig() {
+        Midtrans.serverKey = mainServerKey;
+        Midtrans.clientKey = mainClientKey;
+        Midtrans.isProduction = false;
+        Midtrans.setReadTimeout(READ_TIMEOUT);
+        Midtrans.setConnectTimeout(CONNECT_TIMEOUT);
+        Midtrans.setKeepAliveDuration(KEEP_ALIVE_DURATION);
+        Midtrans.setMaxConnectionPool(CONNECTION_POOL_SIZE);
+        Midtrans.setWriteTimeout(WRITE_TIMEOUT);
+        Midtrans.setHttpClientTimeUnit(TimeUnit.SECONDS);
+        Midtrans.setProxyConfig(null);
     }
 
 

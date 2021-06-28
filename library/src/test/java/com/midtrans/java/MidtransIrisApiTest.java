@@ -7,8 +7,7 @@ import com.midtrans.java.mockupdata.DataMockup;
 import com.midtrans.service.MidtransIrisApi;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -19,38 +18,42 @@ import java.util.Map;
 import static com.midtrans.java.mockupdata.Constant.approverKey;
 import static com.midtrans.java.mockupdata.Constant.creatorKey;
 import static com.midtrans.java.mockupdata.DataMockup.refNumber;
+import static org.junit.jupiter.api.Assertions.*;
 
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MidtransIrisApiTest {
-    MidtransIrisApi irisApi;
-    DataMockup dataMockup;
-    Map<String, String> beneficiaries = new HashMap<>();
+    private static MidtransIrisApi irisApi;
+    private static DataMockup dataMockup;
+    private static Map<String, String> beneficiaries = new HashMap<>();
 
 
-    @Before
-    public void setUp() {
+    @BeforeAll
+    public static void setUp() {
         dataMockup = new DataMockup();
         irisApi = new ConfigFactory(new Config(creatorKey, null, false)).getIrisApi();
     }
 
     @Test
+    @Order(2)
     public void ping() throws MidtransError {
         String result = irisApi.ping();
-        assert result.equals("pong");
+        assertEquals("pong", result);
     }
 
     @Test
+    @Order(3)
     public void getAggregatorBalance() throws MidtransError {
         JSONObject result = irisApi.getBalance();
-        assert result.has("balance");
+        assertTrue(result.has("balance"));
     }
 
     @Test
+    @Order(4)
     public void createUpdateGetBeneficiaries() throws MidtransError {
         beneficiaries = dataMockup.initDataBeneficiaries();
         JSONObject result = irisApi.createBeneficiaries(beneficiaries);
-        assert result.has("status");
-        assert result.getString("status").equals("created");
+        assertTrue(result.has("status"));
+        assertEquals("created", result.getString("status"));
 
         getListBeneficiaries();
         updateBeneficiaries();
@@ -60,17 +63,18 @@ public class MidtransIrisApiTest {
         String oldAliasName = beneficiaries.get("alias_name");
         beneficiaries.replace("alias_name", oldAliasName, oldAliasName + "edt");
         JSONObject result = irisApi.updateBeneficiaries(oldAliasName, beneficiaries);
-        assert result.getString("status").equals("updated");
+        assertEquals("updated", result.getString("status"));
     }
 
     private void getListBeneficiaries() throws MidtransError {
         JSONArray result = irisApi.getBeneficiaries();
         JSONObject jsonResult = new JSONObject(result.get(result.length() - 1).toString());
-        assert jsonResult.getString("alias_name").equals(beneficiaries.get("alias_name"));
+        assertEquals(beneficiaries.get("alias_name"), jsonResult.getString("alias_name"));
     }
 
 
     @Test
+    @Order(5)
     public void createAndApprovePayouts() throws MidtransError {
         JSONObject beneficiaries = getRandomBeneficiaries();
 
@@ -78,7 +82,7 @@ public class MidtransIrisApiTest {
         Request payout to Iris API
          */
         JSONObject response = irisApi.createPayouts(dataMockup.initDataRequestPayout(beneficiaries));
-        assert response.has("payouts");
+        assertTrue(response.has("payouts"));
 
         JSONArray responsePayouts = response.getJSONArray("payouts");
         responsePayouts.get(0);
@@ -98,18 +102,20 @@ public class MidtransIrisApiTest {
     private void approvePayouts(Map<String, Object> params) throws MidtransError {
         irisApi.apiConfig().setServerKey(approverKey);
         JSONObject result = irisApi.approvePayouts(params);
-        assert result.getString("status").equals("ok");
+        assertEquals("ok", result.getString("status"));
     }
 
     @Test
+    @Order(6)
     public void createAndRejectPayouts() throws MidtransError {
         JSONObject beneficiaries = getRandomBeneficiaries();
 
         /*
         Request payout to Iris API
          */
+        irisApi.apiConfig().setServerKey(creatorKey);
         JSONObject response = irisApi.createPayouts(dataMockup.initDataRequestPayout(beneficiaries));
-        assert response.has("payouts");
+        assertTrue(response.has("payouts"));
 
         JSONArray responsePayouts = response.getJSONArray("payouts");
         responsePayouts.get(0);
@@ -129,26 +135,29 @@ public class MidtransIrisApiTest {
     private void rejectPayouts(Map<String, Object> params) throws MidtransError {
         irisApi.apiConfig().setServerKey(approverKey);
         JSONObject result = irisApi.rejectPayouts(params);
-        assert result.getString("status").equals("ok");
+        assertEquals("ok", result.getString("status"));
     }
 
     @Test
+    @Order(7)
     public void getTransactionHistory() throws MidtransError {
         LocalDate localDate = LocalDate.now();
         String fromDate = DateTimeFormatter.ofPattern("yyy-MM-dd").format(localDate.minusMonths(1));
         String toDate = DateTimeFormatter.ofPattern("yyy-MM-dd").format(localDate);
         JSONArray arrayResult = irisApi.getTransactionHistory(fromDate, toDate);
-        assert !arrayResult.isEmpty();
+        assertFalse(arrayResult.isEmpty());
     }
 
     @Test
+    @Order(8)
     public void getTopUpChannels() throws MidtransError {
         JSONArray result = irisApi.getTopUpChannels();
         JSONObject jsonResult = new JSONObject(result.get(0).toString());
-        assert jsonResult.getString("virtual_account_type").equals("mandiri_bill_key");
+        assertEquals("mandiri_bill_key", jsonResult.getString("virtual_account_type"));
     }
 
     @Test
+    @Order(9)
     public void getBeneficiaryBanks() throws MidtransError {
         JSONObject result = irisApi.getBeneficiaryBanks();
         JSONArray beneficiaryBanks = result.getJSONArray("beneficiary_banks");
@@ -159,17 +168,19 @@ public class MidtransIrisApiTest {
                 break;
             }
         }
-        assert arrayList != null;
-        assert arrayList.getString("code").equals("bca");
+        assertNotNull(arrayList);
+        assertEquals("bca", arrayList.getString("code"));
     }
 
     @Test
+    @Order(10)
     public void validateBankAccount() throws MidtransError {
         JSONObject result = irisApi.validateBankAccount("danamon", "000001137298");
-        assert result.getString("account_no").equals("000001137298");
+        assertEquals("000001137298", result.getString("account_no"));
     }
 
     @Test
+    @Order(11)
     public void createBeneficiaryWithIdempotencyKey() throws MidtransError {
         Map beneficiary = dataMockup.initDataBeneficiaries();
 
@@ -178,31 +189,34 @@ public class MidtransIrisApiTest {
 
         // Request create beneficiary to Iris API
         JSONObject result1 = irisApi.createBeneficiaries(beneficiary);
-        assert result1.getString("status").equals("created");
+        assertEquals("created", result1.getString("status"));
+
 
         JSONObject result2 = irisApi.createBeneficiaries(beneficiary);
-        assert result2.getString("status").equals("created");
+        assertEquals("created", result2.getString("status"));
     }
 
     @Test
-    public void failureCredentials()  {
+    @Order(12)
+    public void failureCredentials() {
         irisApi.apiConfig().setServerKey("dummy");
         try {
-            JSONObject result = irisApi.getBalance();
+            irisApi.getBalance();
         } catch (MidtransError e) {
             e.printStackTrace();
-            assert e.getResponseBody().contains("Access denied");
+            assertTrue(e.getResponseBody().contains("Access denied"));
         }
     }
 
     @Test
+    @Order(13)
     public void failureGetPayoutsDetails() {
         irisApi.apiConfig().setServerKey(approverKey);
         try {
             irisApi.getPayoutDetails(refNumber);
         } catch (MidtransError e) {
             e.printStackTrace();
-            assert e.getMessage().contains("404");
+            assertTrue(e.getMessage().contains("404"));
         }
     }
 
