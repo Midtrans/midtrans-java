@@ -14,26 +14,47 @@ public class IrisApi {
 
     public static String ping() throws MidtransError {
         Config config = Config.builder().setServerKey("NoNeedKey").build();
-        return APIHttpClient.request(APIHttpClient.GET, Config.getGlobalConfig().getIrisApiURL() + "ping", config, null);
+        return APIHttpClient.request(
+                APIHttpClient.GET,
+                Config.getGlobalConfig().getIrisApiURL() + "ping",
+                config,
+                null
+        );
     }
 
     public static JSONObject getBalance(Config configOptions) throws MidtransError {
-        return new JSONObject((String) APIHttpClient.request(APIHttpClient.GET, configOptions.getIrisApiURL() + "balance", configOptions, null));
+        return new JSONObject((String) APIHttpClient.request(
+                APIHttpClient.GET,
+                configOptions.getIrisApiURL() + "balance",
+                configOptions,
+                null
+        ));
     }
 
     public static JSONObject createBeneficiaries(Map<String, String> requestBody, Config configOptions) throws MidtransError {
-        return new JSONObject((String) APIHttpClient.request(APIHttpClient.POST, configOptions.getIrisApiURL() + "beneficiaries", configOptions, requestBody));
+        return new JSONObject((String) APIHttpClient.request(
+                APIHttpClient.POST,
+                configOptions.getIrisApiURL() + "beneficiaries",
+                configOptions,
+                requestBody
+        ));
     }
 
     public static JSONObject updateBeneficiaries(String aliasName, Map<String, String> requestBody, Config configOptions) throws MidtransError {
-        return new JSONObject((String) APIHttpClient.request(APIHttpClient.PATCH,
+        return new JSONObject((String) APIHttpClient.request(
+                APIHttpClient.PATCH,
                 configOptions.getIrisApiURL() + "beneficiaries/" + Optional.ofNullable(aliasName).orElse("null"),
                 configOptions,
-                Optional.ofNullable(requestBody).orElse(new HashMap<>())));
+                Optional.ofNullable(requestBody).orElse(new HashMap<>())
+        ));
     }
 
     public static JSONArray getBeneficiaries(Config configOptions) throws MidtransError {
-        return new JSONArray((String) APIHttpClient.request(APIHttpClient.GET, configOptions.getIrisApiURL() + "beneficiaries", configOptions, null));
+        return new JSONArray((String) APIHttpClient.request(
+                APIHttpClient.GET,
+                configOptions.getIrisApiURL() + "beneficiaries", configOptions,
+                null
+        ));
     }
 
     public static JSONObject createPayouts(Map<String, Object> requestBody, Config configOptions) throws MidtransError {
