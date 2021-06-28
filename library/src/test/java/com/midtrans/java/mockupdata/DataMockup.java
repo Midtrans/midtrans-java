@@ -2,14 +2,17 @@ package com.midtrans.java.mockupdata;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.midtrans.Config;
+import com.midtrans.httpclient.CoreApi;
+import com.midtrans.httpclient.error.MidtransError;
 import org.json.JSONObject;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
 
-@Component
+import static com.midtrans.java.mockupdata.Constant.cardNumberFDS;
+
 public class DataMockup {
 
     private List<String> listedPayment;
@@ -321,6 +324,48 @@ public class DataMockup {
             e.printStackTrace();
         }
         return map;
+    }
+
+    // Make dummy transaction for get orderId
+    public static String makeTransaction(Config config) throws MidtransError {
+        DataMockup dataMockup = new DataMockup();
+        dataMockup.setPaymentType("gopay");
+        JSONObject result;
+
+        if (config == null) {
+            result = CoreApi.chargeTransaction(dataMockup.initDataMock());
+        } else {
+            result = CoreApi.chargeTransaction(dataMockup.initDataMock(), config);
+        }
+        return result.getString("order_id");
+    }
+
+    // MockUp Transaction FDS Challenge
+    public static String makeFDSTransaction(Config config) throws MidtransError {
+        DataMockup dataMockup = new DataMockup();
+        dataMockup.setPaymentType("credit_card");
+        Map<String, String> cc = new HashMap<>();
+        cc.put("token_id", genCardToken(cardNumberFDS, config));
+        dataMockup.creditCard(cc);
+
+        JSONObject result = CoreApi.chargeTransaction(dataMockup.initDataMock(), config);
+        return result.getString("order_id");
+    }
+
+    // Mock CreditCard Data
+    public static Map<String, String> creditCard(String cardNumber) {
+        Map<String, String> cardParams = new HashMap<>();
+        cardParams.put("card_number", cardNumber);
+        cardParams.put("card_exp_month", "12");
+        cardParams.put("card_exp_year", "2022");
+        cardParams.put("card_cvv", "123");
+        return cardParams;
+    }
+
+    //For generate tokenCard
+    public static String genCardToken(String cardNumber, Config config) throws MidtransError {
+        JSONObject result = CoreApi.cardToken(creditCard(cardNumber), config);
+        return result.getString("token_id");
     }
 
     public Map<String, Object> jsonToMap(String json) {

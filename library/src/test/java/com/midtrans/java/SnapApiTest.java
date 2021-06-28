@@ -6,21 +6,21 @@ import com.midtrans.httpclient.SnapApi;
 import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.java.mockupdata.DataMockup;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.IOException;
 
 import static com.midtrans.java.mockupdata.Constant.*;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SnapApiTest {
 
-    private Config configOptions;
-    private DataMockup dataMockup;
+    private static Config configOptions;
+    private static DataMockup dataMockup;
 
-    @Before
-    public void setUp() {
+    @BeforeAll
+    public static void setUp() {
         dataMockup = new DataMockup();
 
         Midtrans.serverKey = mainServerKey;
@@ -33,37 +33,41 @@ public class SnapApiTest {
     }
 
     @Test
+    @Order(1)
     public void createTransactionSimpleParam() throws MidtransError {
         JSONObject resultMethod1 = SnapApi.createTransaction(dataMockup.miniDataMockUp());
-        assert resultMethod1.has("token");
-        assert resultMethod1.has("redirect_url");
+        assertTrue(resultMethod1.has("token"));
+        assertTrue(resultMethod1.has("redirect_url"));
 
         JSONObject resultMethod2 = SnapApi.createTransaction(dataMockup.miniDataMockUp(), configOptions);
-        assert resultMethod2.has("token");
-        assert resultMethod2.has("redirect_url");
+        assertTrue(resultMethod2.has("token"));
+        assertTrue(resultMethod2.has("redirect_url"));
     }
 
     @Test
+    @Order(2)
     public void createTransactionMaxParam() throws MidtransError, IOException {
         JSONObject result = SnapApi.createTransaction(dataMockup.maxDataMockUp());
-        assert result.has("token");
-        assert result.has("redirect_url");
+        assertTrue(result.has("token"));
+        assertTrue(result.has("redirect_url"));
 
         JSONObject result2 = SnapApi.createTransaction(dataMockup.maxDataMockUp(), configOptions);
-        assert result2.has("token");
-        assert result2.has("redirect_url");
+        assertTrue(result2.has("token"));
+        assertTrue(result2.has("redirect_url"));
     }
 
     @Test
+    @Order(3)
     public void createTransactionToken() throws MidtransError {
         String token = SnapApi.createTransactionToken(dataMockup.miniDataMockUp());
-        assert token.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}");
+        assertTrue(token.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"));
 
         String token2 = SnapApi.createTransactionToken(dataMockup.miniDataMockUp(), configOptions);
-        assert token2.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}");
+        assertTrue(token2.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"));
     }
 
     @Test
+    @Order(4)
     public void createTransactionRedirectUrl() throws MidtransError {
         // Method 1
         String redirectURL = SnapApi.createTransactionRedirectUrl(dataMockup.miniDataMockUp());
@@ -77,16 +81,17 @@ public class SnapApiTest {
     }
 
     @Test
+    @Order(5)
     public void badRequestBodyOnSnapTrans() {
 
         //Method 1 with global config
         try {
             JSONObject result1 = SnapApi.createTransaction(dataMockup.badDataMockUp());
-            assert result1.getJSONArray("error_messages").get(0).toString().equals("transaction_details.gross_amount is required");
-            assert result1.getJSONArray("error_messages").get(1).toString().equals("transaction_details.gross_amount is not a number");
+            assertEquals("transaction_details.gross_amount is required", result1.getJSONArray("error_messages").get(0));
+            assertEquals("transaction_details.gross_amount is not a number", result1.getJSONArray("error_messages").get(1));
         } catch (MidtransError e) {
             e.printStackTrace();
-            assert e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 400 API response:");
+            assertTrue(e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 400 API response:"));
         }
 
         // Method 2 with apiConfigOptions
@@ -96,11 +101,12 @@ public class SnapApiTest {
             assert result2.getJSONArray("error_messages").get(1).toString().equals("transaction_details.gross_amount is not a number");
         } catch (MidtransError e) {
             e.printStackTrace();
-            assert e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 400 API response:");
+            assertTrue(e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 400 API response:"));
         }
     }
 
     @Test
+    @Order(6)
     public void errorServerKey() {
         Midtrans.serverKey = "DUMMY";
         Config configOptions1 = Config.builder().setServerKey("DUMMY").build();
@@ -109,16 +115,16 @@ public class SnapApiTest {
         try {
             SnapApi.createTransaction(dataMockup.miniDataMockUp());
         } catch (MidtransError e) {
-            assert e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 401");
-            assert e.getResponseBody().equals("{\"error_messages\":[\"Access denied due to unauthorized transaction, please check client or server key\",\"Visit https://snap-docs.midtrans.com/#request-headers for more details\"]}");
+            assertTrue(e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 401"));
+            assertEquals("{\"error_messages\":[\"Access denied due to unauthorized transaction, please check client or server key\",\"Visit https://snap-docs.midtrans.com/#request-headers for more details\"]}", e.getResponseBody());
         }
 
         // Method 2
         try {
             SnapApi.createTransaction(dataMockup.miniDataMockUp(), configOptions1);
         } catch (MidtransError e) {
-            assert e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 401");
-            assert e.getResponseBody().equals("{\"error_messages\":[\"Access denied due to unauthorized transaction, please check client or server key\",\"Visit https://snap-docs.midtrans.com/#request-headers for more details\"]}");
+            assertTrue(e.getMessage().contains("Midtrans API is returning API error. HTTP status code: 401"));
+            assertEquals("{\"error_messages\":[\"Access denied due to unauthorized transaction, please check client or server key\",\"Visit https://snap-docs.midtrans.com/#request-headers for more details\"]}", e.getResponseBody());
         }
     }
 

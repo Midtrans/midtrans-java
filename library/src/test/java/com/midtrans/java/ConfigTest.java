@@ -2,50 +2,96 @@ package com.midtrans.java;
 
 import com.midtrans.Config;
 import com.midtrans.proxy.ProxyConfig;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.concurrent.TimeUnit;
 
 import static com.midtrans.java.mockupdata.Constant.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ConfigTest {
 
-    private Config config;
+    private static Config config;
 
-    @Before
-    public void setUp() {
+    @BeforeAll
+    public static void setUp() {
         config = new Config(mainServerKey, mainClientKey, isProduction);
     }
 
+    @Test
+    @Order(1)
+    public void getCoreApiURL() {
+        if (isProduction) {
+            assertEquals(COREAPI_PRODUCTION_BASE_URL, config.getCoreApiURL());
+        } else {
+            assertEquals(COREAPI_SANDBOX_BASE_URL, config.getCoreApiURL());
+        }
+    }
 
     @Test
+    @Order(2)
+    public void getSnapApiURL() {
+        if (isProduction) {
+            assertEquals(SNAP_PRODUCTION_BASE_URL, config.getSnapApiURL());
+        } else {
+            assertEquals(SNAP_SANDBOX_BASE_URL, config.getSnapApiURL());
+        }
+    }
+
+    @Test
+    @Order(3)
+    public void getIrisApiURL() {
+        if (isProduction) {
+            assertEquals(IRIS_PRODUCTION_BASE_URL, config.getIrisApiURL());
+        } else {
+            assertEquals(IRIS_SANDBOX_BASE_URL, config.getIrisApiURL());
+        }
+    }
+
+    @Test
+    @Order(4)
     public void setServerKey() {
         config.setServerKey(secondServerKey);
         assertEquals(secondServerKey, config.getServerKey());
     }
 
     @Test
+    @Order(5)
     public void setClientKey() {
         config.setClientKey(secondClientKey);
         assertEquals(secondClientKey, config.getClientKey());
     }
 
     @Test
+    @Order(6)
+    public void getServerKey() {
+        assertEquals(secondServerKey, config.getServerKey());
+    }
+
+    @Test
+    @Order(7)
+    public void getClientKey() {
+        assertEquals(secondClientKey, config.getClientKey());
+    }
+
+    @Test
+    @Order(8)
     public void setProduction() {
         config.setProduction(true);
         assertTrue(config.isProduction());
     }
 
     @Test
+    @Order(9)
     public void setEnabledLog() {
         config.setEnabledLog(true);
         assertTrue(config.isEnabledLog());
     }
 
     @Test
+    @Order(10)
     public void setConnectTimeout() {
         /*
           Set connect timeout with minus value
@@ -71,6 +117,7 @@ public class ConfigTest {
     }
 
     @Test
+    @Order(11)
     public void setReadTimeOut() {
         /*
           Set read timeout with minus value
@@ -95,6 +142,7 @@ public class ConfigTest {
     }
 
     @Test
+    @Order(12)
     public void setWriteTimeOut() {
         /*
           Set write timeout with minus value
@@ -119,6 +167,7 @@ public class ConfigTest {
     }
 
     @Test
+    @Order(13)
     public void setKeepAliveDuration() {
         /*
          Set keep alive duration with minus value
@@ -145,6 +194,7 @@ public class ConfigTest {
 
 
     @Test
+    @Order(14)
     public void setMaxConnectionPool() {
         /*
          Set max connection pool with minus value
@@ -160,6 +210,7 @@ public class ConfigTest {
     }
 
     @Test
+    @Order(15)
     public void setProxyConfig() {
         ProxyConfig proxyConfig = new ProxyConfig(PROXY_HOTS, PROXY_PORT, PROXY_USERNAME, PROXY_PASSWORD);
         config.setProxyConfig(proxyConfig);
@@ -169,71 +220,38 @@ public class ConfigTest {
         assertEquals(PROXY_PASSWORD, config.getProxyConfig().getPassword());
     }
 
-
     @Test
+    @Order(16)
     public void setIrisIdempotencyKey() {
         config.setIrisIdempotencyKey("IRIS-IDEMPOTENCY-KEY");
         assertEquals("IRIS-IDEMPOTENCY-KEY", config.getIrisIdempotencyKey());
     }
 
     @Test
+    @Order(17)
     public void setPaymentIdempotencyKey() {
         config.setPaymentIdempotencyKey("PAYMENT-IDEMPOTENCY-KEY");
         assertEquals("PAYMENT-IDEMPOTENCY-KEY", config.getPaymentIdempotencyKey());
     }
 
     @Test
+    @Order(18)
     public void paymentAppendNotification() {
         config.paymentAppendNotification(APPEND_NOTIFICATION);
         assertEquals(APPEND_NOTIFICATION, config.getPaymentAppendNotification());
     }
 
     @Test
+    @Order(19)
     public void paymentOverrideNotification() {
         config.paymentOverrideNotification(OVERRIDE_NOTIFICATION);
         assertEquals(OVERRIDE_NOTIFICATION, config.getPaymentOverrideNotification());
     }
 
     @Test
+    @Order(20)
     public void setIrisMerchantKey() {
-        config.setIRIS_MERCHANT_KEY("IRIS-MERCHANT-KEY");
+        config.setIrisMerchantKey("IRIS-MERCHANT-KEY");
         assertEquals(config.getIRIS_MERCHANT_KEY(), "IRIS-MERCHANT-KEY");
-    }
-
-    @Test
-    public void getSERVER_KEY() {
-        assertEquals(mainServerKey, config.getServerKey());
-    }
-
-    @Test
-    public void getClientKey() {
-        assertEquals(mainClientKey, config.getClientKey());
-    }
-
-    @Test
-    public void getCoreApiURL() {
-        if (isProduction) {
-            assertEquals(COREAPI_PRODUCTION_BASE_URL, config.getCoreApiURL());
-        } else {
-            assertEquals(COREAPI_SANDBOX_BASE_URL, config.getCoreApiURL());
-        }
-    }
-
-    @Test
-    public void getSnapApiURL() {
-        if (isProduction) {
-            assertEquals(SNAP_PRODUCTION_BASE_URL, config.getSnapApiURL());
-        } else {
-            assertEquals(SNAP_SANDBOX_BASE_URL, config.getSnapApiURL());
-        }
-    }
-
-    @Test
-    public void getIrisApiURL() {
-        if (isProduction) {
-            assertEquals(IRIS_PRODUCTION_BASE_URL, config.getIrisApiURL());
-        } else {
-            assertEquals(IRIS_SANDBOX_BASE_URL, config.getIrisApiURL());
-        }
     }
 }

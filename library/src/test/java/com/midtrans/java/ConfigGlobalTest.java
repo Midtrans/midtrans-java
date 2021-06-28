@@ -3,21 +3,19 @@ package com.midtrans.java;
 import com.midtrans.Config;
 import com.midtrans.Midtrans;
 import com.midtrans.proxy.ProxyConfig;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.midtrans.java.mockupdata.Constant.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ConfigGlobalTest {
 
-    private Config config;
+    private static Config config;
 
-    @Before
-    public void setUp() {
+    @BeforeAll
+    public static void setUp() {
         ProxyConfig proxyConfig = ProxyConfig.builder()
                 .setHost(PROXY_HOTS)
                 .setPort(PROXY_PORT)
@@ -46,9 +44,8 @@ public class ConfigGlobalTest {
 
     @Test
     public void clientKey() {
-        assertEquals(config.getClientKey(), mainClientKey);
+        assertEquals(mainClientKey, config.getClientKey());
     }
-
 
     @Test
     public void isProduction() {
@@ -99,6 +96,23 @@ public class ConfigGlobalTest {
     @Test
     public void proxy() {
         assertEquals(config.getProxyConfig(), Midtrans.getProxyConfig());
+    }
+
+    @AfterAll
+    public static void resetConfig() {
+        Midtrans.serverKey = mainServerKey;
+        Midtrans.clientKey = mainClientKey;
+        Midtrans.isProduction = false;
+        Midtrans.enableLog = true;
+        Midtrans.setReadTimeout(READ_TIMEOUT);
+        Midtrans.setConnectTimeout(CONNECT_TIMEOUT);
+        Midtrans.setKeepAliveDuration(KEEP_ALIVE_DURATION);
+        Midtrans.setMaxConnectionPool(CONNECTION_POOL_SIZE);
+        Midtrans.setWriteTimeout(WRITE_TIMEOUT);
+        Midtrans.setHttpClientTimeUnit(TimeUnit.SECONDS);
+        Midtrans.setProxyConfig(null);
+
+        config = Config.builder().build();
     }
 
 }

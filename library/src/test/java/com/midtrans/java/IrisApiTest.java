@@ -7,8 +7,7 @@ import com.midtrans.httpclient.error.MidtransError;
 import com.midtrans.java.mockupdata.DataMockup;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,16 +19,17 @@ import java.util.UUID;
 import static com.midtrans.java.mockupdata.Constant.approverKey;
 import static com.midtrans.java.mockupdata.Constant.creatorKey;
 import static com.midtrans.java.mockupdata.DataMockup.refNumber;
+import static org.junit.jupiter.api.Assertions.*;
 
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class IrisApiTest {
-    private DataMockup dataMockup;
-    private Map<String, String> beneficiaries = new HashMap<>();
-    private Config configOptions;
+    private static DataMockup dataMockup;
+    private static Map<String, String> beneficiaries = new HashMap<>();
+    private static Config configOptions;
 
 
-    @Before
-    public void setUp() {
+    @BeforeAll
+    public static void setUp() {
         dataMockup = new DataMockup();
 
         configOptions = Config.builder()
@@ -39,25 +39,28 @@ public class IrisApiTest {
     }
 
     @Test
+    @Order(2)
     public void ping() throws MidtransError {
         String result = IrisApi.ping();
-        assert result.equals("pong");
+        assertEquals("pong", result);
     }
 
     @Test
+    @Order(3)
     public void getAggregatorBalance() throws MidtransError {
         JSONObject result = IrisApi.getBalance(configOptions);
-        assert result.has("balance");
+        assertTrue(result.has("balance"));
     }
 
     @Test
+    @Order(4)
     public void createUpdateGetBeneficiaries() throws MidtransError {
         beneficiaries = dataMockup.initDataBeneficiaries();
 
         /* Using method with Global Config */
         JSONObject result = IrisApi.createBeneficiaries(beneficiaries, configOptions);
-        assert result.has("status");
-        assert result.getString("status").equals("created");
+        assertTrue(result.has("status"));
+        assertEquals("created", result.getString("status"));
         getListAndUpdateBeneficiaries(configOptions);
 
     }
@@ -65,7 +68,7 @@ public class IrisApiTest {
     private void getListAndUpdateBeneficiaries(Config config) throws MidtransError {
         JSONArray result2 = IrisApi.getBeneficiaries(config);
         JSONObject jsonResult2 = new JSONObject(result2.get(result2.length() - 1).toString());
-        assert jsonResult2.getString("alias_name").equals(beneficiaries.get("alias_name"));
+        assertEquals(beneficiaries.get("alias_name"), jsonResult2.getString("alias_name"));
         String oldAliasName = beneficiaries.get("alias_name");
         updateBeneficiaries(oldAliasName, config);
     }
@@ -73,17 +76,18 @@ public class IrisApiTest {
     private void updateBeneficiaries(String oldAliasName, Config config) throws MidtransError {
         beneficiaries.replace("alias_name", oldAliasName, oldAliasName + "edt");
         JSONObject result = IrisApi.updateBeneficiaries(oldAliasName, beneficiaries, config);
-        assert result.getString("status").equals("updated");
+        assertEquals("updated", result.getString("status"));
     }
 
 
     @Test
+    @Order(5)
     public void createAndApprovePayouts() throws MidtransError {
         JSONObject beneficiaries = getRandomBeneficiaries(configOptions);
 
 
         JSONObject response = IrisApi.createPayouts(dataMockup.initDataRequestPayout(beneficiaries), configOptions);
-        assert response.has("payouts");
+        assertTrue(response.has("payouts"));
 
         /*
         Approve payouts to Iris API
@@ -94,7 +98,7 @@ public class IrisApiTest {
 
         configOptions.setServerKey(approverKey);
         JSONObject result = IrisApi.approvePayouts(approvePayout, configOptions);
-        assert result.getString("status").equals("ok");
+        assertEquals("ok", result.getString("status"));
     }
 
     private ArrayList<String> getPayoutsFromResult(JSONObject response) {
@@ -107,6 +111,7 @@ public class IrisApiTest {
     }
 
     @Test
+    @Order(6)
     public void createAndRejectPayouts() throws MidtransError {
         JSONObject beneficiaries = getRandomBeneficiaries(configOptions);
 
@@ -116,7 +121,7 @@ public class IrisApiTest {
         Request payout to Iris API
          */
         JSONObject response = IrisApi.createPayouts(dataMockup.initDataRequestPayout(beneficiaries), configOptions);
-        assert response.has("payouts");
+        assertTrue(response.has("payouts"));
 
         JSONArray responsePayouts = response.getJSONArray("payouts");
         responsePayouts.get(0);
@@ -136,28 +141,31 @@ public class IrisApiTest {
     private void rejectPayouts(Map<String, Object> params) throws MidtransError {
         configOptions.setServerKey(approverKey);
         JSONObject result = IrisApi.rejectPayouts(params, configOptions);
-        assert result.getString("status").equals("ok");
+        assertEquals("ok", result.getString("status"));
     }
 
     @Test
+    @Order(7)
     public void getTransactionHistory() throws MidtransError {
         Midtrans.serverKey = creatorKey;
         LocalDate localDate = LocalDate.now();
         String fromDate = DateTimeFormatter.ofPattern("yyy-MM-dd").format(localDate.minusMonths(1));
         String toDate = DateTimeFormatter.ofPattern("yyy-MM-dd").format(localDate);
         JSONArray arrayResult = IrisApi.getTransactionHistory(fromDate, toDate, configOptions);
-        assert !arrayResult.isEmpty();
+        assertFalse(arrayResult.isEmpty());
     }
 
     @Test
+    @Order(8)
     public void getTopUpChannels() throws MidtransError {
         Midtrans.serverKey = creatorKey;
         JSONArray result = IrisApi.getTopUpChannels(configOptions);
         JSONObject jsonResult = new JSONObject(result.get(0).toString());
-        assert jsonResult.getString("virtual_account_type").equals("mandiri_bill_key");
+        assertEquals("mandiri_bill_key", jsonResult.getString("virtual_account_type"));
     }
 
     @Test
+    @Order(9)
     public void getBeneficiaryBanks() throws MidtransError {
         JSONObject result = IrisApi.getBeneficiaryBanks(configOptions);
         JSONArray beneficiaryBanks = result.getJSONArray("beneficiary_banks");
@@ -168,17 +176,19 @@ public class IrisApiTest {
                 break;
             }
         }
-        assert arrayList != null;
-        assert arrayList.getString("code").equals("bca");
+        assertNotNull(arrayList);
+        assertEquals("bca", arrayList.getString("code"));
     }
 
     @Test
+    @Order(10)
     public void validateBankAccount() throws MidtransError {
         JSONObject result = IrisApi.validateBankAccount("danamon", "000001137298", configOptions);
-        assert result.getString("account_no").equals("000001137298");
+        assertEquals("000001137298", result.getString("account_no"));
     }
 
     @Test
+    @Order(11)
     public void createBeneficiaryWithIdempotencyKey() throws MidtransError {
         Map beneficiary = dataMockup.initDataBeneficiaries();
 
@@ -188,35 +198,39 @@ public class IrisApiTest {
                 .setIrisIdempotencyKey(String.valueOf(UUID.randomUUID()))
                 .build();
         JSONObject result1 = IrisApi.createBeneficiaries(beneficiary, configOptions);
-        assert result1.getString("status").equals("created");
+        assertEquals("created", result1.getString("status"));
 
         JSONObject result2 = IrisApi.createBeneficiaries(beneficiary, configOptions);
-        assert result2.getString("status").equals("created");
+        assertEquals("created", result2.getString("status"));
+
     }
 
     @Test
+    @Order(12)
     public void failureCredentials() {
         configOptions.setServerKey("dummy");
         try {
             IrisApi.getBalance(configOptions);
         } catch (MidtransError e) {
             e.printStackTrace();
-            assert e.getResponseBody().contains("Access denied");
+            assertTrue(e.getResponseBody().contains("Access denied"));
         }
     }
 
     @Test
+    @Order(13)
     public void failureGetPayoutsDetails() {
         JSONObject result;
         try {
             result = IrisApi.getPayoutDetails(refNumber, configOptions);
-            assert result.getString("error_message").equals("Specified payout not found");
+            assertEquals("pecified payout not found", result.getString("error_message"));
         } catch (MidtransError MidtransError) {
             MidtransError.printStackTrace();
         }
     }
 
     private JSONObject getRandomBeneficiaries(Config config) throws MidtransError {
+        configOptions.setServerKey(creatorKey);
         JSONArray result = IrisApi.getBeneficiaries(config);
         return new JSONObject(result.get(result.length() - 2).toString());
     }

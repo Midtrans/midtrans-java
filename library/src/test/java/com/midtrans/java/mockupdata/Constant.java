@@ -39,7 +39,7 @@ public class Constant {
     public static final String APPEND_NOTIFICATION = "https://example.com/";
     public static final String OVERRIDE_NOTIFICATION = "https://example.com/";
 
-    public static final String PROXY_HOTS = "localhost";
+    public static final String PROXY_HOTS = "http://example.com";
     public static final int PROXY_PORT = 8080;
     public static final String PROXY_USERNAME = "user";
     public static final String PROXY_PASSWORD = "password";
