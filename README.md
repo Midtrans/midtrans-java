@@ -14,21 +14,21 @@ Maven:
 <dependency>
     <groupId>com.midtrans</groupId>
     <artifactId>java-library</artifactId>
-    <version>3.0.0</version>
+    <version>3.1.1</version>
 </dependency>
 ```
 Gradle:
 If you're using Gradle as the build tools for your project, please add jcenter repository to your build script then add the following dependency to your project's build definition (build.gradle):
 ```Gradle
 dependencies {
-	implementation 'com.midtrans:java-library:3.0.0'
+	implementation 'com.midtrans:java-library:3.1.1'
 }
 ```
 > **IMPORTANT NOTE**: Since April 13, 2021 We already migrate the repository from jcenter/bintray repository to [Maven central](https://search.maven.org/artifact/com.midtrans/java-library).
 
 ### 1.b Using JAR File
 
-If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](http://bit.ly/mid-java)
+If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://bit.ly/MidJava311)
 
 ## 2. Usage
 
