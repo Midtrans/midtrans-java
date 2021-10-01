@@ -175,8 +175,8 @@ public class MidtransIrisApiTest {
     @Test
     @Order(10)
     public void validateBankAccount() throws MidtransError {
-        JSONObject result = irisApi.validateBankAccount("danamon", "000001137298");
-        assertEquals("000001137298", result.getString("account_no"));
+        JSONObject result = irisApi.validateBankAccount("mandiri", "1111222233333");
+        assertEquals("1111222233333", result.getString("account_no"));
     }
 
     @Test
