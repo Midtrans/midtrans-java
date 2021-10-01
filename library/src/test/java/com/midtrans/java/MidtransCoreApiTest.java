@@ -317,4 +317,20 @@ public class MidtransCoreApiTest {
         assertEquals(transactionId2, transactionId1);
     }
 
+    @Test
+    @Order(28)
+    public void successChargeTransactionWithPermataVA() throws MidtransError {
+        coreApi.apiConfig().setServerKey(mainServerKey);
+        dataMockup.setPaymentType("bank_transfer");
+        dataMockup.setBank("permata");
+
+        JSONObject result1 = coreApi.chargeTransaction(dataMockup.initDataMock());
+        assertEquals("bank_transfer", result1.getString("payment_type"));
+        assertEquals("pending", result1.getString("transaction_status"));
+
+        JSONObject result2 = coreApi.chargeTransaction(dataMockup.initDataMock());
+        assertEquals("bank_transfer", result2.getString("payment_type"));
+        assertEquals("pending", result2.getString("transaction_status"));
+    }
+
 }
