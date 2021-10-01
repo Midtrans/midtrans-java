@@ -42,8 +42,8 @@ public class APIHttpClient {
 
         RequestBody body = null;
         if (!method.equals(GET)) {
-            MediaType mediaType = MediaType.parse("application/json");
-            body = RequestBody.create(mediaType, jsonParam.toString());
+            //MediaType mediaType = MediaType.parse("application/json");
+            body = RequestBody.create(null, jsonParam.toString());
         }
 
         Request request = new Request.Builder()
