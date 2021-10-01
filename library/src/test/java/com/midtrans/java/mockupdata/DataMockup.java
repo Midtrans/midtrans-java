@@ -18,6 +18,7 @@ public class DataMockup {
     private List<String> listedPayment;
     private Map<String, String> creditCard;
     private String paymentType = "";
+    private String bank = "";
 
     public static final String refNumber = "032b1bae14578690bb";
 
@@ -34,6 +35,11 @@ public class DataMockup {
         creditCard = new HashMap<>();
         creditCard.putAll(params);
     }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
 
     public Map<String, Object> initDataMock() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -103,6 +109,12 @@ public class DataMockup {
         }
         if (listedPayment != null) {
             body.put("enabled_payments", listedPayment);
+        }
+
+        if (paymentType.equals("bank_transfer")) {
+            Map<String, Object> bankTransfer = new HashMap<>();
+            bankTransfer.put("bank", bank);
+            body.put("bank_transfer", bankTransfer);
         }
 
         return body;
