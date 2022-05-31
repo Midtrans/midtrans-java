@@ -391,4 +391,16 @@ public class DataMockup {
         return map;
     }
 
+    public static Map<String, Object> simpleDataMock(String orderId, String paymentType) {
+        Map<String, String> transDetail = new HashMap<>();
+        transDetail.put("order_id", orderId);
+        transDetail.put("gross_amount", "265000");
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("transaction_details", transDetail);
+        body.put("payment_type", paymentType);
+
+        return body;
+    }
+
 }
