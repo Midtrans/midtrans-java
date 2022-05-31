@@ -1,10 +1,12 @@
 package com.midtrans.java.mockupdata;
 
 public class Constant {
-    public static final String mainServerKey = "SB-Mid-server-TOq1a2AVuiyhhOjvfs3U_KeO";
-    public static final String mainClientKey = "SB-Mid-client-nKsqvar5cn60u2Lv";
+    public static final String mainServerKey = "SB-Mid-server-LDMQH0mOAUofApUWMmXxUIFj";
+    public static final String mainClientKey = "SB-Mid-client-_CIibU2GiWPARC2l";
+    public static final String merchantId1 = "G331392016";
     public static final String secondServerKey = "SB-Mid-server-9Nm5c-HJE65AjLNtTX-bRjqm";
     public static final String secondClientKey = "SB-Mid-client-GtbzK39rvs5El-bC";
+    public static final String merchantId2 = "G902985977";
 
     public static boolean isProduction = false;
 
