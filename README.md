@@ -1,7 +1,7 @@
 # Midtrans Client - Java
 [![Download](https://maven-badges.herokuapp.com/maven-central/com.midtrans/java-library/badge.svg)](https://search.maven.org/artifact/com.midtrans/java-library/)
 [![Build Status](https://travis-ci.org/Xaxxis/midtrans-java.svg?branch=master)](https://travis-ci.org/Xaxxis/midtrans-java)
-[![Demo apps](https://img.shields.io/badge/Go%20to-Demo%20Apps-green)](https://midtrans-java.herokuapp.com/)
+[![Demo apps](https://img.shields.io/badge/Go%20to-Demo%20Apps-green)](https://sample-demo-dot-midtrans-support-tools.et.r.appspot.com/)
 
 Midtrans :heart: Java, This is the Official Java API client/library for Midtrans Payment API. Visit [https://midtrans.com](https://midtrans.com). More information about the product and see documentation at [http://docs.midtrans.com](https://beta-docs.midtrans.com/) for more technical details. This library used java version 1.8
 
@@ -14,21 +14,21 @@ Maven:
 <dependency>
     <groupId>com.midtrans</groupId>
     <artifactId>java-library</artifactId>
-    <version>3.1.2</version>
+    <version>3.1.3</version>
 </dependency>
 ```
 Gradle:
 If you're using Gradle as the build tools for your project, please add jcenter repository to your build script then add the following dependency to your project's build definition (build.gradle):
 ```Gradle
 dependencies {
-	implementation 'com.midtrans:java-library:3.1.2'
+	implementation 'com.midtrans:java-library:3.1.3'
 }
 ```
 > **IMPORTANT NOTE**: Since April 13, 2021 We already migrate the repository from jcenter/bintray repository to [Maven central](https://search.maven.org/artifact/com.midtrans/java-library).
 
 ### 1.b Using JAR File
 
-If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://search.maven.org/remotecontent?filepath=com/midtrans/java-library/3.1.2/java-library-3.1.2.jar)
+If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://search.maven.org/remotecontent?filepath=com/midtrans/java-library/3.1.3/java-library-3.1.3.jar)
 
 ## 2. Usage
 
@@ -66,8 +66,8 @@ JSONObject result = CoreApi.chargeTransaction(param);
 // SnapApi request with global config
 JSONObject result = SnapApi.createTransaction(param);
 ```
-
-All the request can accept an optional Config object. This is used if you want to set an others' config like idempotency key, proxy,
+#### Per-request Configuration
+All the request can accept an optional Config object. This is used if you want to set an others' config like idempotency key, proxy, override/append notification url
 or if you want to pass the server-key on each method, or use multiple account on each method.
 ```java
 import com.midtrans.Config;
@@ -76,21 +76,64 @@ import com.midtrans.httpclient.CoreApi;
 import com.midtrans.httpclient.error.MidtransError;
 import org.json.JSONObject;
 
-Config configOptions = Config.builder()
+Config coreApiConfigOptions = Config.builder()
         .setServerKey("YOUR_SERVER_KEY")
         .setClientKey("YOUR_CLIENT_KEY")
         .setIrisIdempotencyKey("UNIQUE_ID")
         .setPaymentIdempotencyKey("UNIQUE_ID")
         .setProxyConfig(PROXY_CONFIG)
+        .setPaymentOverrideNotification("WEBHOOK_ENDPOINT")
         .setIsProduction(false)
         .build();
 
 // CoreApi request with config options
-JSONObject result = CoreApi.chargeTransaction(param, configOptions);
+JSONObject result = CoreApi.chargeTransaction(param, coreApiConfigOptions);
+
+Config snapConfigOptions = Config.builder()
+        .setServerKey("YOUR_SERVER_KEY")
+        .setClientKey("YOUR_CLIENT_KEY")
+        .setIrisIdempotencyKey("UNIQUE_ID")
+        .setPaymentIdempotencyKey("UNIQUE_ID")
+        .setProxyConfig(PROXY_CONFIG)
+        .setPaymentOverrideNotification("WEBHOOK_ENDPOINT")
+        .setIsProduction(false)
+        .build();
 
 // SnapApi request with config options
-JSONObject result = SnapApi.createTransaction(param, configOptions);
+JSONObject result = SnapApi.createTransaction(param, snapConfigOptions);
 ```
+
+or if you want to use single account (credential-key) but you need to set the config options value dynamically, you can also set the api client like this
+```java
+import com.midtrans.Midtrans;
+import com.midtrans.httpclient.CoreApi;
+import com.midtrans.httpclient.SnapApi;
+import com.midtrans.httpclient.error.MidtransError;
+import org.json.JSONObject;
+
+//1. Set credentials key globally
+Midtrans.serverKey = "YOUR_SERVER_KEY";
+Midtrans.clientKey = "YOUR_CLIENT_KEY";
+Midtrans.isProduction = false;
+
+//2. Set config options for core-api charge request
+Config configOptions = Config.builder()
+     .setPaymentIdempotencyKey("UNIQUE_ID")
+     .setPaymentOverrideNotification("DYNAMIC_WEBHOOK_ENDPOINT")
+     .build();
+
+//3. CoreApi request with config options
+JSONObject result = CoreApi.chargeTransaction(param, configOptions);
+
+//4. Set config options for Snap charge request
+Config snapConfigOptions = Config.builder()
+     .setPaymentOverrideNotification("DYNAMIC_WEBHOOK_ENDPOINT")
+     .build();
+
+//5. SnapApi request with config options
+JSONObject result = SnapApi.createTransaction(param, snapConfigOptions);
+```
+
 #### Alternative way to initialize
 ```java
 import com.midtrans.Config;
@@ -132,6 +175,8 @@ MidtransIrisApi irisApi = new ConfigFactory(new Config("IRIS-CREDENTIALS",null ,
 ```
 
 You can also re-set config using `apiConfig()` method on MidtransCoreApi.Class, MidtransSnapApi.Class or MidtransIrisApi.class like `coreApi.apiConfig().set( ... )`
+> Please note, that this way is not thread-safe. May you can create an instance of Config and set the options' config per request. [Refer to this section](README.md#per-request-configuration)
+
 example:
 
 ```java
@@ -146,9 +191,6 @@ coreApi.apiConfig().setServerKey("YOUR_SERVER_KEY");
 
 // For Iris Disbursement can set creator & approver credentials with apiConfig()
 irisApi.apiConfig().setServerKey("IRIS-CREDENTIALS");
-
-irisApi.apiConfig().setIrisIdempotencyKey("IRIS-IDEMPOTENCY-KEY");
-
 ```
 
 In production environment, LOG is by default turned off, you can enable by `setEnabledLog`, e.g:
@@ -202,19 +244,19 @@ Midtrans.setMaxConnectionPool(16);
 Midtrans.setKeepAliveDuration(300000);
 Midtrans.setHttpClientTimeUnit(TimeUnit.MILLISECONDS);
 
-// Set connection timeout from initiate api object
-coreApi.apiConfig().setConnectionTimeout(10000, TimeUnit.MILLISECONDS);
-coreApi.apiConfig().setReadTimeout(10000, TimeUnit.MILLISECONDS);
-coreApi.apiConfig().setWriteTimeout(10000, TimeUnit.MILLISECONDS);
-coreApi.apiConfig().setKeepAliveDuration(300000, TimeUnit.MILLISECONDS);
-coreApi.apiConfig().setMaxConnectionPool(16);
-
 // set connection timeout with Config class
 config.setConnectionTimeout(10000, TimeUnit.MILLISECONDS);
 config.setReadTimeout(10000, TimeUnit.MILLISECONDS);
 config.setWriteTimeout(10000, TimeUnit.MILLISECONDS);
 config.setKeepAliveDuration(300000, TimeUnit.MILLISECONDS);
 config.setMaxConnectionPool(16);
+
+// Set connection timeout from initiate api object
+coreApi.apiConfig().setConnectionTimeout(10000, TimeUnit.MILLISECONDS);
+coreApi.apiConfig().setReadTimeout(10000, TimeUnit.MILLISECONDS);
+coreApi.apiConfig().setWriteTimeout(10000, TimeUnit.MILLISECONDS);
+coreApi.apiConfig().setKeepAliveDuration(300000, TimeUnit.MILLISECONDS);
+coreApi.apiConfig().setMaxConnectionPool(16);
 ```
 
 #### Override Notification Url
@@ -230,10 +272,18 @@ Both header can only receive up to maximum of 3 urls.
 
 ```java
 //X-Append-Notification
-coreApi.apiConfig().paymentAppendNotification("https://example.com/test1,https://example.com/test");
+Config configOptions = Config.builder()
+     .setPaymentAppendNotification("https://example.com/test1,https://example.com/test")
+     .build();
+        
+CoreApi.chargeTransaction(param, configOptions);
 
 //X-Override-Notification
-coreApi.apiConfig().paymentOverrideNotification("https://example.com/test1,https://example.com/test");
+Config configOptions = Config.builder()
+     .setPaymentOverrideNotification("https://example.com/test1,https://example.com/test")
+     .build();;
+
+CoreApi.chargeTransaction(param, configOptions);
 ```
 When both `X-Append-Notification` and `X-Override-Notification` are used together then only override will be used.
 
