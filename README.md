@@ -46,7 +46,7 @@ Choose one that you think best for your unique needs.
 
 Get your client key and server key from [Midtrans Dashboard](https://dashboard.midtrans.com)
 
-Create API client object, You can also check the [project's functional tests](library/src/test/java/com/midtrans/java) for more examples.
+Create API client object, Select one from any of methods below that you most prefer. You can also check the [project's functional tests](library/src/test/java/com/midtrans/java) for more examples.
 
 Set a config with globally, except iris api
 ```java
@@ -68,7 +68,7 @@ JSONObject result = SnapApi.createTransaction(param);
 ```
 #### Per-request Configuration
 All the request can accept an optional Config object. This is used if you want to set an others' config like idempotency key, proxy, override/append notification url
-or if you want to pass the server-key on each method, or use multiple account on each method.
+or want to use multiple account on each method. Please follow the steps given below.
 ```java
 import com.midtrans.Config;
 import com.midtrans.Midtrans;
@@ -103,7 +103,7 @@ Config snapConfigOptions = Config.builder()
 JSONObject result = SnapApi.createTransaction(param, snapConfigOptions);
 ```
 
-or if you want to use single account (credential-key) but you need to set the config options value dynamically, you can also set the api client like this
+In case you only have a use single account (credential-key) but you need to set the config options value dynamically from the config object. Please follow the steps given below.
 ```java
 import com.midtrans.Midtrans;
 import com.midtrans.httpclient.CoreApi;
