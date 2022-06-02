@@ -68,7 +68,7 @@ JSONObject result = SnapApi.createTransaction(param);
 ```
 #### Per-request Configuration
 It is also possible if on each of individual requests you want to set a unique/different configuration; like idempotency key, 
-proxy, override/append notification url, or multiple account API keys via static method e.g: `CoreApi.chargeTransaction(param, coreApiConfigOptions)` method available on `CoreApi.class`, `SnapApi.class`, `TransactionApi.class` or `IrisApi.class`. Please follow the steps given below.
+proxy, override/append notification url, or multiple account API keys via Config options and set as param on static method e.g: `CoreApi.chargeTransaction(param, coreApiConfigOptions)` method available on `CoreApi.class`, `SnapApi.class`, `TransactionApi.class` or `IrisApi.class`. Please follow the steps given below.
 ```java
 import com.midtrans.Config;
 import com.midtrans.Midtrans;
