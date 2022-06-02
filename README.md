@@ -67,8 +67,8 @@ JSONObject result = CoreApi.chargeTransaction(param);
 JSONObject result = SnapApi.createTransaction(param);
 ```
 #### Per-request Configuration
-All the request can accept an optional Config object. This is used if you want to set an others' config like idempotency key, proxy, override/append notification url
-or want to use multiple account on each method. Please follow the steps given below.
+It is also possible if on each of individual requests you want to set a unique/different configuration; like idempotency key, 
+proxy, override/append notification url, or multiple account API keys via static method e.g: `CoreApi.chargeTransaction(param, coreApiConfigOptions)` method available on `CoreApi.class`, `SnapApi.class`, `TransactionApi.class` or `IrisApi.class`. Please follow the steps given below.
 ```java
 import com.midtrans.Config;
 import com.midtrans.Midtrans;
@@ -103,7 +103,7 @@ Config snapConfigOptions = Config.builder()
 JSONObject result = SnapApi.createTransaction(param, snapConfigOptions);
 ```
 
-In case you only have a use single account (credential-key) but you need to set the config options value dynamically from the config object. Please follow the steps given below.
+In case you are using a single account API key, but you need to set the config options value dynamically from the config object. Please follow the steps given below.
 ```java
 import com.midtrans.Midtrans;
 import com.midtrans.httpclient.CoreApi;
@@ -175,7 +175,7 @@ MidtransIrisApi irisApi = new ConfigFactory(new Config("IRIS-CREDENTIALS",null ,
 ```
 
 You can also re-set config using `apiConfig()` method on MidtransCoreApi.Class, MidtransSnapApi.Class or MidtransIrisApi.class like `coreApi.apiConfig().set( ... )`
-> Please note, that this way is not thread-safe. May you can create an instance of Config and set the options' config per request. [Refer to this section](README.md#per-request-configuration)
+> Please note that if you are using multi-thread concurrency, this method is not thread-safe. For that, you should use the method of creating & setting individual Config option instances per request. [Refer to this section](README.md#per-request-configuration)
 
 example:
 
