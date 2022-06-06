@@ -30,7 +30,8 @@ public class MidtransIrisApiTest {
     @BeforeAll
     public static void setUp() {
         dataMockup = new DataMockup();
-        irisApi = new ConfigFactory(new Config(creatorKey, null, false)).getIrisApi();
+        Config irisConfig = Config.builder().setServerKey(creatorKey).setIsProduction(false).build();
+        irisApi = new ConfigFactory(irisConfig).getIrisApi();
     }
 
     @Test
