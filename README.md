@@ -14,21 +14,21 @@ Maven:
 <dependency>
     <groupId>com.midtrans</groupId>
     <artifactId>java-library</artifactId>
-    <version>3.1.3</version>
+    <version>3.1.4</version>
 </dependency>
 ```
 Gradle:
 If you're using Gradle as the build tools for your project, please add jcenter repository to your build script then add the following dependency to your project's build definition (build.gradle):
 ```Gradle
 dependencies {
-	implementation 'com.midtrans:java-library:3.1.3'
+	implementation 'com.midtrans:java-library:3.1.4'
 }
 ```
 > **IMPORTANT NOTE**: Since April 13, 2021 We already migrate the repository from jcenter/bintray repository to [Maven central](https://search.maven.org/artifact/com.midtrans/java-library).
 
 ### 1.b Using JAR File
 
-If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://search.maven.org/remotecontent?filepath=com/midtrans/java-library/3.1.3/java-library-3.1.3.jar)
+If you are not using project build management like Maven, Gradle or Ant you can use manual jar library download JAR Library on [here](https://search.maven.org/remotecontent?filepath=com/midtrans/java-library/3.1.4/java-library-3.1.4.jar)
 
 ## 2. Usage
 
@@ -142,7 +142,13 @@ import com.midtrans.Config;
 import com.midtrans.ConfigFactory;
 import com.midtrans.service.MidtransCoreApi;
 
-MidtransCoreApi coreApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getCoreApi();
+Config coreApiConfigOptions = Config.builder()
+        .setServerKey("YOUR_SERVER_KEY")
+        .setClientKey("YOUR_CLIENT_KEY")
+        .setIsProduction(false)
+        .build();
+
+MidtransCoreApi coreApi = new ConfigFactory(coreApiConfigOptions).getCoreApi();
 
 //You can set Config.class with
 `YOUR_SERVER_KEY`
@@ -155,7 +161,13 @@ import com.midtrans.Config;
 import com.midtrans.ConfigFactory;
 import com.midtrans.service.MidtransSnapApi;
 
-MidtransSnapApi snapApi = new ConfigFactory(new Config("YOU_SERVER_KEY","YOUR_CLIENT_KEY", false)).getSnapApi();
+Config snapConfigOptions = Config.builder()
+        .setServerKey("YOUR_SERVER_KEY")
+        .setClientKey("YOUR_CLIENT_KEY")
+        .setIsProduction(false)
+        .build();
+
+MidtransSnapApi snapApi = new ConfigFactory(snapConfigOptions).getSnapApi();
 
 //You can set Config.class with
 `YOUR_SERVER_KEY`
@@ -168,7 +180,12 @@ import com.midtrans.Config;
 import com.midtrans.ConfigFactory;
 import com.midtrans.service.MidtransIrisApi;
 
-MidtransIrisApi irisApi = new ConfigFactory(new Config("IRIS-CREDENTIALS",null , false)).getIrisApi();
+Config irisConfigOptions = Config.builder()
+        .setServerKey("IRIS-CREDENTIAL")
+        .setIsProduction(false)
+        .build();
+
+MidtransIrisApi irisApi = new ConfigFactory(irisConfigOptions).getIrisApi();
 
 //You can set Config.class with
 `IRIS-CREDNTIALS`
