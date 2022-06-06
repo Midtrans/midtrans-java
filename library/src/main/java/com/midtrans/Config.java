@@ -38,6 +38,10 @@ public class Config {
     /**
      * Midtrans configuration constructor
      *
+     * @deprecated
+     * This constructor will delete soon on the next major release.
+     * <p> Please use {@link Config#builder()} instead.
+     *
      * @param serverKey   Merchant server-key
      * @param clientKey   Merchant client-key
      * @param isProduction Merchant Environment Sandbox or Production
@@ -55,6 +59,10 @@ public class Config {
 
     /**
      * Midtrans configuration constructor
+     *
+     * @deprecated
+     * This constructor will delete soon on the next major release.
+     * <p> Please use {@link Config#builder()} instead.
      *
      * @param serverKey        Merchant server-key
      * @param clientKey        Merchant client-key
@@ -78,6 +86,10 @@ public class Config {
 
     /**
      * Midtrans configuration constructor
+     *
+     * @deprecated
+     * This constructor will delete soon on the next major release.
+     * <p> Please use {@link Config#builder()} instead.
      *
      * @param serverKey        Merchant server-key
      * @param clientKey        Merchant client-key
