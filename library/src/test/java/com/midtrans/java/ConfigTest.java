@@ -17,7 +17,11 @@ public class ConfigTest {
 
     @BeforeAll
     public static void setUp() {
-        config = new Config(mainServerKey, mainClientKey, isProduction);
+        config = Config.builder()
+                .setServerKey(mainServerKey)
+                .setClientKey(mainClientKey)
+                .setIsProduction(false)
+                .build();
     }
 
     @Test
