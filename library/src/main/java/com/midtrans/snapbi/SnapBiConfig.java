@@ -13,7 +13,7 @@ public class SnapBiConfig {
     private static String snapBiChannelId;
     private static boolean enableLogging = false;
 
-    public static final String SNAP_BI_SANDBOX_BASE_URL = "https://merchants.stg.midtrans.com";
+    public static final String SNAP_BI_SANDBOX_BASE_URL = "https://merchants.sbx.midtrans.com";
     public static final String SNAP_BI_PRODUCTION_BASE_URL = "https://merchants.midtrans.com";
 
     public static boolean isProduction() {
