@@ -33,18 +33,18 @@ public class SnapBiDirectDebitPayment {
          * Basic example
          * To change the payment method, you can change the value of the request body on the `payOptionDetails`
          */
-//        JSONObject snapBiResponse1 = SnapBi.directDebit()
-//                .withBody(createDirectDebitRequestBody())
-//                .createPayment(externalId);
-//
-//        /*
-//         * Example of using existing access token to create payment. You can uncomment and run the code
-//         * To change the payment method, you can change the value of the request body on the `payOptionDetails`
-//         */
-//        JSONObject snapBiResponse2 = SnapBi.directDebit()
-//                .withBody(createDirectDebitRequestBody())
-//                .withAccessToken("")
-//                .createPayment(externalId);
+        JSONObject snapBiResponse1 = SnapBi.directDebit()
+                .withBody(createDirectDebitRequestBody())
+                .createPayment(externalId);
+
+        /*
+         * Example of using existing access token to create payment. You can uncomment and run the code
+         * To change the payment method, you can change the value of the request body on the `payOptionDetails`
+         */
+        JSONObject snapBiResponse2 = SnapBi.directDebit()
+                .withBody(createDirectDebitRequestBody())
+                .withAccessToken("")
+                .createPayment(externalId);
 
         /*
          * Example of using additional header on access token and when doing transaction  header.
