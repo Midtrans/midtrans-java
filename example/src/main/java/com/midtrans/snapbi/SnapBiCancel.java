@@ -82,6 +82,30 @@ public class SnapBiCancel {
                 .withTransactionHeader(createAdditionalHeader())
                 .cancel(externalId);
 
+        /*
+         *  Example code for VA cancel
+         */
+        /*
+         *  Basic implementation for VA cancel
+         */
+        JSONObject snapBiResponse7 = SnapBi.va()
+                .withBody(createVaCancelBody())
+                .cancel(externalId);
+        /*
+         *  Example code for VA cancel by re-using access token
+         */
+        JSONObject snapBiResponse8 = SnapBi.va()
+                .withBody(createVaCancelBody())
+                .withAccessToken("")
+                .cancel(externalId);
+        /*
+         *   Example code for VA cancel by adding additional header
+         */
+        JSONObject snapBiResponse9 = SnapBi.va()
+                .withBody(createVaCancelBody())
+                .withAccessTokenHeader(createAdditionalHeader())
+                .withTransactionHeader(createAdditionalHeader())
+                .cancel(externalId);
 
         System.out.println("Snap Bi response : " + snapBiResponse6);
 
@@ -101,6 +125,22 @@ public class SnapBiCancel {
         Map<String, Object> requestBody = new HashMap<>();
 
         requestBody.put("originalReferenceNo", "A120240913100313Zmpy1tA0MtID");
+        return requestBody;
+    }
+
+    public static Map<String, Object> createVaCancelBody
+            () {
+        // Create the top-level map
+        Map<String, Object> additionalInfo = new HashMap<>();
+        additionalInfo.put("merchantId", merchantId);
+
+        Map<String, Object> requestBody = new HashMap<>();
+
+        requestBody.put("partnerServiceId", "    1234");
+        requestBody.put("customerNo", "201574");
+        requestBody.put("virtualAccountNo", "    1234201574");
+        requestBody.put("trxId", "97d83afb-f721-40bf-8146-70dd317cdaf3");
+        requestBody.put("additionalInfo", additionalInfo);
         return requestBody;
     }
     public static  Map<String, String > createAdditionalHeader(){
