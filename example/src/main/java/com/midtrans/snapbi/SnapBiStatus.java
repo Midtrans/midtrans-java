@@ -80,8 +80,32 @@ public class SnapBiStatus {
                 .withTransactionHeader(createAdditionalHeader())
                 .getStatus(externalId);
 
+        /*
+         *  Example code for VA status
+         */
+        /*
+         *  Basic implementation for VA status
+         */
+        JSONObject snapBiResponse7 = SnapBi.va()
+                .withBody(createVaStatusBody())
+                .getStatus(externalId);
+        /*
+         *  Example code for VA status by re-using access token
+         */
+        JSONObject snapBiResponse8 = SnapBi.va()
+                .withBody(createVaStatusBody())
+                .withAccessToken("")
+                .getStatus(externalId);
+        /*
+         *  Example code for VA status by adding additional header
+         */
+        JSONObject snapBiResponse9 = SnapBi.va()
+                .withBody(createVaStatusBody())
+                .withAccessTokenHeader(createAdditionalHeader())
+                .withTransactionHeader(createAdditionalHeader())
+                .getStatus(externalId);
 
-        System.out.println("Snap Bi response : " + snapBiResponse1);
+        System.out.println("Snap Bi response : " + snapBiResponse9);
 
     }
     public static Map<String, Object> createDirectDebitStatusByReferenceNoBody
@@ -109,5 +133,21 @@ public class SnapBiStatus {
         headers.put("X-Device-id", "device id");
         headers.put("debug-id", "debug id");
         return headers;
+    }
+
+    public static Map<String, Object> createVaStatusBody
+            () {
+        // Create the top-level map
+        Map<String, Object> additionalInfo = new HashMap<>();
+        additionalInfo.put("merchantId", merchantId);
+
+        Map<String, Object> requestBody = new HashMap<>();
+
+        requestBody.put("partnerServiceId", "    1234");
+        requestBody.put("customerNo", "201574");
+        requestBody.put("virtualAccountNo", "    1234201574");
+        requestBody.put("inquiryRequestId", "97d83afb-f721-40bf-8146-70dd317cdaf3");
+        requestBody.put("additionalInfo", additionalInfo);
+        return requestBody;
     }
 }
