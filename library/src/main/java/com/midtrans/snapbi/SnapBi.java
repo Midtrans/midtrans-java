@@ -22,6 +22,10 @@ public class SnapBi {
     public static final String DEBIT_CANCEL = "/v1.0/debit/cancel";
     public static final String VA_STATUS = "/v1.0/transfer-va/status";
     public static final String VA_CANCEL = "/v1.0/transfer-va/delete-va";
+    public static final String QRIS_PAYMENT = "/v1.0/qr/qr-mpm-generate";
+    public static final String QRIS_STATUS = "/v1.0/qr/qr-mpm-query";
+    public static final String QRIS_REFUND = "/v1.0/qr/qr-mpm-refund";
+    public static final String QRIS_CANCEL = "/v1.0/qr/qr-mpm-cancel";
 
     private String apiPath;
     private String paymentMethod;
@@ -49,6 +53,10 @@ public class SnapBi {
 
     public static SnapBi va() {
         return new SnapBi("va");
+    }
+
+    public static SnapBi qris() {
+        return new SnapBi("qris");
     }
 
     public SnapBi withAccessTokenHeader(Map<String, String> headers) {
@@ -285,30 +293,44 @@ public class SnapBi {
     }
 
     private String setupCreatePaymentApiPath(String paymentMethod) {
-        if ("va".equals(paymentMethod)) {
-            return CREATE_VA;
-        } else {
-            return PAYMENT_HOST_TO_HOST;
+        switch (paymentMethod) {
+            case "va":
+                return CREATE_VA;
+            case "qris":
+                return QRIS_PAYMENT;
+            default:
+                return PAYMENT_HOST_TO_HOST;
         }
     }
 
     private String setupRefundApiPath(String paymentMethod) {
-        return DEBIT_REFUND;
+        switch (paymentMethod) {
+            case "qris":
+                return QRIS_REFUND;
+            default:
+                return DEBIT_REFUND;
+        }
     }
 
     private String setupCancelApiPath(String paymentMethod) {
-        if ("va".equals(paymentMethod)) {
-            return VA_CANCEL;
-        } else {
-            return DEBIT_CANCEL;
+        switch (paymentMethod) {
+            case "va":
+                return VA_CANCEL;
+            case "qris":
+                return QRIS_CANCEL;
+            default:
+                return DEBIT_CANCEL;
         }
     }
 
     private String setupGetStatusApiPath(String paymentMethod) {
-        if ("va".equals(paymentMethod)) {
-            return VA_STATUS;
-        } else {
-            return DEBIT_STATUS;
+        switch (paymentMethod) {
+            case "va":
+                return VA_STATUS;
+            case "qris":
+                return QRIS_STATUS;
+            default:
+                return DEBIT_STATUS;
         }
     }
 }
