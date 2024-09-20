@@ -31,7 +31,7 @@ public class SnapBiCancel {
          * The difference is based on the request body/ payload.
          * For Direct Debit you can refer to the method createDirectDebitCancelByExternalIdBody() or createDirectCancelByReferenceNoBody() to see the value.
          * For VA (Bank Transfer) you can refer to the variable $vaStatusBody to see the value.
-         * For qris, you can refer to the variable $qrisStatusBody.
+         * For Qris, you can refer to the method createQrisCancelBody.
          */
 
         /*
@@ -106,8 +106,32 @@ public class SnapBiCancel {
                 .withAccessTokenHeader(createAdditionalHeader())
                 .withTransactionHeader(createAdditionalHeader())
                 .cancel(externalId);
+        /*
+         *  Example code for VA cancel
+         */
+        /*
+         *  Basic implementation for VA cancel
+         */
+        JSONObject snapBiResponse10 = SnapBi.qris()
+                .withBody(createQrisCancelBody())
+                .cancel(externalId);
+        /*
+         *  Example code for VA cancel by re-using access token
+         */
+        JSONObject snapBiRespons11 = SnapBi.qris()
+                .withBody(createQrisCancelBody())
+                .withAccessToken("")
+                .cancel(externalId);
+        /*
+         *   Example code for VA cancel by adding additional header
+         */
+        JSONObject snapBiResponse12 = SnapBi.qris()
+                .withBody(createQrisCancelBody())
+                .withAccessTokenHeader(createAdditionalHeader())
+                .withTransactionHeader(createAdditionalHeader())
+                .cancel(externalId);
 
-        System.out.println("Snap Bi response : " + snapBiResponse6);
+        System.out.println("Snap Bi response : " + snapBiResponse12);
 
     }
     public static Map<String, Object> createDirectDebitCancelByExternalIdBody
@@ -141,6 +165,17 @@ public class SnapBiCancel {
         requestBody.put("virtualAccountNo", "    1234201574");
         requestBody.put("trxId", "97d83afb-f721-40bf-8146-70dd317cdaf3");
         requestBody.put("additionalInfo", additionalInfo);
+        return requestBody;
+    }
+
+    public static Map<String, Object> createQrisCancelBody
+            () {
+        // Create the top-level map
+        Map<String, Object> requestBody = new HashMap<>();
+
+        requestBody.put("originalReferenceNo", "A120240910091847fYkCqhCH1XID");
+        requestBody.put("merchantId", merchantId);
+        requestBody.put("reason", "cancel reason");
         return requestBody;
     }
     public static  Map<String, String > createAdditionalHeader(){
