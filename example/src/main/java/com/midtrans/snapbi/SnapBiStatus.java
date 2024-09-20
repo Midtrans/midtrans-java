@@ -28,8 +28,8 @@ public class SnapBiStatus {
          * Example code for SnapBI get status.
          * The difference is based on the request body/ payload.
          * For Direct Debit you can refer to the method createDirectDebitStatusByExternalIdBody() or createDirectDebitStatusByReferenceNoBody() to see the value.
-         * For VA (Bank Transfer) you can refer to the variable $vaStatusBody to see the value.
-         * For qris, you can refer to the variable $qrisStatusBody.
+         * For VA (Bank Transfer) you can refer to the method createVaStatusBody() to see the value.
+         * For qris, you can refer to the method createQrisStatusBody().
          */
 
         /*
@@ -104,8 +104,32 @@ public class SnapBiStatus {
                 .withAccessTokenHeader(createAdditionalHeader())
                 .withTransactionHeader(createAdditionalHeader())
                 .getStatus(externalId);
+        /*
+         *  Example code for Qris status
+         */
+        /*
+         *  Basic implementation for Qris status
+         */
+        JSONObject snapBiResponse10 = SnapBi.qris()
+                .withBody(createVaStatusBody())
+                .getStatus(externalId);
+        /*
+         *  Example code for Qris status by re-using access token
+         */
+        JSONObject snapBiResponse11 = SnapBi.qris()
+                .withBody(createVaStatusBody())
+                .withAccessToken("")
+                .getStatus(externalId);
+        /*
+         *  Example code for Qris status by adding additional header
+         */
+        JSONObject snapBiResponse12 = SnapBi.qris()
+                .withBody(createQrisStatusBody())
+                .withAccessTokenHeader(createAdditionalHeader())
+                .withTransactionHeader(createAdditionalHeader())
+                .getStatus(externalId);
 
-        System.out.println("Snap Bi response : " + snapBiResponse9);
+        System.out.println("Snap Bi response : " + snapBiResponse12);
 
     }
     public static Map<String, Object> createDirectDebitStatusByReferenceNoBody
@@ -148,6 +172,19 @@ public class SnapBiStatus {
         requestBody.put("virtualAccountNo", "    1234201574");
         requestBody.put("inquiryRequestId", "97d83afb-f721-40bf-8146-70dd317cdaf3");
         requestBody.put("additionalInfo", additionalInfo);
+        return requestBody;
+    }
+
+    public static Map<String, Object> createQrisStatusBody
+            () {
+        // Create the top-level map
+        Map<String, Object> requestBody = new HashMap<>();
+
+        requestBody.put("originalReferenceNo", "A120240910100828anKJlXgsi6ID");
+        requestBody.put("originalPartnerReferenceNo", "uzi-order-testing66e01a9b8c6bf");
+        requestBody.put("merchantId", merchantId);
+        requestBody.put("serviceCode", "54");
+
         return requestBody;
     }
 }
