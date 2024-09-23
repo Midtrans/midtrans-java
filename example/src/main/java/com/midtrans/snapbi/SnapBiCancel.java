@@ -107,23 +107,23 @@ public class SnapBiCancel {
                 .withTransactionHeader(createAdditionalHeader())
                 .cancel(externalId);
         /*
-         *  Example code for VA cancel
+         *  Example code for Qris cancel
          */
         /*
-         *  Basic implementation for VA cancel
+         *  Basic implementation for Qris cancel
          */
         JSONObject snapBiResponse10 = SnapBi.qris()
                 .withBody(createQrisCancelBody())
                 .cancel(externalId);
         /*
-         *  Example code for VA cancel by re-using access token
+         *  Example code for Qris cancel by re-using access token
          */
         JSONObject snapBiRespons11 = SnapBi.qris()
                 .withBody(createQrisCancelBody())
                 .withAccessToken("")
                 .cancel(externalId);
         /*
-         *   Example code for VA cancel by adding additional header
+         *   Example code for Qris cancel by adding additional header
          */
         JSONObject snapBiResponse12 = SnapBi.qris()
                 .withBody(createQrisCancelBody())
@@ -148,7 +148,7 @@ public class SnapBiCancel {
         // Create the top-level map
         Map<String, Object> requestBody = new HashMap<>();
 
-        requestBody.put("originalReferenceNo", "A120240913100313Zmpy1tA0MtID");
+        requestBody.put("originalReferenceNo", "A12024092305243239N7MuWlDCID");
         return requestBody;
     }
 
@@ -161,9 +161,9 @@ public class SnapBiCancel {
         Map<String, Object> requestBody = new HashMap<>();
 
         requestBody.put("partnerServiceId", "    1234");
-        requestBody.put("customerNo", "201574");
-        requestBody.put("virtualAccountNo", "    1234201574");
-        requestBody.put("trxId", "97d83afb-f721-40bf-8146-70dd317cdaf3");
+        requestBody.put("customerNo", "741633");
+        requestBody.put("virtualAccountNo", "    1234741633");
+        requestBody.put("trxId", "02a9c5a3-e088-45de-8688-424b5f65c927");
         requestBody.put("additionalInfo", additionalInfo);
         return requestBody;
     }
@@ -173,7 +173,7 @@ public class SnapBiCancel {
         // Create the top-level map
         Map<String, Object> requestBody = new HashMap<>();
 
-        requestBody.put("originalReferenceNo", "A120240910091847fYkCqhCH1XID");
+        requestBody.put("originalReferenceNo", "A120240923112046EjKURlq1QqID");
         requestBody.put("merchantId", merchantId);
         requestBody.put("reason", "cancel reason");
         return requestBody;

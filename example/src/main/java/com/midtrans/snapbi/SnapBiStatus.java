@@ -36,7 +36,7 @@ public class SnapBiStatus {
          * Example code for Direct Debit getStatus using externalId
          */
         JSONObject snapBiResponse1 = SnapBi.directDebit()
-                .withBody(createDirectDebitStatusByExternalIdBody())
+                .withBody(createDirectDebitStatusByReferenceNoBody())
                 .getStatus(externalId);
 
         /*
@@ -137,9 +137,9 @@ public class SnapBiStatus {
         // Create the top-level map
         Map<String, Object> requestBody = new HashMap<>();
 
-        requestBody.put("originalReferenceNo", "A120240907120426ZsbsQvlcYBID");
+        requestBody.put("originalReferenceNo", "A1202409230511097Hmk31oa4UID");
         requestBody.put("serviceCode", "54");
-        requestBody.put("originalExternalId", externalId);
+        requestBody.put("originalExternalId", "b8cc77cd-64c2-4edb-b083-39a320f67c06");
         return requestBody;
     }
 
@@ -168,9 +168,9 @@ public class SnapBiStatus {
         Map<String, Object> requestBody = new HashMap<>();
 
         requestBody.put("partnerServiceId", "    1234");
-        requestBody.put("customerNo", "201574");
-        requestBody.put("virtualAccountNo", "    1234201574");
-        requestBody.put("inquiryRequestId", "97d83afb-f721-40bf-8146-70dd317cdaf3");
+        requestBody.put("customerNo", "083430");
+        requestBody.put("virtualAccountNo", "    1234083430");
+        requestBody.put("inquiryRequestId", "4b1da710-fbf5-425e-9648-06e40b290326");
         requestBody.put("additionalInfo", additionalInfo);
         return requestBody;
     }
@@ -180,7 +180,7 @@ public class SnapBiStatus {
         // Create the top-level map
         Map<String, Object> requestBody = new HashMap<>();
 
-        requestBody.put("originalReferenceNo", "A120240910100828anKJlXgsi6ID");
+        requestBody.put("originalReferenceNo", "A120240923082857KzdNmUKObJID");
         requestBody.put("originalPartnerReferenceNo", "uzi-order-testing66e01a9b8c6bf");
         requestBody.put("merchantId", merchantId);
         requestBody.put("serviceCode", "54");
