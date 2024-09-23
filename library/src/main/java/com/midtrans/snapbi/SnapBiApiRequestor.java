@@ -14,9 +14,11 @@ public class SnapBiApiRequestor {
         // Create a logging interceptor
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        client = new OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-                .build();
+        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+        if (SnapBiConfig.isEnableLogging()) {
+            clientBuilder.addInterceptor(loggingInterceptor);
+        }
+        client = clientBuilder.build();
     }
 
     public static JSONObject remoteCall(String url, Map<String, String> headers, Map<String, ?> body) throws IOException {
