@@ -28,15 +28,15 @@ public class SnapBiStatus {
          * Example code for SnapBI get status.
          * The difference is based on the request body/ payload.
          * For Direct Debit you can refer to the method createDirectDebitStatusByExternalIdBody() or createDirectDebitStatusByReferenceNoBody() to see the value.
-         * For VA (Bank Transfer) you can refer to the variable $vaStatusBody to see the value.
-         * For qris, you can refer to the variable $qrisStatusBody.
+         * For VA (Bank Transfer) you can refer to the method createVaStatusBody() to see the value.
+         * For qris, you can refer to the method createQrisStatusBody().
          */
 
         /*
          * Example code for Direct Debit getStatus using externalId
          */
         JSONObject snapBiResponse1 = SnapBi.directDebit()
-                .withBody(createDirectDebitStatusByExternalIdBody())
+                .withBody(createDirectDebitStatusByReferenceNoBody())
                 .getStatus(externalId);
 
         /*
@@ -104,8 +104,32 @@ public class SnapBiStatus {
                 .withAccessTokenHeader(createAdditionalHeader())
                 .withTransactionHeader(createAdditionalHeader())
                 .getStatus(externalId);
+        /*
+         *  Example code for Qris status
+         */
+        /*
+         *  Basic implementation for Qris status
+         */
+        JSONObject snapBiResponse10 = SnapBi.qris()
+                .withBody(createVaStatusBody())
+                .getStatus(externalId);
+        /*
+         *  Example code for Qris status by re-using access token
+         */
+        JSONObject snapBiResponse11 = SnapBi.qris()
+                .withBody(createVaStatusBody())
+                .withAccessToken("")
+                .getStatus(externalId);
+        /*
+         *  Example code for Qris status by adding additional header
+         */
+        JSONObject snapBiResponse12 = SnapBi.qris()
+                .withBody(createQrisStatusBody())
+                .withAccessTokenHeader(createAdditionalHeader())
+                .withTransactionHeader(createAdditionalHeader())
+                .getStatus(externalId);
 
-        System.out.println("Snap Bi response : " + snapBiResponse9);
+        System.out.println("Snap Bi response : " + snapBiResponse12);
 
     }
     public static Map<String, Object> createDirectDebitStatusByReferenceNoBody
@@ -113,9 +137,9 @@ public class SnapBiStatus {
         // Create the top-level map
         Map<String, Object> requestBody = new HashMap<>();
 
-        requestBody.put("originalReferenceNo", "A120240907120426ZsbsQvlcYBID");
+        requestBody.put("originalReferenceNo", "A1202409230511097Hmk31oa4UID");
         requestBody.put("serviceCode", "54");
-        requestBody.put("originalExternalId", externalId);
+        requestBody.put("originalExternalId", "b8cc77cd-64c2-4edb-b083-39a320f67c06");
         return requestBody;
     }
 
@@ -144,10 +168,23 @@ public class SnapBiStatus {
         Map<String, Object> requestBody = new HashMap<>();
 
         requestBody.put("partnerServiceId", "    1234");
-        requestBody.put("customerNo", "201574");
-        requestBody.put("virtualAccountNo", "    1234201574");
-        requestBody.put("inquiryRequestId", "97d83afb-f721-40bf-8146-70dd317cdaf3");
+        requestBody.put("customerNo", "083430");
+        requestBody.put("virtualAccountNo", "    1234083430");
+        requestBody.put("inquiryRequestId", "4b1da710-fbf5-425e-9648-06e40b290326");
         requestBody.put("additionalInfo", additionalInfo);
+        return requestBody;
+    }
+
+    public static Map<String, Object> createQrisStatusBody
+            () {
+        // Create the top-level map
+        Map<String, Object> requestBody = new HashMap<>();
+
+        requestBody.put("originalReferenceNo", "A120240923082857KzdNmUKObJID");
+        requestBody.put("originalPartnerReferenceNo", "uzi-order-testing66e01a9b8c6bf");
+        requestBody.put("merchantId", merchantId);
+        requestBody.put("serviceCode", "54");
+
         return requestBody;
     }
 }

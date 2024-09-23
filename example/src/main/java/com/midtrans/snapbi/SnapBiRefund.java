@@ -30,8 +30,7 @@ public class SnapBiRefund {
          * Example code for SnapBI refund.
          * The difference is based on the request body/ payload.
          * For Direct Debit you can refer to the method createDirectDebitRefundByExternalIdBody() or createDirectDebitRefundByReferenceNoBody() to see the value.
-         * For VA (Bank Transfer) you can refer to the variable $vaStatusBody to see the value.
-         * For qris, you can refer to the variable $qrisStatusBody.
+         * For Qris, you can refer to the method createQrisRefundBody().
          */
 
         /*
@@ -81,9 +80,36 @@ public class SnapBiRefund {
                 .withAccessTokenHeader(createAdditionalHeader())
                 .withTransactionHeader(createAdditionalHeader())
                 .refund(externalId);
+        /*
+         * Example code for Qris
+         */
+        /*
+         * Example code for Qris refund basic implementation
+         */
+        JSONObject snapBiResponse7 = SnapBi.qris()
+                .withBody(createQrisRefundBody())
+                .refund(externalId);
+
+        /*
+         * Example code for Qris refund using ReferenceNo by re-using access token
+         */
+        JSONObject snapBiResponse8 = SnapBi.qris()
+                .withBody(createQrisRefundBody())
+                .withAccessToken("")
+                .refund(externalId);
+
+        /*
+         *  Example code for Qris refund using ReferenceNo by adding additional header
+         */
+        JSONObject snapBiResponse9 = SnapBi.qris()
+                .withBody(createQrisRefundBody())
+                .withAccessTokenHeader(createAdditionalHeader())
+                .withTransactionHeader(createAdditionalHeader())
+                .refund(externalId);
 
 
-        System.out.println("Snap Bi response : " + snapBiResponse6);
+
+        System.out.println("Snap Bi response : " + snapBiResponse9);
 
     }
     public static Map<String, Object> createDirectDebitRefundByExternalIdBody
@@ -113,9 +139,28 @@ public class SnapBiRefund {
 
         Map<String, Object> requestBody = new HashMap<>();
 
-        requestBody.put("originalReferenceNo", "A120240913095213DcgHlugtdsID");
+        requestBody.put("originalReferenceNo", "A1202409230511097Hmk31oa4UID");
         requestBody.put("reason", "some-reason");
         requestBody.put("refundAmount", refundAmount);
+        return requestBody;
+    }
+    public static Map<String, Object> createQrisRefundBody() {
+        Map<String, Object> refundAmount = new HashMap<>();
+        refundAmount.put("value", "100.00");
+        refundAmount.put("currency", "IDR");
+
+        Map<String, Object> additionalInfo = new HashMap<>();
+        additionalInfo.put("foo", "bar");
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("merchantId", merchantId);
+        requestBody.put("originalPartnerReferenceNo", "uzi-order-testing66e01a9b8c6bf");
+        requestBody.put("originalReferenceNo", "A120240923082857KzdNmUKObJID");
+        requestBody.put("partnerRefundNo", "refund-abc123456");
+        requestBody.put("reason", "some-reason");
+        requestBody.put("refundAmount", refundAmount);
+        requestBody.put("additionalInfo", additionalInfo);
+
         return requestBody;
     }
     public static  Map<String, String > createAdditionalHeader(){

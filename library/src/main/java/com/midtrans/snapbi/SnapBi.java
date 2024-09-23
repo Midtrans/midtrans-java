@@ -22,6 +22,10 @@ public class SnapBi {
     public static final String DEBIT_CANCEL = "/v1.0/debit/cancel";
     public static final String VA_STATUS = "/v1.0/transfer-va/status";
     public static final String VA_CANCEL = "/v1.0/transfer-va/delete-va";
+    public static final String QRIS_PAYMENT = "/v1.0/qr/qr-mpm-generate";
+    public static final String QRIS_STATUS = "/v1.0/qr/qr-mpm-query";
+    public static final String QRIS_REFUND = "/v1.0/qr/qr-mpm-refund";
+    public static final String QRIS_CANCEL = "/v1.0/qr/qr-mpm-cancel";
 
     private String apiPath;
     private String paymentMethod;
@@ -49,6 +53,10 @@ public class SnapBi {
 
     public static SnapBi va() {
         return new SnapBi("va");
+    }
+
+    public static SnapBi qris() {
+        return new SnapBi("qris");
     }
 
     public SnapBi withAccessTokenHeader(Map<String, String> headers) {
@@ -203,7 +211,6 @@ public class SnapBi {
             // Convert requestBody Map to JSON string using JSONObject
             JSONObject jsonBody = new JSONObject(requestBody);
             String minifiedBody = jsonBody.toString();
-            System.out.println("Minified Body: " + minifiedBody);
 
             // Generate SHA-256 hash of the minified request body
             byte[] hashedBody = hashSha256(minifiedBody);
@@ -285,30 +292,52 @@ public class SnapBi {
     }
 
     private String setupCreatePaymentApiPath(String paymentMethod) {
-        if ("va".equals(paymentMethod)) {
-            return CREATE_VA;
-        } else {
-            return PAYMENT_HOST_TO_HOST;
+        switch (paymentMethod) {
+            case "va":
+                return CREATE_VA;
+            case "qris":
+                return QRIS_PAYMENT;
+            case "directDebit":
+                return PAYMENT_HOST_TO_HOST;
+            default:
+                throw new UnsupportedOperationException("Payment method not implemented: " + paymentMethod);
         }
     }
 
     private String setupRefundApiPath(String paymentMethod) {
-        return DEBIT_REFUND;
+        switch (paymentMethod) {
+            case "qris":
+                return QRIS_REFUND;
+            case "directDebit":
+                return DEBIT_REFUND;
+            default:
+                throw new UnsupportedOperationException("Payment method not implemented: " + paymentMethod);
+        }
     }
 
     private String setupCancelApiPath(String paymentMethod) {
-        if ("va".equals(paymentMethod)) {
-            return VA_CANCEL;
-        } else {
-            return DEBIT_CANCEL;
+        switch (paymentMethod) {
+            case "va":
+                return VA_CANCEL;
+            case "qris":
+                return QRIS_CANCEL;
+            case "directDebit":
+                return DEBIT_CANCEL;
+            default:
+                throw new UnsupportedOperationException("Payment method not implemented: " + paymentMethod);
         }
     }
 
     private String setupGetStatusApiPath(String paymentMethod) {
-        if ("va".equals(paymentMethod)) {
-            return VA_STATUS;
-        } else {
-            return DEBIT_STATUS;
+        switch (paymentMethod) {
+            case "va":
+                return VA_STATUS;
+            case "qris":
+                return QRIS_STATUS;
+            case "directDebit":
+                return DEBIT_STATUS;
+            default:
+                throw new UnsupportedOperationException("Payment method not implemented: " + paymentMethod);
         }
     }
 }
