@@ -881,6 +881,574 @@ Available methods for `MidtransIrisApi` class
      */
     JSONObject validateBankAccount(String bank, String account) throws MidtransError;
 ```
+## 3. Snap-BI (*NEW FEATURE starting v3.2.0)
+Standar Nasional Open API Pembayaran, or in short SNAP, is a national payment open API standard published by Bank Indonesia. To learn more you can read this [docs](https://docs.midtrans.com/reference/core-api-snap-open-api-overview)
+
+### 3.1 General Settings
+
+```java
+//These config value are based on the header stated here https://docs.midtrans.com/reference/getting-started-1
+// Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+SnapBiConfig.setProduction(true);
+// Set your client id. Merchant’s client ID that will be given by Midtrans, will be used as X-CLIENT-KEY on request’s header in B2B Access Token API.
+SnapBiConfig.setSnapBiClientId("YOUR CLIENT ID");
+// Set your private key here, make sure to add \n on the private key, you can refer to the examples
+SnapBiConfig.setSnapBiPrivateKey("YOUR PRIVATE KEY");
+// Set your client secret. Merchant’s secret key that will be given by Midtrans, will be used for symmetric signature generation for Transactional API’s header.
+SnapBiConfig.setSnapBiClientSecret("YOUR CLIENT SECRET");
+// Set your partner id. Merchant’s partner ID that will be given by Midtrans, will be used as X-PARTNER-ID on Transactional API’s header.
+SnapBiConfig.setSnapBiPartnerId("YOUR PARTNER ID");
+// Set the channel id here.
+SnapBiConfig.setSnapBiChannelId("YOUR CHANNEL ID");
+// Enable logging to see details of the request/response make sure to disable this on production, the default is disabled.
+SnapBiConfig.setEnableLogging(true);
+```
+
+### 3.2 Create Payment
+
+#### 3.2.1 Direct Debit (Gopay, Dana, Shopeepay)
+Refer to this [docs](https://docs.midtrans.com/reference/direct-debit-api-gopay) for more detailed information about creating payment using direct debit.
+
+```java
+
+// Create the top-level map of request body
+public Map<String, Object> createDirectDebitRequestBody() {
+    // Create the top-level map
+    Map<String, Object> requestBody = new HashMap<>();
+
+    // Add partnerReferenceNo and other fields
+    requestBody.put("partnerReferenceNo", externalId);
+    requestBody.put("chargeToken", "");
+    requestBody.put("merchantId", merchantId);
+    requestBody.put("validUpTo", "2030-07-20T20:34:15.452305Z");
+
+    // Create and add urlParam map
+    Map<String, String> urlParam = new HashMap<>();
+    urlParam.put("url", "https://midtrans-test.com/api/notification");
+    urlParam.put("type", "PAY_RETURN");
+    urlParam.put("isDeeplink", "N");
+    requestBody.put("urlParam", urlParam);
+
+    // Create and add payOptionDetails list
+    List<Map<String, Object>> payOptionDetails = new ArrayList<>();
+    Map<String, Object> payOptionDetail = new HashMap<>();
+    payOptionDetail.put("payMethod", "GOPAY");
+    payOptionDetail.put("payOption", "GOPAY_WALLET");
+
+    // Create and add transAmount map
+    Map<String, String> transAmount = new HashMap<>();
+    transAmount.put("value", "1500");
+    transAmount.put("currency", "IDR");
+    payOptionDetail.put("transAmount", transAmount);
+
+    payOptionDetails.add(payOptionDetail);
+    requestBody.put("payOptionDetails", payOptionDetails);
+
+    // Create and add additionalInfo map
+    Map<String, Object> additionalInfo = new HashMap<>();
+
+    // Create and add customerDetails map
+    Map<String, Object> customerDetails = new HashMap<>();
+    customerDetails.put("firstName", "Merchant");
+    customerDetails.put("lastName", "Operation");
+    customerDetails.put("email", "merchant-ops@midtrans.com");
+    customerDetails.put("phone", "+6281932358123");
+
+    // Create and add billingAddress map
+    Map<String, String> billingAddress = new HashMap<>();
+    billingAddress.put("firstName", "Merchant");
+    billingAddress.put("lastName", "Operation");
+    billingAddress.put("phone", "+6281932358123");
+    billingAddress.put("address", "Pasaraya Blok M");
+    billingAddress.put("city", "Jakarta");
+    billingAddress.put("postalCode", "12160");
+    billingAddress.put("countryCode", "IDN");
+    customerDetails.put("billingAddress", billingAddress);
+
+    // Create and add shippingAddress map
+    Map<String, String> shippingAddress = new HashMap<>();
+    shippingAddress.put("firstName", "Merchant");
+    shippingAddress.put("lastName", "Operation");
+    shippingAddress.put("phone", "+6281932358123");
+    shippingAddress.put("address", "Pasaraya Blok M");
+    shippingAddress.put("city", "Jakarta");
+    shippingAddress.put("postalCode", "12160");
+    shippingAddress.put("countryCode", "IDN");
+    customerDetails.put("shippingAddress", shippingAddress);
+
+    additionalInfo.put("customerDetails", customerDetails);
+
+    // Create and add items list
+    List<Map<String, Object>> items = new ArrayList<>();
+    Map<String, Object> item = new HashMap<>();
+    item.put("id", "8143fc4f-ec05-4c55-92fb-620c212f401e");
+
+    // Create and add price map
+    Map<String, String> price = new HashMap<>();
+    price.put("value", "1500.00");
+    price.put("currency", "IDR");
+    item.put("price", price);
+
+    item.put("quantity", 1);
+    item.put("name", "test item name");
+    item.put("brand", "test item brand");
+    item.put("category", "test item category");
+    item.put("merchantName", "Merchant Operation");
+
+    items.add(item);
+    additionalInfo.put("items", items);
+
+    requestBody.put("additionalInfo", additionalInfo);
+
+    return requestBody;
+}
+/**
+ *  Basic example
+ * to change the payment method, you can change the value of the request body on the `payOptionDetails`
+ * the `currency` value that we support for now is only `IDR`
+ */
+JSONObject snapBiResponse1 = SnapBi.directDebit()
+        .withBody(createDirectDebitRequestBody)
+        .createPayment(externalId);
+
+```
+#### 3.2.2 VA (Bank Transfer)
+Refer to this [docs](https://docs.midtrans.com/reference/virtual-account-api-bank-transfer) for more detailed information about VA/Bank Transfer.
+```java
+
+//function to create request body
+public Map<String, Object> createVaRequestBody() {
+    // Create the top-level map
+    Map<String, Object> requestBody = new HashMap<>();
+
+    // Create and add transAmount map
+    Map<String, Object> totalAmount = new HashMap<>();
+    totalAmount.put("value", "1500.00");
+    totalAmount.put("currency", "IDR");
+    requestBody.put("totalAmount", totalAmount);
+
+    Map<String, Object> flags = new HashMap<>();
+    flags.put("shouldRandomizeVaNumber", true);
+
+    Map<String, Object> billingAddress = new HashMap<>();
+    billingAddress.put("firstName", "Merchant");
+    billingAddress.put("lastName", "Operation");
+    billingAddress.put("phone", "+6281932358123");
+    billingAddress.put("address", "Pasaraya Blok M");
+    billingAddress.put("city", "Jakarta");
+    billingAddress.put("postalCode", "12160");
+    billingAddress.put("countryCode", "IDN");
+
+    Map<String, Object> shippingAddress = new HashMap<>();
+    shippingAddress.put("firstName", "Merchant");
+    shippingAddress.put("lastName", "Operation");
+    shippingAddress.put("phone", "6281932358123");
+    shippingAddress.put("address", "Pasaraya Blok M");
+    shippingAddress.put("city", "Jakarta");
+    shippingAddress.put("postalCode", "12160");
+    shippingAddress.put("countryCode", "IDN");
+
+
+    Map<String, Object> customerDetails = new HashMap<>();
+    customerDetails.put("firstName", "Merchant");
+    customerDetails.put("lastName", "Operation");
+    customerDetails.put("email", "merchant-ops@midtrans.com");
+    customerDetails.put("phone", "+6281932358123");
+    customerDetails.put("billingAddress", billingAddress);
+    customerDetails.put("shippingAddress", shippingAddress);
+
+    List<Map<String, Object>> items = new ArrayList<>();
+    Map<String, Object> item = new HashMap<>();
+    item.put("id", "8143fc4f-ec05-4c55-92fb-620c212f401e");
+    // Create and add price map
+    Map<String, Object> price = new HashMap<>();
+    price.put("value", "1500.00");
+    price.put("currency", "IDR");
+    item.put("price", price);
+
+    item.put("quantity", 1);
+    item.put("name", "test item name");
+    item.put("brand", "test item brand");
+    item.put("category", "test item category");
+    item.put("merchantName", "Merchant Operation");
+
+    items.add(item);
+
+    Map<String, Object> additionalInfo = new HashMap<>();
+    additionalInfo.put("merchantId", merchantId);
+    additionalInfo.put("bank", "bca");
+    additionalInfo.put("flags", flags);
+    additionalInfo.put("customerDetails", customerDetails);
+    additionalInfo.put("shippingAddress", shippingAddress);
+    additionalInfo.put("billingAddress", billingAddress);
+    additionalInfo.put("items", items);
+
+    requestBody.put("partnerServiceId", "    1234");
+    requestBody.put("customerNo", "0000000000");
+    requestBody.put("virtualAccountNo", "    12340000000000");
+    requestBody.put("virtualAccountName", "Merchant Operation");
+    requestBody.put("virtualAccountEmail", "merchant-ops@midtrans.com");
+    requestBody.put("virtualAccountPhone", "6281932358123");
+    requestBody.put("trxId", externalId);
+    requestBody.put("additionalInfo", additionalInfo);
+
+    return requestBody;
+}
+
+/**
+ * basic implementation to create payment using va
+ */
+JSONObject snapBiResponse1 = SnapBi.va()
+        .withBody(createVaRequestBody())
+        .createPayment(externalId);
+```
+#### 3.2.3 Qris
+Refer to this [docs](https://docs.midtrans.com/reference/mpm-api-qris) for more detailed information about Qris.
+```java
+
+//function to create the request body
+public static Map<String, Object> createQrisRequestBody() {
+    // Create the top-level map
+    Map<String, Object> requestBody = new HashMap<>();
+
+    // Add partnerReferenceNo and other fields
+    requestBody.put("partnerReferenceNo", externalId);
+    requestBody.put("merchantId", merchantId);
+    requestBody.put("validityPeriod", "2030-07-03T12:08:56-07:00");
+
+    // Create and add amount map
+    Map<String, String> amount = new HashMap<>();
+    amount.put("value", "1500.00");
+    amount.put("currency", "IDR");
+    requestBody.put("amount", amount);
+
+    // Create and add additionalInfo map
+    Map<String, Object> additionalInfo = new HashMap<>();
+
+    // Create and add customerDetails map
+    Map<String, Object> customerDetails = new HashMap<>();
+    customerDetails.put("firstName", "Merchant");
+    customerDetails.put("lastName", "Operation");
+    customerDetails.put("email", "merchant-ops@midtrans.com");
+    customerDetails.put("phone", "+6281932358123");
+
+    additionalInfo.put("customerDetails", customerDetails);
+
+    // Create and add items list
+    List<Map<String, Object>> items = new ArrayList<>();
+    Map<String, Object> item = new HashMap<>();
+    item.put("id", "8143fc4f-ec05-4c55-92fb-620c212f401e");
+
+    // Create and add price map
+    Map<String, String> price = new HashMap<>();
+    price.put("value", "1500.00");
+    price.put("currency", "IDR");
+    item.put("price", price);
+
+    item.put("quantity", 1);
+    item.put("name", "test item name");
+    item.put("brand", "test item brand");
+    item.put("category", "test item category");
+    item.put("merchantName", "Merchant Operation");
+
+    items.add(item);
+    additionalInfo.put("items", items);
+    additionalInfo.put("acquirer", "gopay");
+    additionalInfo.put("customerDetails", customerDetails);
+    additionalInfo.put("countryCode", "ID");
+    additionalInfo.put("locale", "id_ID");
+
+    requestBody.put("additionalInfo", additionalInfo);
+
+    return requestBody;
+}
+
+/**
+ * basic implementation to create payment using Qris
+ */
+JSONObject snapBiResponse1 = SnapBi.qris()
+        .withBody(createQrisRequestBody())
+        .createPayment(externalId);
+```
+
+### 3.4 Get Transaction Status
+Refer to this [docs](https://docs.midtrans.com/reference/get-transaction-status-api) for more detailed information about getting the transaction status.
+```java
+public static Map<String, Object> createDirectDebitStatusByReferenceNoBody
+        () {
+    // Create the top-level map
+    Map<String, Object> requestBody = new HashMap<>();
+
+    requestBody.put("originalReferenceNo", "A1202409230511097Hmk31oa4UID");
+    requestBody.put("serviceCode", "54");
+    requestBody.put("originalExternalId", "b8cc77cd-64c2-4edb-b083-39a320f67c06");
+    return requestBody;
+}
+
+public static Map<String, Object> createDirectDebitStatusByExternalIdBody
+        () {
+    // Create the top-level map
+    Map<String, Object> requestBody = new HashMap<>();
+
+    requestBody.put("originalExternalId", "uzi-order-testing66ce90ce90ee5");
+    requestBody.put("serviceCode", "54");
+    return requestBody;
+}
+public static  Map<String, String > createAdditionalHeader(){
+    Map<String, String> headers = new HashMap<>();
+    headers.put("X-Device-id", "device id");
+    headers.put("debug-id", "debug id");
+    return headers;
+}
+
+public static Map<String, Object> createVaStatusBody
+        () {
+    // Create the top-level map
+    Map<String, Object> additionalInfo = new HashMap<>();
+    additionalInfo.put("merchantId", merchantId);
+
+    Map<String, Object> requestBody = new HashMap<>();
+
+    requestBody.put("partnerServiceId", "    1234");
+    requestBody.put("customerNo", "083430");
+    requestBody.put("virtualAccountNo", "    1234083430");
+    requestBody.put("inquiryRequestId", "4b1da710-fbf5-425e-9648-06e40b290326");
+    requestBody.put("additionalInfo", additionalInfo);
+    return requestBody;
+}
+
+/**
+ * Example code for Direct Debit getStatus using externalId
+ */
+JSONObject snapBiResponse1 = SnapBi.directDebit()
+        .withBody(createDirectDebitStatusByReferenceNoBody())
+        .getStatus(externalId);
+
+/**
+ * Example code for Direct Debit getStatus using referenceNo
+ */
+JSONObject snapBiResponse4 = SnapBi.directDebit()
+        .withBody(createDirectDebitStatusByReferenceNoBody())
+        .getStatus(externalId);
+    
+/**
+ * Example code for VA (Bank Transfer) getStatus
+ */
+JSONObject snapBiResponse7 = SnapBi.va()
+        .withBody(createVaStatusBody())
+        .getStatus(externalId);
+/**
+ * 
+ * Example code for Qris getStatus
+ */
+JSONObject snapBiResponse10 = SnapBi.qris()
+        .withBody(createVaStatusBody())
+        .getStatus(externalId);     
+
+```
+
+### 3.5 Cancel Transaction
+Refer to this [docs](https://docs.midtrans.com/reference/cancel-api) for more detailed information about cancelling the payment.
+```java
+public static Map<String, Object> createDirectDebitCancelByExternalIdBody
+        () {
+    // Create the top-level map
+    Map<String, Object> requestBody = new HashMap<>();
+
+    requestBody.put("originalExternalId", "67be74c3-8cf5-4af3-b62b-0715899fd713");
+    return requestBody;
+}
+
+public static Map<String, Object> createDirectCancelByReferenceNoBody
+        () {
+    // Create the top-level map
+    Map<String, Object> requestBody = new HashMap<>();
+
+    requestBody.put("originalReferenceNo", "A12024092305243239N7MuWlDCID");
+    return requestBody;
+}
+
+public static Map<String, Object> createVaCancelBody
+        () {
+    // Create the top-level map
+    Map<String, Object> additionalInfo = new HashMap<>();
+    additionalInfo.put("merchantId", merchantId);
+
+    Map<String, Object> requestBody = new HashMap<>();
+
+    requestBody.put("partnerServiceId", "    1234");
+    requestBody.put("customerNo", "741633");
+    requestBody.put("virtualAccountNo", "    1234741633");
+    requestBody.put("trxId", "02a9c5a3-e088-45de-8688-424b5f65c927");
+    requestBody.put("additionalInfo", additionalInfo);
+    return requestBody;
+}
+
+public static Map<String, Object> createQrisCancelBody
+        () {
+    // Create the top-level map
+    Map<String, Object> requestBody = new HashMap<>();
+
+    requestBody.put("originalReferenceNo", "A120240923112046EjKURlq1QqID");
+    requestBody.put("merchantId", merchantId);
+    requestBody.put("reason", "cancel reason");
+    return requestBody;
+}
+/**
+ * Basic implementation to cancel transaction using referenceNo
+ */
+JSONObject snapBiResponse1 = SnapBi.directDebit()
+        .withBody(createDirectCancelByReferenceNoBody())
+        .cancel(externalId);
+
+/**
+ * Basic implementation to cancel transaction using externalId
+ */
+JSONObject snapBiResponse4 = SnapBi.directDebit()
+        .withBody(createDirectDebitCancelByExternalIdBody())
+        .cancel(externalId);
+
+/**
+ * Basic implementation of VA (Bank Transfer) to cancel transaction
+ */
+JSONObject snapBiResponse7 = SnapBi.va()
+        .withBody(createVaCancelBody())
+        .cancel(externalId);
+
+/**
+ * Basic implementation of Qris to cancel transaction
+ */
+JSONObject snapBiResponse10 = SnapBi.qris()
+        .withBody(createQrisCancelBody())
+        .cancel(externalId);
+```
+
+### 3.6 Refund Transaction
+Refer to this [docs](https://docs.midtrans.com/reference/refund-api) for more detailed information about refunding the payment.
+
+```java
+ public static Map<String, Object> createDirectDebitRefundByExternalIdBody() {
+    // Create the top-level map
+
+    Map<String, Object> refundAmount = new HashMap<>();
+    refundAmount.put("value", "100.00");
+    refundAmount.put("currency", "IDR");
+
+    Map<String, Object> requestBody = new HashMap<>();
+
+    requestBody.put("originalExternalId", "9d18b81c-485c-4b67-a308-7cc060dc202e");
+    requestBody.put("partnerRefundNo", "9d18b81c-485c-4b67-a308-7cc060dc202e refund-0001");
+    requestBody.put("reason", "some-reason");
+    requestBody.put("refundAmount", refundAmount);
+
+    return requestBody;
+}
+
+public static Map<String, Object> createDirectDebitRefundByReferenceNoBody() {
+    // Create the top-level map
+    Map<String, Object> refundAmount = new HashMap<>();
+    refundAmount.put("value", "100.00");
+    refundAmount.put("currency", "IDR");
+
+    Map<String, Object> requestBody = new HashMap<>();
+
+    requestBody.put("originalReferenceNo", "A1202409230511097Hmk31oa4UID");
+    requestBody.put("reason", "some-reason");
+    requestBody.put("refundAmount", refundAmount);
+    return requestBody;
+}
+public static Map<String, Object> createQrisRefundBody() {
+    Map<String, Object> refundAmount = new HashMap<>();
+    refundAmount.put("value", "100.00");
+    refundAmount.put("currency", "IDR");
+
+    Map<String, Object> additionalInfo = new HashMap<>();
+    additionalInfo.put("foo", "bar");
+
+    Map<String, Object> requestBody = new HashMap<>();
+    requestBody.put("merchantId", merchantId);
+    requestBody.put("originalPartnerReferenceNo", "uzi-order-testing66e01a9b8c6bf");
+    requestBody.put("originalReferenceNo", "A120240923082857KzdNmUKObJID");
+    requestBody.put("partnerRefundNo", "refund-abc123456");
+    requestBody.put("reason", "some-reason");
+    requestBody.put("refundAmount", refundAmount);
+    requestBody.put("additionalInfo", additionalInfo);
+
+    return requestBody;
+}
+/**
+ * Example code for refund using externalId
+ */
+JSONObject snapBiResponse4 = SnapBi.directDebit()
+        .withBody(createDirectDebitRefundByExternalIdBody())
+        .refund(externalId);
+
+/**
+ * Example code for refund using reference no
+ */
+JSONObject snapBiResponse1 = SnapBi.directDebit()
+        .withBody(createDirectDebitRefundByReferenceNoBody())
+        .refund(externalId);
+    
+/**
+ * Example code for refund using Qris
+ */
+JSONObject snapBiResponse7 = SnapBi.qris()
+        .withBody(createQrisRefundBody())
+        .refund(externalId);
+```
+
+### 3.7 Adding additional header / override the header
+
+You can add or override the header value, by utilizing the `withAccessTokenHeader` or `withTransactionHeader` method chain.
+Refer to this [docs](https://docs.midtrans.com/reference/core-api-snap-open-api-overview) to see the header value required by Snap-Bi , and see the default header on each payment method
+
+```java
+//function to create the additional header
+public static  Map<String, String > createAdditionalHeader(){
+    Map<String, String> headers = new HashMap<>();
+    headers.put("X-Device-id", "device id");
+    headers.put("debug-id", "debug id");
+    return headers;
+}
+
+ /**
+ * Example code for Direct Debit refund using additional header
+ */
+SONObject snapBiResponse3 = SnapBi.directDebit()
+        .withBody(createDirectDebitRequestBody())
+        .withAccessTokenHeader(createAdditionalHeader())
+        .withTransactionHeader(createAdditionalHeader())
+        .createPayment(externalId);
+/**
+ * Example code for using additional header on creating payment using VA
+ */
+JSONObject snapBiResponse3 = SnapBi.va()
+        .withBody(createVaRequestBody())
+        .withAccessTokenHeader(createAdditionalHeader())
+        .withTransactionHeader(createAdditionalHeader())
+        .createPayment(externalId);
+```
+
+### 3.8 Reusing Access Token
+
+If you've saved your previous access token and wanted to re-use it, you can do it by utilizing the `.withAccessToken()`.
+
+```java
+/**
+ * Example reusing your existing accessToken by using .withAccessToken()
+ */
+JSONObject snapBiResponse2 = SnapBi.va()
+        .withBody(createVaRequestBody())
+        .withAccessToken("your access token")
+        .createPayment(externalId);
+
+```
+
+### 3.9 Payment Notification
+To implement Snap-Bi Payment Notification you can refer to this [docs](https://docs.midtrans.com/reference/payment-notification-api)
+
+
 
 ## 4. Examples
 Examples are available on [/examples](example) folder 
