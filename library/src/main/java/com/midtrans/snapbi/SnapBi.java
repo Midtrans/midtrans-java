@@ -211,7 +211,6 @@ public class SnapBi {
             // Convert requestBody Map to JSON string using JSONObject
             JSONObject jsonBody = new JSONObject(requestBody);
             String minifiedBody = jsonBody.toString();
-            System.out.println("Minified Body: " + minifiedBody);
 
             // Generate SHA-256 hash of the minified request body
             byte[] hashedBody = hashSha256(minifiedBody);
@@ -298,8 +297,10 @@ public class SnapBi {
                 return CREATE_VA;
             case "qris":
                 return QRIS_PAYMENT;
-            default:
+            case "directDebit":
                 return PAYMENT_HOST_TO_HOST;
+            default:
+                throw new UnsupportedOperationException("Payment method not implemented: " + paymentMethod);
         }
     }
 
@@ -307,8 +308,10 @@ public class SnapBi {
         switch (paymentMethod) {
             case "qris":
                 return QRIS_REFUND;
-            default:
+            case "directDebit":
                 return DEBIT_REFUND;
+            default:
+                throw new UnsupportedOperationException("Payment method not implemented: " + paymentMethod);
         }
     }
 
@@ -318,8 +321,10 @@ public class SnapBi {
                 return VA_CANCEL;
             case "qris":
                 return QRIS_CANCEL;
-            default:
+            case "directDebit":
                 return DEBIT_CANCEL;
+            default:
+                throw new UnsupportedOperationException("Payment method not implemented: " + paymentMethod);
         }
     }
 
@@ -329,8 +334,10 @@ public class SnapBi {
                 return VA_STATUS;
             case "qris":
                 return QRIS_STATUS;
-            default:
+            case "directDebit":
                 return DEBIT_STATUS;
+            default:
+                throw new UnsupportedOperationException("Payment method not implemented: " + paymentMethod);
         }
     }
 }
