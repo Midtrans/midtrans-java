@@ -1,5 +1,11 @@
 ## CHANGELOG MIDTRANS JAVA LIBRARY
 
+## v3.2.0 (September 24, 2024)
+
+Feature:
+- New method to support SnapBi for direct debit, va, and qris.
+
+- 
 ## v3.0.0 (April 13, 2021)
 
 Feature:
