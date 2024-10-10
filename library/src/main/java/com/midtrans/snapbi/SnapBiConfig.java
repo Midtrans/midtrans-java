@@ -12,7 +12,7 @@ public class SnapBiConfig {
     private static String snapBiPartnerId;
     private static String snapBiChannelId;
     private static boolean enableLogging = false;
-
+    private static String snapBiPublicKey;
     public static final String SNAP_BI_SANDBOX_BASE_URL = "https://merchants.sbx.midtrans.com";
     public static final String SNAP_BI_PRODUCTION_BASE_URL = "https://merchants.midtrans.com";
 
@@ -64,6 +64,13 @@ public class SnapBiConfig {
 
     public static void setEnableLogging(boolean enableLogging) {
         SnapBiConfig.enableLogging = enableLogging;
+    }
+    public static String getSnapBiPublicKey() {
+        return snapBiPublicKey;
+    }
+
+    public static void setSnapBiPublicKey(String snapBiPublicKey) {
+        SnapBiConfig.snapBiPublicKey = snapBiPublicKey;
     }
     public static String getSnapBiTransactionBaseUrl() {
         return isProduction ? SNAP_BI_PRODUCTION_BASE_URL : SNAP_BI_SANDBOX_BASE_URL;
