@@ -162,6 +162,9 @@ public class SnapBi {
     }
 
     public Boolean isWebhookNotificationVerified() throws Exception {
+        if (SnapBiConfig.getSnapBiPublicKey() == null || SnapBiConfig.getSnapBiPublicKey().trim().isEmpty()) {
+            throw new IllegalStateException("Please set up your public key");
+        }
         String minifiedBody = minifyJson(this.notificationPayload);
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hashedNotificationBodyJsonString = digest.digest(minifiedBody.getBytes());
