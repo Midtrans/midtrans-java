@@ -2,13 +2,12 @@ package com.midtrans.snapbi;
 
 import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.security.spec.X509EncodedKeySpec;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.security.spec.PKCS8EncodedKeySpec;
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 
 import org.json.JSONObject;
 
@@ -41,6 +40,10 @@ public class SnapBi {
     private String deviceId;
     private String debugId;
     private String timeStamp;
+    private String signature;
+    private String notificationUrlPath;
+    private String notificationPayload;
+
 
     public SnapBi(String paymentMethod) {
         this.paymentMethod = paymentMethod;
@@ -59,6 +62,10 @@ public class SnapBi {
         return new SnapBi("qris");
     }
 
+    public static SnapBi notification() {
+        return new SnapBi("");
+    }
+    
     public SnapBi withAccessTokenHeader(Map<String, String> headers) {
         this.accessTokenHeader.putAll(headers);
         return this;
@@ -114,6 +121,26 @@ public class SnapBi {
         return this;
     }
 
+    public SnapBi withSignature(String signature) {
+        this.signature = signature;
+        return this;
+    }
+
+    public SnapBi withTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+        return this;
+    }
+
+    public SnapBi withNotificationUrlPath(String notificationUrlPath) {
+        this.notificationUrlPath = notificationUrlPath;
+        return this;
+    }
+
+    public SnapBi withNotificationPayload(String notificationPayload) {
+        this.notificationPayload = notificationPayload;
+        return this;
+    }
+
     public JSONObject createPayment(String externalId) throws Exception {
         this.apiPath = setupCreatePaymentApiPath(this.paymentMethod);
         return createConnection(externalId);
@@ -132,6 +159,43 @@ public class SnapBi {
     public JSONObject getStatus(String externalId) throws Exception {
         this.apiPath = setupGetStatusApiPath(this.paymentMethod);
         return createConnection(externalId);
+    }
+
+    public Boolean isWebhookNotificationVerified() throws Exception {
+        if (SnapBiConfig.getSnapBiPublicKey() == null || SnapBiConfig.getSnapBiPublicKey().trim().isEmpty()) {
+            throw new IllegalStateException
+                    ("The public key is null, You need to set the public key from SnapBiConfig.' .\n" +
+                    "For more details contact support at support@midtrans.com if you have any questions.");
+        }
+        String minifiedBody = minifyJson(this.notificationPayload);
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hashedNotificationBodyJsonString = digest.digest(minifiedBody.getBytes());
+        String hashedNotificationBodyJsonStringHex = bytesToHex(hashedNotificationBodyJsonString)
+                .toLowerCase();
+        String rawStringDataToVerifyAgainstSignature = "POST" +
+                ":" +
+                this.notificationUrlPath +
+                ":" +
+                hashedNotificationBodyJsonStringHex +
+                ":" +
+                this.timeStamp;
+        Signature verifier = Signature.getInstance("SHA256withRSA");
+        verifier.initVerify(getPublicKey(SnapBiConfig.getSnapBiPublicKey()));
+        verifier.update(rawStringDataToVerifyAgainstSignature.getBytes(StandardCharsets.UTF_8));
+        boolean isSignatureVerified = verifier.verify(Base64.getDecoder().decode(this.signature));
+
+        return isSignatureVerified;
+    }
+
+    private static PublicKey getPublicKey(String publicKeyString) throws Exception {
+        String publicKeyPEM = publicKeyString
+                .replace("-----BEGIN PUBLIC KEY-----", "")
+                .replace("-----END PUBLIC KEY-----", "")
+                .replaceAll("\\s", "");
+        byte[] keyBytes = Base64.getDecoder().decode(publicKeyPEM);
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        return keyFactory.generatePublic(keySpec);
     }
 
     public JSONObject getAccessToken() throws Exception {
@@ -172,9 +236,9 @@ public class SnapBi {
         snapBiTransactionHeader.put("Accept", "application/json");
         snapBiTransactionHeader.put("X-PARTNER-ID", SnapBiConfig.getSnapBiPartnerId());
         snapBiTransactionHeader.put("X-EXTERNAL-ID", externalId);
-        snapBiTransactionHeader.put("X-DEVICE-ID", this.deviceId != null ? this.deviceId : "" );
+        snapBiTransactionHeader.put("X-DEVICE-ID", this.deviceId != null ? this.deviceId : "");
         snapBiTransactionHeader.put("CHANNEL-ID", SnapBiConfig.getSnapBiChannelId());
-        snapBiTransactionHeader.put("debug-id", this.debugId != null ? this.debugId : "" );
+        snapBiTransactionHeader.put("debug-id", this.debugId != null ? this.debugId : "");
         snapBiTransactionHeader.put("Authorization", "Bearer " + this.accessToken);
         snapBiTransactionHeader.put("X-TIMESTAMP", timeStamp);
         snapBiTransactionHeader.put("X-SIGNATURE", SnapBi.getSymmetricSignatureHmacSh512(
@@ -229,6 +293,7 @@ public class SnapBi {
             throw new RuntimeException("Error generating symmetric signature", e);
         }
     }
+
     private static String minifyJson(String json) {
         // Minify JSON by removing whitespace
         return json.replaceAll("\\s+", "");
@@ -245,6 +310,7 @@ public class SnapBi {
         mac.init(secretKeySpec);
         return mac.doFinal(payload.getBytes(StandardCharsets.UTF_8));
     }
+
     private static String bytesToHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         for (byte b : bytes) {
@@ -252,6 +318,7 @@ public class SnapBi {
         }
         return sb.toString();
     }
+
     public static String getAsymmetricSignatureSha256WithRsa(String clientId, String timeStamp, String privateKey) throws Exception {
         String stringToSign = clientId + "|" + timeStamp;
 
