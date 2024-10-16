@@ -1,5 +1,10 @@
 ## CHANGELOG MIDTRANS JAVA LIBRARY
 
+## v3.2.1 (October 16, 2024)
+
+Feature:
+- New method to verify webhook notification
+
 ## v3.2.0 (September 24, 2024)
 
 Feature:
