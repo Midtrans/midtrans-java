@@ -294,7 +294,7 @@ public class SnapBi {
         }
     }
 
-    static String minifyJson(String json) {
+    private static String minifyJson(String json) {
         if (json == null || json.isEmpty()) {
             return "";
         }

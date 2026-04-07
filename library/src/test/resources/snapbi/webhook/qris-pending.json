@@ -1,0 +1,17 @@
+{
+  "originalReferenceNo" : "Q1202409241000001MerchantQRIS",
+  "originalPartnerReferenceNo" : "partner-ref-001",
+  "serviceCode" : "54",
+  "latestTransactionStatus" : "03",
+  "transactionStatusDesc" : "Pending",
+  "amount" : {
+    "value" : "50000.00",
+    "currency" : "IDR"
+  },
+  "additionalInfo" : {
+    "statusMessage" : "transaction is pending",
+    "merchantName" : "Kedai Kopi Nusantara"
+  },
+  "responseCode" : "2005400",
+  "responseMessage" : "Successful"
+}

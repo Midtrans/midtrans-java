@@ -1,0 +1,24 @@
+{
+  "originalReferenceNo" : "Q1202409241000001MerchantQRIS",
+  "originalPartnerReferenceNo" : "partner-ref-001",
+  "serviceCode" : "54",
+  "latestTransactionStatus" : "00",
+  "transactionStatusDesc" : "Success",
+  "amount" : {
+    "value" : "50000.00",
+    "currency" : "IDR"
+  },
+  "feeAmount" : {
+    "value" : "750.00",
+    "currency" : "IDR"
+  },
+  "paidTime" : "2024-09-24T10:05:30+07:00",
+  "additionalInfo" : {
+    "statusMessage" : "transaction is successful",
+    "buyerName" : "John \"JD\" Doe",
+    "merchantName" : "Kedai Kopi Nusantara",
+    "terminalId" : "TERM 001 A"
+  },
+  "responseCode" : "2005400",
+  "responseMessage" : "Successful"
+}

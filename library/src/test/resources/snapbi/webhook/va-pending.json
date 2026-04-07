@@ -1,0 +1,15 @@
+{
+  "originalReferenceNo" : "A1202409231511081IDnMTwbGpYp",
+  "virtualAccountNo" : "7082214536759543",
+  "virtualAccountName" : "Midtrans Test User",
+  "paymentRequestId" : "test request 1",
+  "trxDateTime" : "2024-09-23T15:11:08+07:00",
+  "additionalInfo" : {
+    "statusMessage" : "transaction is pending"
+  },
+  "responseCode" : "2002500",
+  "responseMessage" : "Success",
+  "latestTransactionStatus" : "03",
+  "transactionStatusDesc" : "Pending",
+  "customField" : { }
+}

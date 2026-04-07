@@ -12,6 +12,7 @@ public class MidtransError extends Exception {
     private String responseBody;
     private Response response;
 
+    @Override
     public String getMessage() {
         return message;
     }
