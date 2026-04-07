@@ -1,18 +1,32 @@
 package com.midtrans.httpclient.error;
 
-import lombok.Getter;
 import okhttp3.Response;
 
 /**
  * MidtransError class to catch error messages
  */
-@Getter
 public class MidtransError extends Exception {
 
     private String message;
     private Integer statusCode;
     private String responseBody;
     private Response response;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public Integer getStatusCode() {
+        return statusCode;
+    }
+
+    public String getResponseBody() {
+        return responseBody;
+    }
+
+    public Response getResponse() {
+        return response;
+    }
 
     /**
      * Constructs a Midtrans exception with the message

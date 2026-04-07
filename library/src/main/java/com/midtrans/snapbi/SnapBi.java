@@ -294,9 +294,35 @@ public class SnapBi {
         }
     }
 
-    private static String minifyJson(String json) {
-        // Minify JSON by removing whitespace
-        return json.replaceAll("\\s+", "");
+    static String minifyJson(String json) {
+        // Minify JSON by removing insignificant whitespace (outside of string values)
+        // while preserving whitespace inside quoted strings and maintaining key order.
+        StringBuilder sb = new StringBuilder(json.length());
+        boolean inString = false;
+        boolean escaped = false;
+        for (int i = 0; i < json.length(); i++) {
+            char c = json.charAt(i);
+            if (escaped) {
+                sb.append(c);
+                escaped = false;
+                continue;
+            }
+            if (c == '\\' && inString) {
+                sb.append(c);
+                escaped = true;
+                continue;
+            }
+            if (c == '"') {
+                inString = !inString;
+                sb.append(c);
+                continue;
+            }
+            if (!inString && Character.isWhitespace(c)) {
+                continue;
+            }
+            sb.append(c);
+        }
+        return sb.toString();
     }
 
     private static byte[] hashSha256(String input) throws NoSuchAlgorithmException {
