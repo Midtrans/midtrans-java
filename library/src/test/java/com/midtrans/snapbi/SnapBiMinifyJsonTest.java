@@ -63,6 +63,16 @@ public class SnapBiMinifyJsonTest {
     }
 
     @Test
+    void nullInputReturnsEmptyString() {
+        assertEquals("", SnapBi.minifyJson(null));
+    }
+
+    @Test
+    void emptyInputReturnsEmptyString() {
+        assertEquals("", SnapBi.minifyJson(""));
+    }
+
+    @Test
     void realisticSnapBiVaNotificationPayload() {
         String input = "{\n" +
                 "  \"originalReferenceNo\" : \"A1202409231511081IDnMTwbGpYp\",\n" +

@@ -295,6 +295,9 @@ public class SnapBi {
     }
 
     static String minifyJson(String json) {
+        if (json == null || json.isEmpty()) {
+            return "";
+        }
         // Minify JSON by removing insignificant whitespace (outside of string values)
         // while preserving whitespace inside quoted strings and maintaining key order.
         StringBuilder sb = new StringBuilder(json.length());
