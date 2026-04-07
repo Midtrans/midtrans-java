@@ -1,0 +1,26 @@
+{
+  "originalReferenceNo" : "D1202409251400001DirectDebit",
+  "originalPartnerReferenceNo" : "partner-dd-ref-001",
+  "serviceCode" : "54",
+  "latestTransactionStatus" : "00",
+  "transactionStatusDesc" : "Success",
+  "amount" : {
+    "value" : "200000.00",
+    "currency" : "IDR"
+  },
+  "paidTime" : "2024-09-25T14:05:00+07:00",
+  "additionalInfo" : {
+    "statusMessage" : "transaction is successful",
+    "accountHolderName" : "Ahmad Rizki Pratama",
+    "paymentDescription" : "Payment for Order #ORD-2024-09-25-001 (includes \"express\" shipping)",
+    "lineItems" : [
+      {
+        "name" : "Premium Plan Subscription",
+        "quantity" : 1,
+        "price" : "200000.00"
+      }
+    ]
+  },
+  "responseCode" : "2005400",
+  "responseMessage" : "Successful"
+}

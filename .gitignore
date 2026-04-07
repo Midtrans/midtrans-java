@@ -32,6 +32,7 @@ target/
 .classpath
 .project
 .settings
+.factorypath
 **/.checkstyle
 target/
 bin/
@@ -58,3 +59,13 @@ dist
 /mvnw
 /mvnw.bat
 mvnw.cmd
+
+## GitHub Copilot prompts & skills (OpenSpec-generated):
+.github/prompts/
+.github/skills/
+
+## OpenCode (AI agent config):
+.opencode/
+
+## OpenSpec (spec-driven workflow artifacts):
+openspec/

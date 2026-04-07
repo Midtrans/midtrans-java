@@ -1,0 +1,19 @@
+{
+  "originalReferenceNo" : "A1202409231511081IDnMTwbGpYp",
+  "virtualAccountNo" : "7082214536759543",
+  "virtualAccountName" : "Midtrans Yudhi",
+  "paymentRequestId" : "test yudhi3",
+  "trxDateTime" : "2024-09-23T15:15:30+07:00",
+  "paidAmount" : {
+    "value" : "15000.00",
+    "currency" : "IDR"
+  },
+  "additionalInfo" : {
+    "statusMessage" : "transaction is settled",
+    "merchantStoreName" : "Toko Serba Ada Jaya"
+  },
+  "responseCode" : "2002500",
+  "responseMessage" : "Success",
+  "latestTransactionStatus" : "00",
+  "transactionStatusDesc" : "Settlement"
+}
